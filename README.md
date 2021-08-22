@@ -20,3 +20,9 @@ eg.
 ## House rules
 
 - each commit should only have changes to the respective end
+
+## Readmes
+
+Frontend readme - [/frontend/README.md](/frontend/README.md)
+
+Backend readme - [/backend/README.md](/backend/README.md)
