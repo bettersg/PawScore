@@ -1,0 +1,20 @@
+.header {
+    background-color: white;
+}
+
+.footer {
+    background-color: white;
+}
+
+.footerLogo {
+    width: 100px
+}
+
+.footerCol {
+    padding: 20px
+}
+
+.hr {
+    margin: 20px 20px;
+    border: 1px solid #eee;
+}

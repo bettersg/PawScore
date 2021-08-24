@@ -40,7 +40,7 @@ Components or sub-components that pages may require should go in to the `fronten
 
 ### Layouts
 
-Layouts are common page layouts. Please put these in the `frontend/layout` folder.
+Layouts are common page layouts. Please put these in the `frontend/layouts` folder.
 
 ### Styling
 

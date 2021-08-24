@@ -1,5 +1,5 @@
 import styles from "./Test.module.css";
-import WithNavBar from "../../layout/WithNavBar";
+import WithNavBar from "../../layouts/WithNavBar";
 
 const Test = () => {
 	return (
