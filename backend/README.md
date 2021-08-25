@@ -42,6 +42,27 @@ server started at http://127.0.0.1:5000
 ## Database Schema
 TBC
 
+## Database Migration
+```bash
+$ npx sequelize-cli db:migrate
+samuel@laptop /PawScore/backend $ npx sequelize-cli db:migrate
+
+Sequelize CLI [Node: 14.17.2, CLI: 6.2.0, ORM: 6.6.5]
+
+/PawScore/backend/.env
+postgres
+Loaded configuration file "src/config/sequelize-cli-config.js".
+Using environment "development".
+== 20210822164736-create-user: migrating =======
+== 20210822164736-create-user: migrated (0.042s)
+
+== 20210822164737-user-sessions: migrating =======
+== 20210822164737-user-sessions: migrated (0.028s)
+
+== 20210823172147-create-booking: migrating =======
+== 20210823172147-create-booking: migrated (0.017s)
+```
+
 ## Creating a model
 Sequelize is used as the ORM for the project. You may review the existing models for code samples on how models are defined.
 
