@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import WithNavBar from "../../layout/WithNavBar";
-import { getPokemon } from "../../api/testPokemon";
+import WithNavBar from "layouts/WithNavBar";
+import { getPokemon } from "api/testPokemon";
 
 const TestWithId = ({ data, error }) => {
 	const router = useRouter();

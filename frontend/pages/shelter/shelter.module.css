@@ -1,0 +1,24 @@
+.logo {
+	width: 200px;
+	margin: 20px auto;
+}
+
+.subtitle {
+	text-align: center;
+	font-size: small;
+    color: #666;
+}
+
+.loginContainer {
+    margin: 200px auto;
+	padding: 60px 40px;
+	background-color: white;
+}
+
+.loginFormForgot {
+    float: right;
+}
+
+.loginFormButton {
+    width: 100%;
+}
