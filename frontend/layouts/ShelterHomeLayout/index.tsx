@@ -2,7 +2,7 @@ import "antd/dist/antd.css";
 import { Button, Col, Layout, Menu, Row } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../assets/logo.png";
+import logo from "assets/logo.png";
 import styles from "./ShelterHomeLayout.module.css";
 
 const { Header, Content, Footer } = Layout;

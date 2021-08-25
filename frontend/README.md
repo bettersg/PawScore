@@ -26,7 +26,7 @@ See how dynamic routing works to get pokemon data at `/test/[id]` where `[id]` i
 
 ## Conventions
 
-### Page URLS
+### **Page URLS**
 
 Next js does auto routing with folders in the `pages` folder.
 
@@ -34,15 +34,29 @@ So `frontend/pages/this-page` will link to `baseurl/this-page`.
 
 Nested folders like `frontend/pages/this-page/that-page` will link to `baseurl/this-page/that-page`.
 
-### Page components
+### **Absolute imports**
+
+You can import anything with a direct path from the `frontend` folder.
+
+if you are importing `WithNavBar` (in `frontend/layouts/WithNavBar`) from `test` page (in `frontend/pages/test/index`),
+
+#### Old
+
+    import WithNavBar from '../../layouts/WithNavBar'
+
+#### New
+
+    import WithNavBar from 'layouts/WithNavBar'
+
+### **Page components**
 
 Components or sub-components that pages may require should go in to the `frontend/components` folder. Name them after the page.
 
-### Layouts
+### **Layouts**
 
 Layouts are common page layouts. Please put these in the `frontend/layouts` folder.
 
-### Styling
+### **Styling**
 
 Place your stylesheet `module.css` file together with your component file. Name it after the component.
 

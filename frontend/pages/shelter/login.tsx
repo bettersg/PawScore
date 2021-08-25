@@ -1,9 +1,9 @@
-import ShelterHomeLayout from "../../layouts/ShelterHomeLayout";
+import ShelterHomeLayout from "layouts/ShelterHomeLayout";
 import { Button, Checkbox, Col, Form, Input, Row, Tabs } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import styles from "./shelter.module.css";
-import logo from "../../assets/logo.png";
+import logo from "assets/logo.png";
 
 const { TabPane } = Tabs;
 
