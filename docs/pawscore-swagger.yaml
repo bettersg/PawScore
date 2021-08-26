@@ -1,0 +1,131 @@
+openapi: 3.0.1
+info:
+  title: Pawscore
+  description: This is an API documentation for Pawscore. You may review the API schema
+    and/or trigger web API calls here.
+  termsOfService: ""
+  contact:
+    email: samuelpua@better.sg
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 0.0.1
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: /api
+tags:
+- name: auth
+  description: Authentication & Authorization
+- name: booking
+  description: Appointment booking
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+paths:
+  /register:
+    post:
+      tags:
+      - auth
+      summary: Register
+      operationId: register
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                username:
+                  type: string
+                  description: Username
+                password:
+                  type: string
+                  description: Password
+                email:
+                  type: string
+                  description: Password
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /login:
+    post:
+      tags:
+      - auth
+      summary: Login
+      operationId: login
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                username:
+                  type: string
+                  description: Username
+                password:
+                  type: string
+                  description: Password
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /booking:
+    post:
+      tags:
+      - booking
+      summary: Create a new booking
+      operationId: createBooking
+      requestBody:
+        description: Create a new booking
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - cookieAuth: []
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        payload:
+          type: object
+    Booking:
+      type: object
+      properties:
+        shelterID:
+          type: integer
+        userID:
+          type: integer
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      name: connect.sid
+      in: cookie
