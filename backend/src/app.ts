@@ -37,10 +37,21 @@ app.use(passport.session());
 
 authStrategy(passport);
 
+// Set global headers
+app.use('/api',function(req,res,next){
+    res.header("Content-Type" , "application/json" );
+    next(); // http://expressjs.com/guide.html#passing-route control
+});
 
 // Routes
 authRouteSetup(app, passport);
 app.use("/api", isLoggedIn, bookingRouter);
+
+// Swagger docs route
+if (process.env.NODE_ENV === 'development') {
+  app.use('/docs', express.static(__dirname + '/../../docs/'));
+}
+
 
 // Do the sync below with caution!
 // You are recommended to use Sequelize migration scripts instead to maintain compatability!

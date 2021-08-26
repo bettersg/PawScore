@@ -16,7 +16,8 @@ const authRouteSetup = (app: express.Application, passport: passport.PassportSta
             return next(loginErr);
           }
         });
-        const result = {"status": "success", "message": "You have successfully registered"};
+        user.password = "";
+        const result = {"status": "success", "message": "You have successfully registered", "payload": user};
         res.end(JSON.stringify(result));
       }
     })(req, res, next);
@@ -36,7 +37,8 @@ const authRouteSetup = (app: express.Application, passport: passport.PassportSta
         if (loginErr) {
           return next(loginErr);
         }
-        const result = {"status": "success", "message": "You have successfully logged in"};
+        user.password = "";
+        const result = {"status": "success", "message": "You have successfully logged in", "payload": user};
         return res.end(JSON.stringify(result));
       });
     })(req, res, next);

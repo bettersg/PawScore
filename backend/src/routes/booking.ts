@@ -3,6 +3,6 @@ import BookingController from "../controllers/booking";
 
 const router = Router();
 
-router.put("/booking", BookingController.create);
+router.post("/booking", BookingController.create);
 
 export default router;

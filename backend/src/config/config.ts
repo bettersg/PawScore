@@ -17,7 +17,7 @@ config["development"] = {
     "dialect": "postgres",
   },
   "cookieSecret": process.env.COOKIE_SECRET,
-  "expressHost": "127.0.0.1",
+  "expressHost": process.env.EXPRESS_HOST || "127.0.0.1",
   "expressPort": 5000
 };
 
@@ -30,7 +30,7 @@ config["test"] = {
     "dialect": "postgres",
   },
   "cookieSecret": process.env.COOKIE_SECRET,
-  "expressHost": "127.0.0.1",
+  "expressHost": process.env.EXPRESS_HOST || "127.0.0.1",
   "expressPort": 5000
 };
 
@@ -43,7 +43,7 @@ config["production"] = {
     "dialect": "postgres",
   },
   "cookieSecret": process.env.COOKIE_SECRET,
-  "expressHost": "0.0.0.0",
+  "expressHost": process.env.EXPRESS_HOST || "0.0.0.0",
   "expressPort": 5000
 };
 
