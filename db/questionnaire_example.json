@@ -1,0 +1,102 @@
+{
+  "questionnaire_name": "Pet Adoption Readiness Test",
+  "sections": [
+    {
+      "section_title": "Adoption Suitability",
+      "section_description": "",
+      "questions": [
+        {
+          "question_type": "BOOLEAN",
+          "question_title": "Are you a first time owner?",
+          "question_description": "",
+          "question_options": [
+            true,
+            false
+          ],
+          "user_answers": null
+        },
+        {
+          "question_type": "TEXT",
+          "question_title": "Reason for adoption",
+          "question_description": "Please kindly tell us why do you want to adopt?(up to 200 words)",
+          "question_options": [],
+          "user_answers": null
+        }
+      ]
+    },
+    {
+      "section_title": "Personal Details",
+      "section_description": "Your personal details",
+      "questions": [
+        {
+          "question_type": "BOOLEAN",
+          "question_title": "Are you required to travel to work?",
+          "question_description": "",
+          "question_answer": null,
+          "question_options": [
+            true,
+            false
+          ],
+          "user_answers": null
+        },
+        {
+          "question_type": "BOOLEAN",
+          "question_title": "Have you ever given up an animal to shelter?",
+          "question_description": "",
+          "question_answer": null,
+          "question_options": [
+            true,
+            false
+          ],
+          "user_answers": null
+        },
+        {
+          "question_type": "MULTIPLE_CHOICE",
+          "question_title": "multiple choice question here",
+          "question_description": "",
+          "question_answer": [
+            "A",
+            "D"
+          ],
+          "question_options": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "user_answers": null
+        }
+      ]
+    },
+    {
+      "section_title": "Readiness test",
+      "section_description": "Write your answers in place of the item on how much it costs",
+      "questions": [
+        {
+          "question_type": "TEXT",
+          "question_title": "Pet Food",
+          "question_description": "",
+          "question_answer": "100-200",
+          "question_options": [],
+          "user_answers": null
+        },
+        {
+          "question_type": "TEXT",
+          "question_title": "Medical Bills",
+          "question_description": "",
+          "question_answer": "100-200",
+          "question_options": [],
+          "user_answers": null
+        },
+        {
+          "question_type": "TEXT",
+          "question_title": "Yearly Vaccination",
+          "question_description": "",
+          "question_answer": "100-200",
+          "question_options": [],
+          "user_answers": null
+        }
+      ]
+    }
+  ]
+}
