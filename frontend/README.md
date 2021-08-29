@@ -52,6 +52,14 @@ if you are importing `WithNavBar` (in `frontend/layouts/WithNavBar`) from `test`
 
 Components or sub-components that pages may require should go in to the `frontend/components` folder. Name them after the page.
 
+ie: `frontend/components/this-page`
+
+### **Common components**
+
+Common components like buttons or pills should go in to the `frontend/components/common`.
+
+ie: `frontend/components/common/Button`
+
 ### **Layouts**
 
 Layouts are common page layouts. Please put these in the `frontend/layouts` folder.

@@ -1,6 +1,6 @@
-import NavBar from "../common/NavBar";
+import NavBar from "../common/TestNavBar";
 
-const WithNavBar = ({children}) => {
+const WithNavBar = ({ children }) => {
 	return (
 		<>
 			<NavBar />

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import WithNavBar from "layouts/WithNavBar";
+import WithNavBar from "layouts/TestWithNavBar";
 import { getPokemon } from "api/testPokemon";
 
 const TestWithId = ({ data, error }) => {
