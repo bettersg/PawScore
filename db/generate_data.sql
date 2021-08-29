@@ -1,4 +1,39 @@
--- SET SCHEMA 'pawscore_dev';
+SET SCHEMA 'pawscore_dev';
+
+-- PERMISSIONS e.g. admin permissions
+INSERT INTO auth_permission(id, name, code_name)
+values ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'CREATE_USER', 200);
+INSERT INTO auth_permission(id, name, code_name)
+values ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'READ_USER', 200);
+INSERT INTO auth_permission(id, name, code_name)
+values ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'UPDATE_USER', 200);
+INSERT INTO auth_permission(id, name, code_name)
+values ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'DELETE_USER', 200);
+
+-- create group name
+INSERT INTO auth_group(id, name)
+values ('baaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'admin_user');
+INSERT INTO auth_group(id, name)
+values ('baaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'normal_user');
+
+-- link list of permissions related to group e.g. CRUD user
+INSERT INTO auth_group_permission(auth_group_id, auth_permission_id)
+values ('baaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1');
+INSERT INTO auth_group_permission(auth_group_id, auth_permission_id)
+values ('baaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2');
+INSERT INTO auth_group_permission(auth_group_id, auth_permission_id)
+values ('baaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3');
+INSERT INTO auth_group_permission(auth_group_id, auth_permission_id)
+values ('baaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4');
+
+-- Create user
+INSERT INTO auth_user(id, username, email, password, is_staff, is_active, is_admin)
+values ('faaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'admin@pawscore.com', 'admin@pawscore.com', '12345678', true, true,
+        true);
+
+-- Link group permissions to user. e.g. link admin_user group to user
+INSERT INTO auth_user_group_permission(auth_user_id, auth_group_id)
+values ('faaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'baaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1');
 
 -- Adding basic data type
 ----------------------------------
@@ -74,9 +109,16 @@ values ('Adoption Questionaire', '{}');
 -- Use cases
 
 -- User creates profile
-INSERT INTO user_profile (id, user_id, email, phone_no, nric, first_name, last_name, dob, gender,
+INSERT INTO auth_user(id, username, email, password, is_staff, is_active, is_admin)
+values ('faaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', 'tommy@pawscore.com', 'tommy@pawscore.com', '12345667', false, true,
+        false);
+-- User only have normal group permossiosn
+INSERT INTO auth_user_group_permission(auth_user_id, auth_group_id)
+values ('faaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', 'baaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2');
+
+INSERT INTO user_profile (id, auth_user_id, email, phone_no, nric, first_name, last_name, dob, gender,
                           occupation, address, postal_code)
-VALUES ('5df80ec9-afa5-424a-b031-d7e2208ed9d2', '030366fb-58fb-4f06-be5a-00ecf88038d5', 'tommy@pawscore.com',
+VALUES ('5df80ec9-afa5-424a-b031-d7e2208ed9d2', 'faaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', 'tommy@pawscore.com',
         '+6591234567', '', 'Tommy', 'Tan',
         '1995-01-05', 'M', 'Student',
         '50 Sungei Tengah Rd, Singapore 699012', '699012');

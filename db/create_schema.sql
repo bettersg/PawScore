@@ -1,6 +1,6 @@
--- DROP SCHEMA IF EXISTS pawscore_dev CASCADE;
--- CREATE SCHEMA IF NOT EXISTS pawscore_dev;
--- SET SCHEMA 'pawscore_dev';
+DROP SCHEMA IF EXISTS pawscore_dev CASCADE;
+CREATE SCHEMA IF NOT EXISTS pawscore_dev;
+SET SCHEMA 'pawscore_dev';
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE IF NOT EXISTS applications_status -- PENDING, REJECTED, WITHDREW, SHORTLISTED, SCHEDULED, COMPLETED
@@ -27,25 +27,81 @@ CREATE TABLE IF NOT EXISTS application_type -- ADOPTION, FOSTER
     updated_at TIMESTAMP        DEFAULT current_timestamp
 );
 
+CREATE TABLE IF NOT EXISTS auth_user
+( -- Store user auth details
+    id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    username   VARCHAR NOT NULL UNIQUE,
+    email      VARCHAR NOT NULL UNIQUE,
+    password   VARCHAR NOT NULL,
+    is_staff   BOOLEAN NOT NULL,
+    is_active  BOOLEAN NOT NULL,
+    is_admin   BOOLEAN NOT NULL,
+    created_at TIMESTAMP        DEFAULT current_timestamp,
+    updated_at TIMESTAMP        DEFAULT current_timestamp
+);
+
+CREATE TABLE IF NOT EXISTS auth_permission
+(                                -- define permissions here
+    id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name       VARCHAR NOT NULL, -- permissions name
+    code_name  VARCHAR NOT NULL, -- permission code
+    created_at TIMESTAMP        DEFAULT current_timestamp,
+    updated_at TIMESTAMP        DEFAULT current_timestamp
+);
+
+CREATE TABLE IF NOT EXISTS auth_group
+( -- table to store name of permission group
+    id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name       VARCHAR NOT NULL,
+    created_at TIMESTAMP        DEFAULT current_timestamp,
+    updated_at TIMESTAMP        DEFAULT current_timestamp
+);
+
+CREATE TABLE IF NOT EXISTS auth_user_permission
+(-- Add individual permissions user is allowed
+    id                 UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    auth_user_id       UUID REFERENCES auth_user (id),
+    auth_permission_id UUID REFERENCES auth_permission (id),
+    created_at         TIMESTAMP        DEFAULT current_timestamp,
+    updated_at         TIMESTAMP        DEFAULT current_timestamp
+);
+
+CREATE TABLE IF NOT EXISTS auth_group_permission
+( -- holds a set of permissions allow for auth group
+    PRIMARY KEY (auth_group_id, auth_permission_id),
+    auth_group_id      UUID REFERENCES auth_group (id),
+    auth_permission_id UUID REFERENCES auth_permission (id),
+    created_at         TIMESTAMP DEFAULT current_timestamp,
+    updated_at         TIMESTAMP DEFAULT current_timestamp
+);
+
+CREATE TABLE IF NOT EXISTS auth_user_group_permission
+( -- group permissions user allowed
+    id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    auth_user_id  UUID REFERENCES auth_user (id),
+    auth_group_id UUID REFERENCES auth_group (id),
+    created_at    TIMESTAMP        DEFAULT current_timestamp,
+    updated_at    TIMESTAMP        DEFAULT current_timestamp
+);
 
 -- Contains user profile detail. Reference to user_id for external auth
 CREATE TABLE IF NOT EXISTS user_profile
 (
-    id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id     VARCHAR,
-    email       VARCHAR NOT NULL UNIQUE,
-    phone_no    VARCHAR NOT NULL,
-    nric        VARCHAR UNIQUE, -- Putting it as optional first
-    first_name  VARCHAR NOT NULL,
-    last_name   VARCHAR NOT NULL,
-    dob         DATE    NOT NULL,
-    gender      CHAR(1) NOT NULL
+    id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    auth_user_id UUID REFERENCES auth_user (id),
+    email        VARCHAR NOT NULL UNIQUE,
+    phone_no     VARCHAR NOT NULL,
+    nric         VARCHAR UNIQUE, -- Putting it as optional first
+    first_name   VARCHAR NOT NULL,
+    last_name    VARCHAR NOT NULL,
+    dob          DATE    NOT NULL,
+    gender       CHAR(1) NOT NULL
         CONSTRAINT gender_vals CHECK (gender IN ('F', 'M')),
-    occupation  VARCHAR,
-    address     VARCHAR NOT NULL,
-    postal_code VARCHAR NOT NULL,
-    created_at  TIMESTAMP        DEFAULT current_timestamp,
-    updated_at  TIMESTAMP        DEFAULT current_timestamp
+    occupation   VARCHAR,
+    address      VARCHAR NOT NULL,
+    postal_code  VARCHAR NOT NULL,
+    created_at   TIMESTAMP        DEFAULT current_timestamp,
+    updated_at   TIMESTAMP        DEFAULT current_timestamp
 );
 
 CREATE TABLE IF NOT EXISTS shelter
