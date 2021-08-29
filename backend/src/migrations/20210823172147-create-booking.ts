@@ -1,36 +1,37 @@
-'use strict';
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
+import { QueryInterface, DataTypes } from "sequelize";
+
+export default {
+  up: async (queryInterface: QueryInterface) => {
     await queryInterface.createTable('Bookings', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER
       },
       shelterID: {
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER
       },
       userID: {
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER
       },
       startDate: {
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       endDate: {
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       }
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface: QueryInterface) => {
     await queryInterface.dropTable('Bookings');
   }
 };

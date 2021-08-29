@@ -8,7 +8,9 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:migrate": "npx ts-node ./node_modules/sequelize-cli/lib/sequelize db:migrate",
+    "db:migrate:undo": "npx ts-node ./node_modules/sequelize-cli/lib/sequelize db:migrate:undo:all"
   },
   "author": "",
   "license": "MIT",
