@@ -1,7 +1,7 @@
 import { QueryInterface, DataTypes } from "sequelize";
 
 export default {
-  up: async (queryInterface: QueryInterface) => {
+  up: async (queryInterface: QueryInterface): Promise<void> => {
     await queryInterface.createTable('user_sessions', {
       sid: {
         allowNull: false,
@@ -17,7 +17,7 @@ export default {
     });
     await queryInterface.addIndex('user_sessions', ["expire"]);
   },
-  down: async (queryInterface: QueryInterface) => {
+  down: async (queryInterface: QueryInterface): Promise<void>=> {
     await queryInterface.dropTable('user_sessions');
   }
 };
