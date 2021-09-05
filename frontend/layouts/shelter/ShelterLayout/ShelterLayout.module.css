@@ -1,0 +1,30 @@
+.header {
+	background-color: var(--color-header-background);
+	padding: 0;
+	position: relative;
+	line-height: 0;
+	display: flex;
+	justify-content: space-between;
+}
+
+.headerLogo {
+	padding: 19.5px 40px;
+}
+
+.headerMenu {
+	margin: auto 40px;
+	display: flex;
+	align-items: center;
+}
+
+.headerSubMenu > div {
+	margin: auto;
+	color: var(--color-golden-purple);
+	display: inline-flex;
+	align-items: center;
+	height: 64px;
+}
+
+.headerSubMenu span {
+	margin-left: 10px;
+}

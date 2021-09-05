@@ -1,4 +1,3 @@
-import "antd/dist/antd.css";
 import { Button, Col, Layout, Menu, Row } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,19 +8,17 @@ const { Header, Content, Footer } = Layout;
 
 const ShelterHomeLayout = ({ children }) => {
 	return (
-		<>
-			<Layout>
-				<Header className={styles.header}>
-					<HeaderContent />
-				</Header>
-				<Content>
-					<div>{children}</div>
-				</Content>
-				<Footer className={styles.footer}>
-					<FooterContent />
-				</Footer>
-			</Layout>
-		</>
+		<Layout>
+			<Header className={styles.header}>
+				<HeaderContent />
+			</Header>
+			<Content>
+				<div>{children}</div>
+			</Content>
+			<Footer className={styles.footer}>
+				<FooterContent />
+			</Footer>
+		</Layout>
 	);
 };
 
