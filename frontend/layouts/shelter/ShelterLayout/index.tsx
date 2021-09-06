@@ -1,18 +1,62 @@
 import { Layout, Menu } from "antd";
-import Image from "next/image";
-import { useRef } from "react";
-
 import logo from "assets/logo.png";
-import ShelterLeftMenu from "layouts/common/ShelterLeftMenu";
+import Image from "next/image";
+import LeftMenu from "./LeftMenu";
 import styles from "./ShelterLayout.module.css";
+import styled from "styled-components";
 
 const { Header, Content } = Layout;
 
+const HeaderMenuContainer = styled(Menu)`
+	&& .ant-menu-submenu-title:after {
+		border-bottom: 3px solid var(--color-golden-purple) !important;
+	}
+
+	&& .ant-menu-submenu-active {
+		color: var(--color-golden-purple) !important;
+	}
+
+	&& .ant-menu-item a:hover,
+	.ant-menu-item a:active {
+		color: var(--color-golden-purple);
+	}
+`;
+
 const ShelterLayout = ({ children }) => {
 	// const isLoggedIn = true;
-	const { header, headerLogo, menuLogo, headerMenu, headerSubMenu } = styles;
+	const { header, sideMenu } = styles;
 
-	const selectedMenuItems = useRef([]);
+	const handleEditProfileClick = () => {
+		alert("Edit Profile");
+	};
+	const handleSignOutClick = () => {
+		alert("Sign Out");
+	};
+
+	return (
+		<Layout>
+			<Header className={header}>
+				<HeaderContent
+					handleEditProfileClick={handleEditProfileClick}
+					handleSignOutClick={handleSignOutClick}
+				/>
+			</Header>
+			<Layout>
+				<Layout.Sider width={256} className={sideMenu}>
+					<LeftMenu />
+				</Layout.Sider>
+			</Layout>
+			<Content>
+				<div>{children}</div>
+			</Content>
+		</Layout>
+	);
+};
+
+export default ShelterLayout;
+
+const HeaderContent = ({ handleEditProfileClick, handleSignOutClick }) => {
+	const { headerLogo, menuLogo, headerMenu, headerSubMenu } = styles;
 
 	const accountAvatar = (
 		<Image
@@ -24,54 +68,33 @@ const ShelterLayout = ({ children }) => {
 		/>
 	);
 
-	const handleEditProfileClick = () => {
-		alert("Edit Profile");
-	};
-	const handleSingOutClick = () => {
-		alert("Sign Out");
-	};
-
 	return (
-		<Layout>
-			<Header className={header}>
-				<div className={headerLogo}>
-					<Image
-						src={logo}
-						width="139"
-						height="25"
-						alt="PawScore Logo"
-					/>
-				</div>
-				<Menu
-					mode="horizontal"
-					selectedKeys={selectedMenuItems.current}
-					triggerSubMenuAction="click"
-					className={headerMenu}>
-					<Menu.SubMenu
-						key="SubMenu"
-						icon={accountAvatar}
-						title="Your Account"
-						className={headerSubMenu}>
-						<Menu.Item
-							key="edit-profile"
-							onClick={handleEditProfileClick}>
-							Edit Profile
-						</Menu.Item>
-						<Menu.Item
-							key="sign-out"
-							danger
-							onClick={handleSingOutClick}>
-							Sign Out
-						</Menu.Item>
-					</Menu.SubMenu>
-				</Menu>
-			</Header>
-			<Content>
-				<ShelterLeftMenu />
-				<div>{children}</div>
-			</Content>
-		</Layout>
+		<>
+			<div className={headerLogo}>
+				<Image src={logo} width="139" height="25" alt="PawScore Logo" />
+			</div>
+			<HeaderMenuContainer
+				mode="horizontal"
+				triggerSubMenuAction="click"
+				className={headerMenu}>
+				<Menu.SubMenu
+					key="SubMenu"
+					icon={accountAvatar}
+					title="Your Account"
+					className={headerSubMenu}>
+					<Menu.Item
+						key="edit-profile"
+						onClick={handleEditProfileClick}>
+						Edit Profile
+					</Menu.Item>
+					<Menu.Item
+						key="sign-out"
+						danger
+						onClick={handleSignOutClick}>
+						Sign Out
+					</Menu.Item>
+				</Menu.SubMenu>
+			</HeaderMenuContainer>
+		</>
 	);
 };
-
-export default ShelterLayout;

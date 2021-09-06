@@ -28,3 +28,8 @@
 .headerSubMenu span {
 	margin-left: 10px;
 }
+
+.sideMenu {
+	height: calc(100vh - var(--menu-header-menu-height));
+	background-color: var(--color-header-background);
+}
