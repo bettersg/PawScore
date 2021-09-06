@@ -1,4 +1,5 @@
 @import "layouts/common/colors.css";
+@import "layouts/common/menus.css";
 
 body {
 	color: #000000;

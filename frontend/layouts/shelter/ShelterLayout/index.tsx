@@ -1,8 +1,10 @@
 import { Layout, Menu } from "antd";
 import Image from "next/image";
-import logo from "assets/logo.png";
-import styles from "./ShelterLayout.module.css";
 import { useRef } from "react";
+
+import logo from "assets/logo.png";
+import ShelterLeftMenu from "layouts/common/ShelterLeftMenu";
+import styles from "./ShelterLayout.module.css";
 
 const { Header, Content } = Layout;
 
@@ -65,6 +67,7 @@ const ShelterLayout = ({ children }) => {
 				</Menu>
 			</Header>
 			<Content>
+				<ShelterLeftMenu />
 				<div>{children}</div>
 			</Content>
 		</Layout>

@@ -22,7 +22,7 @@
 	color: var(--color-golden-purple);
 	display: inline-flex;
 	align-items: center;
-	height: 64px;
+	height: var(--menu-header-menu-height);
 }
 
 .headerSubMenu span {
