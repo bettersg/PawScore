@@ -1,9 +1,9 @@
-import NavBar from "../common/TestNavBar";
+import ShelterHeader from "../common/ShelterHeader";
 
 const WithNavBar = ({ children }) => {
 	return (
 		<>
-			<NavBar />
+			<ShelterHeader />
 			{children}
 		</>
 	);

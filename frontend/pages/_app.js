@@ -1,3 +1,4 @@
+import "antd/dist/antd.css";
 import "./main.css";
 
 // This default export is required in a new `pages/_app.js` file.
