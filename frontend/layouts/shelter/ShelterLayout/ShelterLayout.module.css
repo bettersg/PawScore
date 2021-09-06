@@ -22,9 +22,14 @@
 	color: var(--color-golden-purple);
 	display: inline-flex;
 	align-items: center;
-	height: 64px;
+	height: var(--menu-header-menu-height);
 }
 
 .headerSubMenu span {
 	margin-left: 10px;
+}
+
+.sideMenu {
+	height: calc(100vh - var(--menu-header-menu-height));
+	background-color: var(--color-header-background);
 }
