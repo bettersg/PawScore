@@ -1,8 +1,9 @@
-import { Modal, Button } from "antd";
+import { Modal, Button, message } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 const SaveModal = (props) => {
-	const { confirm } = Modal;
+  const { confirm } = Modal;
+  const key = 'updatable';
 
 	const onClickCancel = () => {
 		confirm({
@@ -28,13 +29,20 @@ const SaveModal = (props) => {
 			okText: "Yes",
 			cancelText: "No",
 			onOk() {
-				console.log("OK");
+				onSaveConfirm();
 			},
 			onCancel() {
 				console.log("Cancel");
 			}
 		});
-	};
+  };
+  
+  const onSaveConfirm = () => {
+    message.loading({ content: 'Saving changes...', key });
+    setTimeout(() => {
+      message.success({ content: 'Changes saved successfully', key, duration: 2 });
+    }, 1500);
+  };
 
 	return (
 		<div>
