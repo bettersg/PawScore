@@ -1,5 +1,5 @@
 'use strict';
-import { Sequelize, Model, Optional, DataTypes } from "sequelize";
+import { Sequelize, Model, Optional, DataTypes, UUIDV4 } from "sequelize";
 
 // Initializing sequelize
 import allConfig from "../config/config";
@@ -9,12 +9,12 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 // These are all the attributes for the model
 interface UserAttributes {
-  id: number;
+  id: string;
   username: string;
   email: string;
   password: string;
   role: string;
-  shelterID: number;
+  shelterId: string;
 }
 
 // Some attributes are optional in `User.build` and `User.create` calls
@@ -24,12 +24,12 @@ interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes {
-  public id!: number;
+  public id!: string;
   public username!: string;
   public email!: string;
   public password!: string;
   public role!: string;
-  public shelterID!: number;
+  public shelterId!: string;
   // public preferredName!: string | null; // for nullable fields
 
   // timestamps!
@@ -64,8 +64,8 @@ class User extends Model<UserAttributes, UserCreationAttributes>
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
       primaryKey: true,
     },
     username: {
@@ -84,13 +84,13 @@ User.init(
       type: new DataTypes.ENUM('SHELTER_ADMIN', 'SHELTER_SUPER_ADMIN', 'ADOPTER'),
       allowNull: false,
     },
-    shelterID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    shelterId: {
+      type: DataTypes.UUID,
+      allowNull: true,
     },
   },
   {
-    tableName: "Users",
+    tableName: "user",
     sequelize, // passing the `sequelize` instance is required
   }
 );

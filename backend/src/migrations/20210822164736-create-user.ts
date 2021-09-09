@@ -1,40 +1,24 @@
-import { QueryInterface, DataTypes } from "sequelize";
+import { QueryInterface, DataTypes, UUIDV4 } from "sequelize";
 
 export default {
   up: async (queryInterface: QueryInterface): Promise<void> => {
-    await queryInterface.createTable('Users', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER
-      },
-      username: {
-        type: DataTypes.STRING
-      },
-      email: {
-        type: DataTypes.STRING
-      },
-      password: {
-        type: DataTypes.STRING
-      },
-      role: {
-        type: DataTypes.ENUM('SHELTER_ADMIN', 'SHELTER_SUPER_ADMIN', 'ADOPTER')
-      },
-      shelterID: {
-        type: DataTypes.INTEGER
-      },
-      createdAt: {
-        allowNull: false,
-        type: DataTypes.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: DataTypes.DATE
-      }
-    });
+    await queryInterface.sequelize.query(`
+    CREATE TYPE user_role as ENUM('SHELTER_ADMIN', 'SHELTER_SUPER_ADMIN', 'ADOPTER');
+    CREATE TABLE "user"
+    (
+        id         UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+        username   VARCHAR,
+        email      VARCHAR,
+        password   VARCHAR,
+        role       user_role,
+        shelter_id UUID,
+        created_at TIMESTAMP        DEFAULT current_timestamp,
+        updated_at TIMESTAMP        DEFAULT current_timestamp
+    );
+    `);
+
   },
   down: async (queryInterface: QueryInterface): Promise<void> => {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('user');
   }
 };

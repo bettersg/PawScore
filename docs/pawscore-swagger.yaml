@@ -115,9 +115,11 @@ components:
       type: object
       properties:
         shelterID:
-          type: integer
+          type: string
+          format: uuid
         userID:
-          type: integer
+          type: string
+          format: uuid
         startDate:
           type: string
           format: date-time
