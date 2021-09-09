@@ -22,7 +22,9 @@ config["development"] = {
   },
   "cookieSecret": process.env.COOKIE_SECRET,
   "expressHost": process.env.EXPRESS_HOST || "127.0.0.1",
-  "expressPort": 5000
+  "expressPort": 5000,
+  "storageBucketName": process.env.STORAGE_BUCKET_NAME,
+  "googleSvcAcctKey": process.env.GOOGLE_SVC_ACCT_KEY,
 };
 
 config["test"] = {
@@ -39,7 +41,9 @@ config["test"] = {
   },
   "cookieSecret": process.env.COOKIE_SECRET,
   "expressHost": process.env.EXPRESS_HOST || "127.0.0.1",
-  "expressPort": 5000
+  "expressPort": 5000,
+  "storageBucketName": process.env.STORAGE_BUCKET_NAME,
+  "googleSvcAcctKey": process.env.GOOGLE_SVC_ACCT_KEY,
 };
 
 config["production"] = {
@@ -56,7 +60,9 @@ config["production"] = {
   },
   "cookieSecret": process.env.COOKIE_SECRET,
   "expressHost": process.env.EXPRESS_HOST || "0.0.0.0",
-  "expressPort": 5000
+  "expressPort": 5000,
+  "storageBucketName": process.env.STORAGE_BUCKET_NAME,
+  "googleSvcAcctKey": process.env.GOOGLE_SVC_ACCT_KEY,
 };
 
 
