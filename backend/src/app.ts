@@ -5,6 +5,7 @@ import authStrategy from "./config/passport";
 import setupSession from "./config/session";
 import authRouteSetup from "./routes/auth";
 import bookingRouter from "./routes/booking"
+import animalRouter from "./routes/animal"
 import { isLoggedIn } from "./helpers/auth";
 import { User as UserType } from "./models/user";
 import config from "./config/config";
@@ -45,6 +46,7 @@ app.use('/api',function(req,res,next){
 
 // Routes
 authRouteSetup(app, passport);
+app.use("/api", animalRouter);
 app.use("/api", isLoggedIn, bookingRouter);
 
 // Swagger docs route
