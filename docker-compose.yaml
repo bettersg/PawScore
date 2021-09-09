@@ -1,0 +1,34 @@
+version: "3.6"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "5000:5000"
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; node /app/backend'
+    environment: 
+        DB_USER: postgres
+        DB_PASS: password
+        DB_DATABASE: pawscore
+        DB_HOST: db
+        COOKIE_SECRET: blablablacksheep
+        EXPRESS_HOST: backend
+        NODE_ENV: development
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    ports:
+      - "3000:3000"
+  db:
+    image: postgres:12.3
+    ports:
+      - "5432:5432"
+    # volumes:
+    # - ./create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+    # - ./generate_data.sql:/docker-entrypoint-initdb.d/generate_data.sql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: pawscore
