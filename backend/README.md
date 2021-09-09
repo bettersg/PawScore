@@ -44,7 +44,7 @@ TBC
 
 ## Database Migration
 ```bash
-$ npx sequelize-cli db:migrate
+$ npm run db:migrate
 samuel@laptop /PawScore/backend $ npx sequelize-cli db:migrate
 
 Sequelize CLI [Node: 14.17.2, CLI: 6.2.0, ORM: 6.6.5]

@@ -1,5 +1,5 @@
 'use strict';
-import { Sequelize, Model, Optional, DataTypes } from "sequelize";
+import { Sequelize, Model, Optional, DataTypes, UUIDV4 } from "sequelize";
 
 // Initializing sequelize
 import allConfig from "../config/config";
@@ -9,7 +9,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 // These are all the attributes for the model
 interface UserAttributes {
-  id: number;
+  id: string;
   username: string;
   email: string;
   password: string;
@@ -24,7 +24,7 @@ interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes {
-  public id!: number;
+  public id!: string;
   public username!: string;
   public email!: string;
   public password!: string;
@@ -64,8 +64,8 @@ class User extends Model<UserAttributes, UserCreationAttributes>
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
       primaryKey: true,
     },
     username: {

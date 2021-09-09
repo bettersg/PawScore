@@ -1,5 +1,5 @@
 'use strict';
-import { Sequelize, Model, Optional, DataTypes } from "sequelize";
+import { Sequelize, Model, Optional, DataTypes, UUIDV4 } from "sequelize";
 
 // Initializing sequelize
 import allConfig from "../config/config";
@@ -9,9 +9,9 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 // These are all the attributes for the model
 interface BookingAttributes {
-  id: number;
-  shelterID: number;
-  userID: number;
+  id: string;
+  shelterID: string;
+  userID: string;
   startDate: Date;
   endDate: Date;
 }
@@ -23,9 +23,9 @@ interface BookingCreationAttributes extends Optional<BookingAttributes, "id"> {}
 
 class Booking extends Model<BookingAttributes, BookingCreationAttributes>
   implements BookingAttributes {
-  public id!: number;
-  public shelterID!: number;
-  public userID!: number;
+  public id!: string;
+  public shelterID!: string;
+  public userID!: string;
   public startDate!: Date;
   public endDate!: Date;
 
@@ -62,8 +62,8 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes>
 Booking.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
       primaryKey: true,
     },
     shelterID: {
@@ -71,7 +71,7 @@ Booking.init(
       allowNull: false,
     },
     userID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     startDate: {

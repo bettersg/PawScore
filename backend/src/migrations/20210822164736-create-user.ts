@@ -1,13 +1,13 @@
-import { QueryInterface, DataTypes } from "sequelize";
+import { QueryInterface, DataTypes, UUIDV4 } from "sequelize";
 
 export default {
   up: async (queryInterface: QueryInterface): Promise<void> => {
     await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4,
       },
       username: {
         type: DataTypes.STRING
