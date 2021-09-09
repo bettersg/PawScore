@@ -15,6 +15,10 @@ config["development"] = {
     "database": process.env.DB_DATABASE,
     "host": process.env.DB_HOST,
     "dialect": "postgres",
+    "define": {
+      "underscored": true,
+      "underscoredAll": true
+    }
   },
   "cookieSecret": process.env.COOKIE_SECRET,
   "expressHost": process.env.EXPRESS_HOST || "127.0.0.1",
@@ -28,6 +32,10 @@ config["test"] = {
     "database": process.env.DB_DATABASE,
     "host": process.env.DB_HOST,
     "dialect": "postgres",
+    "define": {
+      "underscored": true,
+      "underscoredAll": true
+    }
   },
   "cookieSecret": process.env.COOKIE_SECRET,
   "expressHost": process.env.EXPRESS_HOST || "127.0.0.1",
@@ -41,6 +49,10 @@ config["production"] = {
     "database": process.env.DB_DATABASE,
     "host": process.env.DB_HOST,
     "dialect": "postgres",
+    "define": {
+      "underscored": true,
+      "underscoredAll": true
+    }
   },
   "cookieSecret": process.env.COOKIE_SECRET,
   "expressHost": process.env.EXPRESS_HOST || "0.0.0.0",

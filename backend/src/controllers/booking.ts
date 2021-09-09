@@ -10,19 +10,19 @@ class BookingController {
    */
   async create(req: express.Request, res: express.Response) {
     // check values are filled
-    if (req.body.shelterID === null || req.body.userProfileID === null || req.body.startDate === null || req.body.endDate === null) {
+    if (req.body.shelterId === null || req.body.userProfileId === null || req.body.startDate === null || req.body.endDate === null) {
       const result = {"status": "failure", "message": "Your booking is invalid."};
       return res.end(JSON.stringify(result));
     }
     // check for userID
-    if (req.user.id !== req.body.userID) {
+    if (req.user.id !== req.body.userId) {
       const result = {"status": "failure", "message": "You are not authorized"};
       return res.end(JSON.stringify(result));
     }
     // finally create
     const data = {
-      shelterID: req.body.shelterID,
-      userID: req.body.userID,
+      shelterId: req.body.shelterId,
+      userId: req.body.userId,
       startDate: req.body.startDate,
       endDate: req.body.endDate
     };

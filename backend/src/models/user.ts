@@ -14,7 +14,7 @@ interface UserAttributes {
   email: string;
   password: string;
   role: string;
-  shelterID: number;
+  shelterId: string;
 }
 
 // Some attributes are optional in `User.build` and `User.create` calls
@@ -29,7 +29,7 @@ class User extends Model<UserAttributes, UserCreationAttributes>
   public email!: string;
   public password!: string;
   public role!: string;
-  public shelterID!: number;
+  public shelterId!: string;
   // public preferredName!: string | null; // for nullable fields
 
   // timestamps!
@@ -84,13 +84,13 @@ User.init(
       type: new DataTypes.ENUM('SHELTER_ADMIN', 'SHELTER_SUPER_ADMIN', 'ADOPTER'),
       allowNull: false,
     },
-    shelterID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    shelterId: {
+      type: DataTypes.UUID,
+      allowNull: true,
     },
   },
   {
-    tableName: "Users",
+    tableName: "user",
     sequelize, // passing the `sequelize` instance is required
   }
 );

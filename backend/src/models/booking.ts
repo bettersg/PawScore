@@ -10,8 +10,8 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 // These are all the attributes for the model
 interface BookingAttributes {
   id: string;
-  shelterID: string;
-  userID: string;
+  shelterId: string;
+  userId: string;
   startDate: Date;
   endDate: Date;
 }
@@ -24,8 +24,8 @@ interface BookingCreationAttributes extends Optional<BookingAttributes, "id"> {}
 class Booking extends Model<BookingAttributes, BookingCreationAttributes>
   implements BookingAttributes {
   public id!: string;
-  public shelterID!: string;
-  public userID!: string;
+  public shelterId!: string;
+  public userId!: string;
   public startDate!: Date;
   public endDate!: Date;
 
@@ -66,11 +66,11 @@ Booking.init(
       defaultValue: UUIDV4,
       primaryKey: true,
     },
-    shelterID: {
+    shelterId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    userID: {
+    userId: {
       type: DataTypes.UUID,
       allowNull: false,
     },
@@ -84,7 +84,7 @@ Booking.init(
     },
   },
   {
-    tableName: "Bookings",
+    tableName: "booking",
     sequelize, // passing the `sequelize` instance is required
   }
 );

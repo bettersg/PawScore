@@ -49,7 +49,7 @@ const authStrategy = (passport: passport.PassportStatic): void => {
               email: req.body.email,
               password: userPasswordHash,
               role: "ADOPTER",
-              shelterID: 0,
+              shelterId: null,
             };
           User.create(data).then((newUser: User) => {
             if (!newUser) {
