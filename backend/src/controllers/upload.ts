@@ -17,7 +17,7 @@ const storageBucketName = fullConfig.storageBucketName
 class UploadController {
   async upload(req: express.Request, res: express.Response) {
     // check first before proceeding
-    if (req.body.originalFilename === null || req.body.originalFilename === "") {
+    if (req.body.originalFilename === undefined || req.body.originalFilename === "") {
       const result = {"status": "failure", "message": "Invalid original filename"};
       return res.end(JSON.stringify(result));
     }
