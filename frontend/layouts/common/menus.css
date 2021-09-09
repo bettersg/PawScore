@@ -2,3 +2,35 @@
     --menu-header-menu-height: 64px;
     --menu-left-menu-width: 256px;
 }
+
+.ant-menu-item:active {
+    background: var(--color-light-purple) !important;
+}
+
+.ant-menu-item:active,
+.ant-menu-item a:hover,
+.ant-menu-item a:active,
+.ant-menu-item-active,
+.ant-menu-submenu-selected,
+.ant-menu-light .ant-menu-submenu-title:hover,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-active,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open {
+    color: var(--color-golden-purple) !important;
+}
+
+.ant-menu-item-selected,
+.ant-menu-light .ant-menu-item:hover {
+    color: var(--color-golden-purple) !important;
+    background-color: var(--color-light-purple) !important;
+}
+
+.ant-menu-item-selected:after {
+    border-right: 3px solid var(--color-golden-purple) !important;
+}
+
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected::after {
+    border-bottom: 2px solid var(--color-golden-purple) !important;
+}

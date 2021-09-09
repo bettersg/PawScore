@@ -19,7 +19,6 @@
 
 .headerSubMenu > div {
 	margin: auto;
-	color: var(--color-golden-purple);
 	display: inline-flex;
 	align-items: center;
 	height: var(--menu-header-menu-height);

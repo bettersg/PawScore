@@ -3,24 +3,8 @@ import logo from "assets/logo.png";
 import Image from "next/image";
 import LeftMenu from "./LeftMenu";
 import styles from "./ShelterLayout.module.css";
-import styled from "styled-components";
 
 const { Header, Content } = Layout;
-
-const HeaderMenuContainer = styled(Menu)`
-	&& .ant-menu-submenu-title:after {
-		border-bottom: 3px solid var(--color-golden-purple) !important;
-	}
-
-	&& .ant-menu-submenu-active {
-		color: var(--color-golden-purple) !important;
-	}
-
-	&& .ant-menu-item a:hover,
-	.ant-menu-item a:active {
-		color: var(--color-golden-purple);
-	}
-`;
 
 const ShelterLayout = ({ children }) => {
 	// const isLoggedIn = true;
@@ -73,7 +57,7 @@ const HeaderContent = ({ handleEditProfileClick, handleSignOutClick }) => {
 			<div className={headerLogo}>
 				<Image src={logo} width="139" height="25" alt="PawScore Logo" />
 			</div>
-			<HeaderMenuContainer
+			<Menu
 				mode="horizontal"
 				triggerSubMenuAction="click"
 				className={headerMenu}>
@@ -94,7 +78,7 @@ const HeaderContent = ({ handleEditProfileClick, handleSignOutClick }) => {
 						Sign Out
 					</Menu.Item>
 				</Menu.SubMenu>
-			</HeaderMenuContainer>
+			</Menu>
 		</>
 	);
 };
