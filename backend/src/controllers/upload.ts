@@ -41,6 +41,8 @@ class UploadController {
       .on('error', function(err) {
         console.log("Error during file upload: " + err.toString())
         console.log(err);
+        const result = {"status": "failure", "message": "Failed to upload file"};
+        return res.end(JSON.stringify(result));
       })
       .on('finish', function() {
         // create object in database
