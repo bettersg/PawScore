@@ -9,6 +9,7 @@ import uploadRouter from "./routes/upload"
 import { isLoggedIn } from "./helpers/auth";
 import { User as UserType } from "./models/user";
 import config from "./config/config";
+import proxy from "express-http-proxy";
 
 // Handle Express req user
 declare module 'express' {
@@ -56,9 +57,10 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 
-app.get( "/", ( req, res ) => {
-    res.send( "Hello world!" );
-} );
+// app.get( "/", ( req, res ) => {
+//     res.send( "Hello world!" );
+// } );
+app.use('/', proxy('http://127.0.0.1:3000'));
 
 // start the Express server
 app.listen(port, host, () => {
