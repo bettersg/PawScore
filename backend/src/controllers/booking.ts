@@ -10,7 +10,8 @@ class BookingController {
    */
   async create(req: express.Request, res: express.Response) {
     // check values are filled
-    if (req.body.shelterId === null || req.body.userProfileId === null || req.body.startDate === null || req.body.endDate === null) {
+    console.log(req.body.shelterId)
+    if (req.body.shelterId === undefined || req.body.userId === undefined || req.body.startDate === undefined || req.body.endDate === undefined) {
       const result = {"status": "failure", "message": "Your booking is invalid."};
       return res.end(JSON.stringify(result));
     }
