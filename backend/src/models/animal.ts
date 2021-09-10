@@ -1,5 +1,6 @@
-import { Model, Optional, DataTypes, Association } from "sequelize";
+import { Association, DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../database";
+import { numericStringtoFloat } from "../utils/modelType";
 import { AdoptionStatus } from "./adoptionStatus";
 import { AnimalImageAttributes, AnimalImageModel } from "./animalImage";
 import { Species } from "./species";
@@ -13,16 +14,16 @@ export interface AnimalAttributes {
   description: string;
   healthIssues: string;
   gender: "F" | "M";
-  ageMonths: number;
-  sizeCm: number;
-  breed: string;
+  ageMonths: number | null;
+  sizeCm: number | null;
+  breed: string | null;
   color: string;
-  weightKg: number;
-  furLength: string;
-  vaccinated: boolean;
-  dewormed: boolean;
-  sterilized: boolean;
-  adoptionFee: number;
+  weightKg: number | null;
+  furLength: string | null;
+  vaccinated: boolean | null;
+  dewormed: boolean | null;
+  sterilized: boolean | null;
+  adoptionFee: number | null;
   intakeDate: string;
   createdAt: Date;
   updatedAt: Date;
@@ -47,8 +48,8 @@ export class AnimalModel extends Model<AnimalAttributes, AnimalCreationAttribute
   public ageMonths!: number | null;
   public sizeCm!: number | null;
   public breed!: string | null;
-  public color!: string | null;
-  public weightKg!: number;
+  public color!: string;
+  public weightKg!: number | null;
   public furLength!: string | null;
   public vaccinated!: boolean | null;
   public dewormed!: boolean | null;
@@ -113,7 +114,8 @@ AnimalModel.init(
       allowNull: false
     },
     weightKg: {
-      type: DataTypes.DECIMAL
+      type: DataTypes.DECIMAL,
+      get: numericStringtoFloat("weightKg")
     },
     furLength: {
       type: DataTypes.STRING
@@ -128,7 +130,8 @@ AnimalModel.init(
       type: DataTypes.BOOLEAN
     },
     adoptionFee: {
-      type: DataTypes.DECIMAL
+      type: DataTypes.DECIMAL,
+      get: numericStringtoFloat("adoptionFee")
     },
     intakeDate: {
       type: DataTypes.DATEONLY,
