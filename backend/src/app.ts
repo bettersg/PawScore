@@ -10,6 +10,7 @@ import { AnimalController } from './controllers/animal';
 import { User as UserType } from "./models/user";
 import authRouteSetup from "./routes/auth";
 import bookingRouter from "./routes/booking";
+import uploadRouter from "./routes/upload";
 import { ApiErrorMiddleware } from './utils/error';
 
 // Handle Express req user
@@ -24,7 +25,7 @@ const app = express();
 const port = config.expressPort;
 const host = config.expressHost;
 
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
 
 // error handler
 if (process.env.NODE_ENV === 'development') {
@@ -50,6 +51,7 @@ app.use('/api', function (req: express.Request, res: express.Response, next: exp
 authRouteSetup(app, passport);
 
 app.use("/api", bookingRouter);
+app.use("/api", uploadRouter);
 
 useExpressServer(app, {
   controllers: [AnimalController],
@@ -64,16 +66,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 
-// Do the sync below with caution!
-// You are recommended to use Sequelize migration scripts instead to maintain compatability!
-
-// models.sequelize.sync().then(() => {
-//     console.log('Nice! Database looks fine')
-// }).catch((err: any) => {
-//     console.log(err, "Something went wrong with the Database Update!")
-// });
-
-// define a route handler for the default home page
 app.get("/", (req, res) => {
   res.send("Hello world!");
 });
