@@ -12,6 +12,7 @@ import authRouteSetup from "./routes/auth";
 import bookingRouter from "./routes/booking";
 import uploadRouter from "./routes/upload";
 import { ApiErrorMiddleware } from './utils/error';
+import proxy from "express-http-proxy";
 
 // Handle Express req user
 declare module 'express' {
@@ -65,10 +66,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use('/docs', express.static(__dirname + '/../../docs/'));
 }
 
-
-app.get("/", (req, res) => {
-  res.send("Hello world!");
-});
+app.use('/', proxy(config.frontendUrl));
 
 // start the Express server
 app.listen(port, host, () => {

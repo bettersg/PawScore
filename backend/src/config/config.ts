@@ -25,6 +25,7 @@ config["development"] = {
   "expressPort": 5000,
   "storageBucketName": process.env.STORAGE_BUCKET_NAME,
   "googleSvcAcctKey": process.env.GOOGLE_SVC_ACCT_KEY,
+  "frontendUrl": process.env.FRONTEND_URL || "http://127.0.0.1:3000",
 };
 
 config["test"] = {
@@ -44,6 +45,7 @@ config["test"] = {
   "expressPort": 5000,
   "storageBucketName": process.env.STORAGE_BUCKET_NAME,
   "googleSvcAcctKey": process.env.GOOGLE_SVC_ACCT_KEY,
+  "frontendUrl": process.env.FRONTEND_URL || "http://127.0.0.1:3000",
 };
 
 config["production"] = {
@@ -63,6 +65,7 @@ config["production"] = {
   "expressPort": 5000,
   "storageBucketName": process.env.STORAGE_BUCKET_NAME,
   "googleSvcAcctKey": process.env.GOOGLE_SVC_ACCT_KEY,
+  "frontendUrl": process.env.FRONTEND_URL || "http://127.0.0.1:3000",
 };
 
 
