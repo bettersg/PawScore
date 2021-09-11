@@ -162,7 +162,7 @@ paths:
       operationId: getAnimals
       responses:
         200:
-          description: successful operation
+          description: Returns list of animals
           content:
             application/json:
               schema:
@@ -177,11 +177,13 @@ paths:
       operationId: getAnimalById
       responses:
         200:
-          description: successful operation
+          description: Returns animal with the specified id
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Animal'
+        404:
+          description: Animal with the specified id was not found
 components:
   schemas:
     ApiResponse:
