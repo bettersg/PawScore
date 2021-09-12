@@ -1,4 +1,4 @@
-import ShelterHomeLayout from "layouts/shelter/ShelterHomeLayout";
+import ShelterLoginLayout from "layouts/shelter/ShelterLoginLayout";
 import { Button, Checkbox, Col, Form, Input, Row, Tabs } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import Image from "next/image";
@@ -24,7 +24,7 @@ const ShelterLogin = () => {
 	};
 
 	return (
-		<ShelterHomeLayout>
+		<ShelterLoginLayout>
 			<Row>
 				<Col span={6} offset={9}>
 					<div className={styles.loginContainer}>
@@ -40,7 +40,7 @@ const ShelterLogin = () => {
 					</div>
 				</Col>
 			</Row>
-		</ShelterHomeLayout>
+		</ShelterLoginLayout>
 	);
 };
 
