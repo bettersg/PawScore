@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import WithNavBar from "layouts/TestWithNavBar";
+import ShelterLayout from "layouts/shelter/ShelterLayout";
 import { getPokemon } from "api/testPokemon";
 
 const TestWithId = ({ data, error }) => {
@@ -9,11 +9,11 @@ const TestWithId = ({ data, error }) => {
 	// const { name } = data || { name: undefined };
 	console.log(data);
 	return (
-		<WithNavBar>
+		<ShelterLayout>
 			<div>id is {id}</div>
 			<div>using id to fetch pokemon!</div>
 			<div>this pokemon is {data.name}</div>
-		</WithNavBar>
+		</ShelterLayout>
 	);
 };
 

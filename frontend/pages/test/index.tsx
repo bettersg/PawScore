@@ -1,12 +1,12 @@
 import styles from "./Test.module.css";
-import WithNavBar from "layouts/TestWithNavBar";
+import ShelterLayout from "layouts/shelter/ShelterLayout";
 
 const Test = () => {
 	return (
-		<WithNavBar>
+		<ShelterLayout>
 			<div className={styles.hello}>this is a testing page</div>
 			<div>try going to /test/[id]</div>
-		</WithNavBar>
+		</ShelterLayout>
 	);
 };
 
