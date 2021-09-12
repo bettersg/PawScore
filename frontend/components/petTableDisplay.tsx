@@ -11,7 +11,7 @@ const PetTableDisplay = () => {
     {
       title: 'Name',
       dataIndex: 'name',
-      sorter: true
+      sorter: (a, b) => a.name.length - b.name.length
     },
     {
       title: 'Visibility',
@@ -71,35 +71,30 @@ const PetTableDisplay = () => {
     }
   ];
 
-  const data = [];
-
-  for (let i = 0; i < 100; i++) {
-    data.push({
-      key: i,
-      name: `Pet ${i}`,
-      visibility: "yes",
-      species: "cat",
-      status: "ADOPTED",
-      action: ""
-    },
-    {
-      key: i,
-      name: `Pet ${i+3}`,
-      visibility: "no",
-      species: "dog",
-      status: "fostered",
-      action: ""
-    },
-    {
-      key: i,
-      name: `Pet ${i+7}`,
-      visibility: "yes",
-      species: "rabbit",
-      status: "SICK",
-      action: ""
-    }
-    );
-  }
+  const data = [{
+    key: 1,
+    name: `Fluttershy 785321`,
+    visibility: "yes",
+    species: "cat",
+    status: "ADOPTED",
+    action: ""
+  },
+  {
+    key: 2,
+    name: `Twilight 951148`,
+    visibility: "no",
+    species: "dog",
+    status: "fostered",
+    action: ""
+  },
+  {
+    key: 7,
+    name: `Rainbow Dash`,
+    visibility: "yes",
+    species: "rabbit",
+    status: "SICK",
+    action: ""
+  }];
   
 	return (
 		<div>
