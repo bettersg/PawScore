@@ -37,3 +37,11 @@ body {
   border: 1px solid hsla(263, 71%, 65%, 1);
   color: hsla(263, 71%, 30%, 1);
  }
+
+ a {
+   color:hsla(265, 64%, 50%, 1)
+ };
+
+ a:hover {
+   color:hsla(263, 71%, 39%, 1);
+ }
