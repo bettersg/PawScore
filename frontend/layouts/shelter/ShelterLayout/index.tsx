@@ -29,10 +29,12 @@ const ShelterLayout = ({ children }) => {
 				<Layout.Sider width={256} className={sideMenu}>
 					<LeftMenu />
 				</Layout.Sider>
+				<Layout>
+					<Content>
+						<div>{children}</div>
+					</Content>
+				</Layout>
 			</Layout>
-			<Content>
-				<div>{children}</div>
-			</Content>
 		</Layout>
 	);
 };
