@@ -1,21 +1,26 @@
 import { Table } from 'antd';
 import SwitchTag from './switchTag';
+import TableName from './tableNameColumn'
 
 const PetTableDisplay = () => {
 
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'key'
+      dataIndex: 'key',
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => a.key - b.key,
     },
     {
       title: 'Name',
       dataIndex: 'name',
-      sorter: (a, b) => a.name.length - b.name.length
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: (name, record) => <TableName name={name} image={record.image} />
     },
     {
       title: 'Visibility',
       dataIndex: 'visibility',
+      onFilter: (value, record) => record.visibility.indexOf(value) === 0,
       filters: [
       {
         text: "No",
@@ -29,6 +34,7 @@ const PetTableDisplay = () => {
     {
       title: 'Species',
       dataIndex: 'species',
+      onFilter: (value, record) => record.species.indexOf(value) === 0,
       filters: [
         {
           text: "Cat",
@@ -43,11 +49,12 @@ const PetTableDisplay = () => {
           text: "Horse",
           value: "horse"
         }],
-      render: (species) => <SwitchTag type="species" value={species.toLowerCase()} />
+      render: (species: string) => <SwitchTag type="species" value={species.toLowerCase()} />
     },
     {
       title: 'Status',
       dataIndex: 'status',
+      onFilter: (value, record) => record.status.indexOf(value) === 0,
       filters: [
         {
           text: "Healthy",
@@ -62,7 +69,7 @@ const PetTableDisplay = () => {
           text: "Adopted",
           value: "adopted"
         }],
-      render: (status) => <SwitchTag type="status" value={status.toLowerCase()} />
+      render: (status: string) => <SwitchTag type="status" value={status.toLowerCase()} />
     },
     {
       title: 'Action',
@@ -71,30 +78,15 @@ const PetTableDisplay = () => {
     }
   ];
 
-  const data = [{
-    key: 1,
-    name: `Fluttershy 785321`,
-    visibility: "yes",
-    species: "cat",
-    status: "ADOPTED",
-    action: ""
-  },
-  {
-    key: 2,
-    name: `Twilight 951148`,
-    visibility: "no",
-    species: "dog",
-    status: "fostered",
-    action: ""
-  },
-  {
-    key: 7,
-    name: `Rainbow Dash`,
-    visibility: "yes",
-    species: "rabbit",
-    status: "SICK",
-    action: ""
-  }];
+  let data: {
+    key: number,
+    name: string,
+    image: string,
+    visibility: string,
+    species: string,
+    status: string,
+    action: string
+  }[];
   
 	return (
 		<div>

@@ -3,7 +3,7 @@ import { Tag } from "antd";
 const SwitchTag = (props) => {
 	const { type, value } = props;
 
-	let element;
+	let element: JSX.Element;
 
 // Switch cases are case-sensitive
 // Ensure that all props are taken in lowercase only
@@ -46,7 +46,7 @@ const SwitchTag = (props) => {
 			return element = <Tag>{value}</Tag>;
 	}
 
-	return (element);
+	return element;
 };
 
 export default SwitchTag;
