@@ -18,12 +18,6 @@
 
 The app can be viewed at <http://localhost:3000>
 
-### Templates
-
-A quick template page has been created at `/test`
-
-See how dynamic routing works to get pokemon data at `/test/[id]` where `[id]` is any number
-
 ## Conventions
 
 ### **Page URLS**
@@ -33,6 +27,11 @@ Next js does auto routing with folders in the `pages` folder.
 So `frontend/pages/this-page` will link to `baseurl/this-page`.
 
 Nested folders like `frontend/pages/this-page/that-page` will link to `baseurl/this-page/that-page`.
+
+**Implemented Pages**
+
+* /shelter/home
+* /shelter/login
 
 ### **Absolute imports**
 
