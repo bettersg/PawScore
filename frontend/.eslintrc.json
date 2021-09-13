@@ -1,3 +1,7 @@
 {
+<<<<<<< HEAD
   "extends": "next/core-web-vitals"
+=======
+	"extends": ["next/core-web-vitals", "next/babel"]
+>>>>>>> 55dc613 ([FE] Removed use of next/image module to remove dependency on auto image optimization.)
 }

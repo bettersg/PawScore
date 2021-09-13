@@ -1,10 +1,9 @@
 import { Button, Col, Layout, Menu, Row } from "antd";
-import Image from "next/image";
 import Link from "next/link";
-import logo from "assets/logo.png";
 import styles from "./ShelterHomeLayout.module.css";
 
 const { Header, Content, Footer } = Layout;
+const logo = "/logo.png";
 
 const ShelterHomeLayout = ({ children }) => {
 	return (
@@ -26,9 +25,11 @@ export default ShelterHomeLayout;
 
 const HeaderContent = () => (
 	<>
-		<div className="logo" style={{ float: "left", width: "100px" }}>
-			<Image src={logo} alt="PawScore Logo" />
-		</div>
+		<img
+			src={logo}
+			style={{ width: 139, height: 25 }}
+			alt="PawScore Logo"
+		/>
 		<Menu
 			style={{ float: "right" }}
 			theme="light"
@@ -56,9 +57,11 @@ const FooterContent = () => (
 					<hr className={styles.hr} />
 					<Row>
 						<Col span={6} className={styles.footerCol}>
-							<div className={styles.footerLogo}>
-								<Image src={logo} alt="PawScore Logo" />
-							</div>
+							<img
+								src={logo}
+								style={{ width: 139, height: 25 }}
+								alt="PawScore Logo"
+							/>
 						</Col>
 						<Col span={6} className={styles.footerCol}>
 							PAWSCORE

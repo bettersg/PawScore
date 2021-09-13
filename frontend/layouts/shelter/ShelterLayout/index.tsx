@@ -1,10 +1,9 @@
 import { Layout, Menu } from "antd";
-import logo from "assets/logo.png";
-import Image from "next/image";
 import LeftMenu from "./LeftMenu";
 import styles from "./ShelterLayout.module.css";
 
 const { Header, Content } = Layout;
+const logo = "/logo.png";
 
 const ShelterLayout = ({ children }) => {
 	// const isLoggedIn = true;
@@ -43,7 +42,7 @@ const HeaderContent = ({ handleEditProfileClick, handleSignOutClick }) => {
 	const { headerLogo, menuLogo, headerMenu, headerSubMenu } = styles;
 
 	const accountAvatar = (
-		<Image
+		<img
 			src="https://via.placeholder.com/32"
 			alt="avatar"
 			width="32"
@@ -55,7 +54,11 @@ const HeaderContent = ({ handleEditProfileClick, handleSignOutClick }) => {
 	return (
 		<>
 			<div className={headerLogo}>
-				<Image src={logo} width="139" height="25" alt="PawScore Logo" />
+				<img
+					src={logo}
+					style={{ width: 139, height: 25 }}
+					alt="PawScore Logo"
+				/>
 			</div>
 			<Menu
 				mode="horizontal"
