@@ -1,5 +1,9 @@
+import PetTableDisplay from '../components/tableDisplay/petTableDisplay';
+
 function HomePage() {
-  return <div>Welcome to Next.js!</div>;
+  return <div>
+    <PetTableDisplay />
+    to Next.js!</div>;
 }
 
 export default HomePage;
