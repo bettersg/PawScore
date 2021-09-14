@@ -181,7 +181,13 @@ const PetTableDisplay = () => {
   }
   
 	return (
-		<div>
+    <div>
+      <div class="flex space-between table-header">
+        Pets
+        <Button type="default">Clear all filters and sortings</Button>
+        <Button type="primary">Integrate with current software</Button>
+        <Button type="primary">Add New</Button>
+      </div>
       <Table columns={columns} dataSource={data} pagination={{ pageSize: 25 }} scroll={{ y: 640 }} />
 		</div>
 	);

@@ -45,3 +45,15 @@ body {
  a:hover {
    color:hsla(263, 71%, 39%, 1);
  }
+
+ .flex {
+   display: flex;
+ }
+
+ .space-between {
+   justify-content: space-between;
+ }
+
+ .table-header {
+   padding: 1em;
+ }
