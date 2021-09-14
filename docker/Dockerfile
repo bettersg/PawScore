@@ -3,6 +3,10 @@ COPY . /app
 
 
 # TODO: Add frontend compile & copy
+WORKDIR /app/frontend
+
+RUN npm install 
+RUN npm run build
 
 # END TODO
 
@@ -21,8 +25,8 @@ RUN sed -i 's/https:\/\/petstore.swagger.io\/v2\/swagger.json/\/docs\/pawscore-s
 
 WORKDIR /app/backend
 
-RUN npm install backend
+RUN npm install
 RUN npm run build
 RUN npm run prestart
 
-CMD node /app/backend
+CMD cd /app/frontend && npm start & node /app/backend

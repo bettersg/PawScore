@@ -20,9 +20,10 @@ tags:
   description: Authentication & Authorization
 - name: booking
   description: Appointment booking
-  externalDocs:
-    description: Find out more
-    url: http://swagger.io
+- name: upload
+  description: Upload & download of file attachments
+- name: animal
+  description: View and manage shelter animals
 paths:
   /register:
     post:
@@ -100,6 +101,89 @@ paths:
       security:
       - cookieAuth: []
       x-codegen-request-body-name: body
+  /upload:
+    post:
+      tags:
+      - upload
+      summary: Upload a new file attachment
+      operationId: uploadFile
+      requestBody:
+        description: Create a new file attachment
+        content:
+          application/json:
+            schema:
+              properties:
+                originalFilename:
+                  type: string
+                  description: Filename
+                base64File:
+                  type: string
+                  description: File in base64
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - cookieAuth: []
+      x-codegen-request-body-name: body
+  /upload/{fileId}:
+    get:
+      tags:
+      - upload
+      summary: Upload a new file attachment
+      operationId: getFile
+      parameters:
+        - name: fileId
+          in: path
+          description: File upload ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - cookieAuth: []
+      x-codegen-request-body-name: body
+  /animal:
+    get:
+      tags:
+      - animal
+      summary: Retrieve all animals
+      operationId: getAnimals
+      responses:
+        200:
+          description: Returns list of animals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Animal'
+  /animal/{id}:
+    get:
+      tags:
+      - animal
+      summary: Retrieve animal by id
+      operationId: getAnimalById
+      responses:
+        200:
+          description: Returns animal with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
+        404:
+          description: Animal with the specified id was not found
 components:
   schemas:
     ApiResponse:
@@ -114,16 +198,100 @@ components:
     Booking:
       type: object
       properties:
-        shelterID:
+        shelterId:
           type: string
           format: uuid
-        userID:
+        userId:
           type: string
           format: uuid
         startDate:
           type: string
           format: date-time
         endDate:
+          type: string
+          format: date-time
+    Animal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        shelterId:
+          type: string
+          format: uuid
+        adoptionStatus:
+          type: string
+          enum: [Ongoing, Adopted, Archived]
+        species:
+          type: string
+          enum: [Cat, Dog, Others]
+        name:
+          type: string
+        description:
+          type: string
+        healthIssues:
+          type: string
+        gender:
+          type: string
+          enum: [F, M]
+        ageMonths:
+          type: integer
+          nullable: true
+        sizeCm:
+          type: integer
+          nullable: true
+        breed:
+          type: string
+          nullable: true
+        color:
+          type: string
+        weightKg:
+          type: integer
+          nullable: true
+        furLength:
+          type: string
+          nullable: true
+        vaccinated:
+          type: boolean
+          nullable: true
+        dewormed:
+          type: boolean
+          nullable: true
+        sterilized:
+          type: boolean
+          nullable: true
+        adoptionFee:
+          type: number
+          nullable: true
+        intakeDate:
+          type: string
+          format: date
+        animalImages:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalImage'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    AnimalImage:
+      type: object
+      properties:
+        animalId:
+          type: string
+          format: uuid
+        photoUrl:
+          type: string
+          format: uri
+        thumbnailUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
           type: string
           format: date-time
   securitySchemes:

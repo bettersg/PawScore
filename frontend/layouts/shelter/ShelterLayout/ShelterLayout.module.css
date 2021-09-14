@@ -15,6 +15,7 @@
 	margin: auto 40px;
 	display: flex;
 	align-items: center;
+	min-width: 126px;
 }
 
 .headerSubMenu > div {

@@ -1,7 +1,6 @@
 import { Button, Col, Layout, Menu, Row } from "antd";
 import Link from "next/link";
-import styles from "./ShelterHomeLayout.module.css";
-
+import styles from "./ShelterLoginLayout.module.css";
 const { Header, Content, Footer } = Layout;
 const logo = "/logo.png";
 

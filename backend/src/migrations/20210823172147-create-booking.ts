@@ -1,4 +1,4 @@
-import { QueryInterface, DataTypes, UUIDV4 } from "sequelize";
+import { QueryInterface } from "sequelize";
 
 export default {
   up: async (queryInterface: QueryInterface): Promise<void> => {
