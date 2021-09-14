@@ -1,11 +1,10 @@
 import ShelterLoginLayout from "layouts/shelter/ShelterLoginLayout";
-import { Button, Checkbox, Col, Form, Input, Row, Tabs } from "antd";
+import { Button, Checkbox, Col, Form, Input, Row, Space, Tabs } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import Image from "next/image";
 import styles from "./shelter.module.css";
-import logo from "assets/logo.png";
 
 const { TabPane } = Tabs;
+const logo = "/logo.png";
 
 type FormValues = {
 	username: string;
@@ -48,9 +47,13 @@ export default ShelterLogin;
 
 const LogoHeader = () => (
 	<>
-		<div className={styles.logo}>
-			<Image src={logo} alt="PawScore Logo" />
-		</div>
+		<Row>
+			<img
+				src={logo}
+				style={{ width: 139, height: 25, margin: "10px auto" }}
+				alt="PawScore Logo"
+			/>
+		</Row>
 		<p className={styles.subtitle}>Making pet adoptions fuss free</p>
 	</>
 );

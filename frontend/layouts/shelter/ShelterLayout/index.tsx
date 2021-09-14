@@ -4,6 +4,7 @@ import LeftMenu from "./LeftMenu";
 import styles from "./ShelterLayout.module.css";
 
 const { Header, Content } = Layout;
+const logo = "/logo.png";
 const { header, sideMenu } = styles;
 
 const ShelterLayout = ({ children }) => {
