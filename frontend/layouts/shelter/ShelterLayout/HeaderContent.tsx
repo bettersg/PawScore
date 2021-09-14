@@ -1,7 +1,8 @@
 import { Menu } from "antd";
-import logo from "assets/logo.png";
 import Image from "next/image";
 import styles from "./ShelterLayout.module.css";
+
+const logo = "/logo.png";
 
 const { headerLogo, menuLogo, headerMenu, headerSubMenu } = styles;
 
@@ -19,7 +20,11 @@ const HeaderContent = ({ handleEditProfileClick, handleSignOutClick }) => {
 	return (
 		<>
 			<div className={headerLogo}>
-				<Image src={logo} width="139" height="25" alt="PawScore Logo" />
+				<img
+					src={logo}
+					style={{ width: 139, height: 25 }}
+					alt="PawScore Logo"
+				/>
 			</div>
 			<Menu
 				mode="horizontal"
