@@ -6,7 +6,11 @@ import styles from "./ShelterLayout.module.css";
 const { Header, Content } = Layout;
 const { header, sideMenu } = styles;
 
-const ShelterLayout = ({ children }) => {
+type Props = {
+	children: JSX.Element;
+};
+
+const ShelterLayout = ({ children }: Props) => {
 	// const isLoggedIn = true;
 
 	const handleEditProfileClick = () => {

@@ -1,4 +1,5 @@
 import { Menu } from "antd";
+import { MenuClickEventHandler } from "rc-menu/lib/interface";
 import Image from "next/image";
 import styles from "./ShelterLayout.module.css";
 
@@ -6,7 +7,15 @@ const logo = "/logo.png";
 
 const { headerLogo, menuLogo, headerMenu, headerSubMenu } = styles;
 
-const HeaderContent = ({ handleEditProfileClick, handleSignOutClick }) => {
+type Props = {
+	handleEditProfileClick: MenuClickEventHandler;
+	handleSignOutClick: MenuClickEventHandler;
+};
+
+const HeaderContent = ({
+	handleEditProfileClick,
+	handleSignOutClick
+}: Props) => {
 	const accountAvatar = (
 		<Image
 			src="https://via.placeholder.com/32"

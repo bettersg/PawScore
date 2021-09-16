@@ -4,7 +4,11 @@ import styles from "./ShelterLoginLayout.module.css";
 const { Header, Content, Footer } = Layout;
 const logo = "/logo.png";
 
-const ShelterHomeLayout = ({ children }) => {
+type ShelterHomeLayoutProps = {
+	children: JSX.Element;
+};
+
+const ShelterHomeLayout = ({ children }: ShelterHomeLayoutProps) => {
 	return (
 		<Layout>
 			<Header className={styles.header}>
