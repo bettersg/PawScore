@@ -67,19 +67,18 @@ class UploadController {
   async download(req: express.Request, res: express.Response) {
     let filename: string;
     // the below checks for file ID & user ID authorization
-    await Upload.findOne({
+    const upload = await Upload.findOne({
         where: {
           id: req.params.uploadId,
           userId: req.user.id,
         }
-      }).then((foundUpload: Upload) => {
-        if (foundUpload) {
-          filename = foundUpload.filename;
-        } else {
-          const result = {"status": "failure", "message": "File ID does not exist"};
-          return res.end(JSON.stringify(result));
-        }
-      });
+    })
+    if (upload) {
+      filename = upload.filename;
+    } else {
+      const result = {"status": "failure", "message": "File ID does not exist"};
+      return res.end(JSON.stringify(result));
+    }
 
     const fileStream = storage.bucket(storageBucketName)
       .file(filename)

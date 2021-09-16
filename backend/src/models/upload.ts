@@ -51,8 +51,6 @@ class Upload extends Model<UploadAttributes, UploadCreationAttributes>
   *
   *
   */
-  // eslint-disable-next-line 
-  public static associations: {};
 }
 
 Upload.init(

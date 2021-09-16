@@ -7,13 +7,17 @@ import { User, UserCreationAttributes } from "../models/user";
 const authStrategy = (passport: passport.PassportStatic): void => {
   const LocalStrategy = passportLocal.Strategy;
   // serialize
-  passport.serializeUser((serialUser: User, done) => {
-      done(null, serialUser.id);
+  passport.serializeUser((_user, done) => {
+      const user = _user as unknown as User
+      done(null, user.id);
   });
 
   // deserialize user
   passport.deserializeUser((id: number, done) => {
-    User.findOne({ where: { id } }).then((foundUser: User) => {
+    User.findOne({ where: { id } }).then((foundUser: User | null) => {
+      if (foundUser === null) {
+        throw new Error(`Error deserializing user with id ${id}`)
+      }
       done(null, foundUser.get());
     }).catch((err: Error) => {
       done(err, null);
@@ -34,7 +38,7 @@ const authStrategy = (passport: passport.PassportStatic): void => {
         where: {
           username
         }
-      }).then((foundUser: User) => {
+      }).then((foundUser: User | null) => {
         if (foundUser)
         {
           return done(Error("Username taken"), null, {
@@ -74,7 +78,7 @@ const authStrategy = (passport: passport.PassportStatic): void => {
         where: {
           username
         }
-      }).then((userFound: User) => {
+      }).then((userFound: User | null) => {
         if (userFound  === null) {
           return done(null, null, { message: 'Incorrect username.' });
         } else if (!bCrypt.compareSync(password, userFound.password)) {
