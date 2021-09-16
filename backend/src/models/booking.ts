@@ -55,8 +55,6 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes>
   *
   *
   */
-  // eslint-disable-next-line 
-  public static associations: {};
 }
 
 Booking.init(

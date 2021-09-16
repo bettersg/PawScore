@@ -15,10 +15,13 @@ import { ApiErrorMiddleware } from './utils/error';
 import proxy from "express-http-proxy";
 
 // Handle Express req user
-declare module 'express' {
+declare module 'express-serve-static-core' {
   export type User = UserType;
   export interface Request {
-    user?: User;
+    // User should always be available when isLoggedIn is used. User may not be
+    // available for non-logged in routes. Making User always present in type
+    // definition avoids copious type checking when using req.user.
+    user: User;
   }
 }
 

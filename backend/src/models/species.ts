@@ -21,8 +21,6 @@ export class SpeciesModel extends Model<SpeciesAttributes>
   public name!: Species;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-
-  public static associations: null;
 }
 
 SpeciesModel.init(

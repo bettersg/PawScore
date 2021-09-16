@@ -14,7 +14,7 @@ interface UserAttributes {
   email: string;
   password: string;
   role: string;
-  shelterId: string;
+  shelterId: string | null;
 }
 
 // Some attributes are optional in `User.build` and `User.create` calls
@@ -29,7 +29,7 @@ class User extends Model<UserAttributes, UserCreationAttributes>
   public email!: string;
   public password!: string;
   public role!: string;
-  public shelterId!: string;
+  public shelterId!: string | null;
   // public preferredName!: string | null; // for nullable fields
 
   // timestamps!
@@ -58,7 +58,6 @@ class User extends Model<UserAttributes, UserCreationAttributes>
   *
   *
   */
-  public static associations: null;
 }
 
 User.init(

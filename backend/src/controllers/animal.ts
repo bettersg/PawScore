@@ -11,7 +11,7 @@ export class AnimalController {
 
   @Get('/:id')
   @OnUndefined(404)
-  async getById(@Param("id") id: string): Promise<AnimalAttributes> {
+  async getById(@Param("id") id: string): Promise<AnimalAttributes | undefined> {
     const animal = await AnimalModel.findByPk(id, { include: [AnimalModel.associations.animalImages] });
     return animal?.get({ plain: true });
   }

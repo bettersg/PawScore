@@ -22,8 +22,6 @@ export class AdoptionStatusModel extends Model<AdoptionStatusAttributes>
   public status!: AdoptionStatus;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-
-  public static associations: null;
 }
 
 AdoptionStatusModel.init(
