@@ -1,9 +1,13 @@
 import { Modal, Button, message } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
-const SaveModal = (props) => {
-  const { confirm } = Modal;
-  const key = 'updatable';
+type Props = {
+	type: "primary" | string;
+};
+
+const SaveModal = (props: Props) => {
+	const { confirm } = Modal;
+	const key = "updatable";
 
 	const onClickCancel = () => {
 		confirm({
@@ -35,23 +39,27 @@ const SaveModal = (props) => {
 				console.log("Cancel");
 			}
 		});
-  };
-  
-  const onSaveConfirm = () => {
-    message.loading({ content: 'Saving changes...', key });
-    setTimeout(() => {
-      message.success({ content: 'Changes saved successfully', key, duration: 2 });
-    }, 1500);
-  };
+	};
+
+	const onSaveConfirm = () => {
+		message.loading({ content: "Saving changes...", key });
+		setTimeout(() => {
+			message.success({
+				content: "Changes saved successfully",
+				key,
+				duration: 2
+			});
+		}, 1500);
+	};
 
 	return (
 		<div>
-      {props.type === "primary" ? (
-        <Button onClick={onClickSave} type="primary">
+			{props.type === "primary" ? (
+				<Button onClick={onClickSave} type="primary">
 					Save
 				</Button>
-      ) : (
-          <Button onClick={onClickCancel}>Cancel</Button>
+			) : (
+				<Button onClick={onClickCancel}>Cancel</Button>
 			)}
 		</div>
 	);
