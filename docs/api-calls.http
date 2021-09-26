@@ -1,0 +1,46 @@
+# Some convenience requests using VSCode's REST Client extension.
+# Extension automatically saves cookies to ~/.rest-client/cookie.json.
+@baseUrl = http://127.0.0.1:5000
+
+# @name testUserRegistration
+POST {{baseUrl}}/api/register
+content-type: application/json
+
+{
+    "username": "test",
+    "password": "test",
+    "email": "text@example.com"
+}
+
+###
+
+# @name testUserLogin
+POST {{baseUrl}}/api/login
+content-type: application/json
+
+{
+    "username": "test",
+    "password": "test"
+}
+
+### 
+
+# @name testUserLogin
+POST {{baseUrl}}/api/user-profile
+content-type: application/json
+
+{
+    "authUserId": "aa300b64-c8c4-437e-9190-e18d850ead7c",
+    "email": "test@example.com",
+    "phoneNo": "test",
+    "nric": "test",
+    "firstName": "test",
+    "lastName": "test",
+    "dob": "1970-01-01T00:00:00.000Z",
+    "gender": "M",
+    "occupation": "test",
+    "address": "test",
+    "postalCode": "test"
+}
+
+### 
