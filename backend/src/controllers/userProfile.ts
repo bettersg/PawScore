@@ -23,8 +23,13 @@ const controllerWrapper =
 		}
 	};
 
+const find = async (req: Request, res: Response): Promise<Response> => {
+	const userProfiles = await UserProfile.findAll();
+	return res.send(userProfiles);
+};
+
 const create = async (req: Request, res: Response): Promise<Response> => {
-	const mySchema = z.object({
+	const reqSchema = z.object({
 		body: z.object({
 			authUserId: z.string().uuid(),
 			email: z.string().email(),
@@ -46,9 +51,84 @@ const create = async (req: Request, res: Response): Promise<Response> => {
 			postalCode: z.string()
 		})
 	});
-	const { body } = mySchema.parse(req);
+	const { body } = reqSchema.parse(req);
 	const userProfile = await UserProfile.create(body);
 	return res.send(userProfile);
 };
 
-export default { create: controllerWrapper(create) };
+const get = async (req: Request, res: Response): Promise<Response> => {
+	const reqSchema = z.object({
+		params: z.object({
+			authUserId: z.string().uuid()
+		})
+	});
+	const { params } = reqSchema.parse(req);
+	const userProfile = await UserProfile.findOne({
+		where: { id: params.authUserId }
+	});
+	if (userProfile === null) {
+		return res.status(StatusCodes.NOT_FOUND).send();
+	}
+	return res.send(userProfile);
+};
+
+const update = async (req: Request, res: Response): Promise<Response> => {
+	const reqSchema = z.object({
+		params: z.object({
+			authUserId: z.string().uuid()
+		}),
+		body: z.object({
+			email: z.string().email().optional(),
+			phoneNo: z.string().optional(),
+			nric: z.string().optional(),
+			firstName: z.string().optional(),
+			lastName: z.string().optional(),
+			dob: z
+				.string()
+				.refine((val) => val, "dob should be in UTC format.") // TODO: Validate for UTC Date format
+				.transform((val) => new Date(val))
+				.refine(
+					(date) => date < new Date(),
+					"dob should not in the future."
+				)
+				.optional(),
+			gender: z
+				.string()
+				.refine((val) => ["F", "M"].includes(val))
+				.optional(),
+			occupation: z.string().optional(),
+			address: z.string().optional(),
+			postalCode: z.string().optional()
+		})
+	});
+
+	const { params, body } = reqSchema.parse(req);
+	const userProfile = await UserProfile.update(body, {
+		where: { id: params.authUserId }
+	});
+	if (userProfile === null) {
+		return res.status(StatusCodes.NOT_FOUND).send();
+	}
+	return res.send(userProfile);
+};
+
+const destroy = async (req: Request, res: Response): Promise<Response> => {
+	const reqSchema = z.object({
+		params: z.object({
+			authUserId: z.string().uuid()
+		})
+	});
+	const { params } = reqSchema.parse(req);
+	await UserProfile.destroy({
+		where: { id: params.authUserId }
+	});
+	return res.send();
+};
+
+export default {
+	find: controllerWrapper(find),
+	create: controllerWrapper(create),
+	get: controllerWrapper(get),
+	update: controllerWrapper(update),
+	destroy: controllerWrapper(destroy)
+};
