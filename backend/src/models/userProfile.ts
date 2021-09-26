@@ -28,7 +28,7 @@ interface UserProfileAttributes {
 	nric: string;
 	firstName: string;
 	lastName: string;
-	dob: Date;
+	dob: string;
 	gender: string;
 	occupation: string;
 	address: string;
@@ -50,7 +50,7 @@ class UserProfile
 	public nric!: string;
 	public firstName!: string;
 	public lastName!: string;
-	public dob!: Date;
+	public dob!: string;
 	public gender!: string;
 	public occupation!: string;
 	public address!: string;
@@ -98,7 +98,7 @@ UserProfile.init(
 			allowNull: false
 		},
 		dob: {
-			type: DataTypes.DATE,
+			type: DataTypes.STRING,
 			allowNull: false
 		},
 		gender: {

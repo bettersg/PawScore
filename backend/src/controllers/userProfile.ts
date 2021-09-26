@@ -39,10 +39,12 @@ const create = async (req: Request, res: Response): Promise<Response> => {
 			lastName: z.string(),
 			dob: z
 				.string()
-				.refine((val) => val, "dob should be in UTC format.") // TODO: Validate for UTC Date format
-				.transform((val) => new Date(val))
 				.refine(
-					(date) => date < new Date(),
+					(val) => val.match(/^\d{4}-\d{2}-\d{2}$/),
+					"dob should be in 'YYYY-MM-DD' format."
+				)
+				.refine(
+					(date) => new Date(date) < new Date(),
 					"dob should not in the future."
 				),
 			gender: z.string().refine((val) => ["F", "M"].includes(val)),
@@ -85,10 +87,12 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 			lastName: z.string().optional(),
 			dob: z
 				.string()
-				.refine((val) => val, "dob should be in UTC format.") // TODO: Validate for UTC Date format
-				.transform((val) => new Date(val))
 				.refine(
-					(date) => date < new Date(),
+					(val) => val.match(/^\d{4}-\d{2}-\d{2}$/),
+					"dob should be in 'YYYY-MM-DD' format."
+				)
+				.refine(
+					(date) => new Date(date) < new Date(),
 					"dob should not in the future."
 				)
 				.optional(),

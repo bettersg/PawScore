@@ -36,7 +36,7 @@ content-type: application/json
     "nric": "test",
     "firstName": "test",
     "lastName": "test",
-    "dob": "1970-01-01T00:00:00.000Z",
+    "dob": "1970-01-01",
     "gender": "M",
     "occupation": "test",
     "address": "test",
