@@ -57,3 +57,7 @@ body {
  .table-header {
    padding: 1em;
  }
+
+ .ant-input-search .ant-input:hover, .ant-input-search .ant-input:focus {
+  border-color:hsla(263, 71%, 39%, 1);
+ }

@@ -1,6 +1,5 @@
 import { Table, Input, Button, Space } from 'antd';
-import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
+import { PlusOutlined, ImportOutlined } from '@ant-design/icons';
 import SwitchTag from './switchTag';
 import TableName from './tableNameColumn';
 import React, { useState } from 'react';
@@ -9,94 +8,22 @@ const PetTableDisplay = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
 
-  const getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-        : '',
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
-      }
-    },
-    render: text =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
-  });
+  const { Search } = Input;
+  const onSearch = () => { };
 
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
-  };
-
-  const handleReset = clearFilters => {
-    clearFilters();
-    setSearchText('');
-  };
 
   const columns = [
     {
       title: 'ID',
       dataIndex: 'key',
-      defaultSortOrder: 'descend',
+      defaultSortOrder: 'ascend',
       sorter: (a, b) => a.key - b.key,
-      ...getColumnSearchProps('key')
     },
     {
       title: 'Name',
       dataIndex: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
       render: (name, record) => <TableName name={name} image={record.image} />,
-      ...getColumnSearchProps('name')
     },
     {
       title: 'Visibility',
@@ -182,13 +109,16 @@ const PetTableDisplay = () => {
   
 	return (
     <div>
-      <div class="flex space-between table-header">
+      <div className="flex space-between table-header">
         Pets
-        <Button type="default">Clear all filters and sortings</Button>
-        <Button type="primary">Integrate with current software</Button>
-        <Button type="primary">Add New</Button>
+          <div>
+        <Search placeholder="search by name or ID" allowClear onSearch={onSearch} style={{ width: "264px", margin: "4px" }} />
+        <Button type="default" style={{margin: "4px"}}>Clear all filters and sortings</Button>
+        <Button type="primary" style={{margin: "4px"}}><ImportOutlined />Integrate with current software</Button>
+        <Button type="primary" style={{margin: "4px"}}><PlusOutlined />Add New</Button>
+          </div>
       </div>
-      <Table columns={columns} dataSource={data} pagination={{ pageSize: 25 }} scroll={{ y: 640 }} />
+      <Table columns={columns} dataSource={data} pagination={{ pageSize: 10 }} scroll={{ y: 640 }} />
 		</div>
 	);
 };
