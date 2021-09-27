@@ -22,7 +22,7 @@ const sequelize = new Sequelize(
 // These are all the attributes for the model
 interface UserProfileAttributes {
 	id: string;
-	authUserId: string;
+	userId: string;
 	email: string;
 	phoneNo: string;
 	nric: string;
@@ -44,7 +44,7 @@ class UserProfile
 	implements UserProfileAttributes
 {
 	public id!: string;
-	public authUserId!: string;
+	public userId!: string;
 	public email!: string;
 	public phoneNo!: string;
 	public nric!: string;
@@ -73,7 +73,7 @@ UserProfile.init(
 			defaultValue: UUIDV4,
 			primaryKey: true
 		},
-		authUserId: {
+		userId: {
 			type: DataTypes.UUID,
 			allowNull: false
 		},

@@ -17,21 +17,16 @@ const controllerWrapper =
 			if (err instanceof BaseError) {
 				return res
 					.status(StatusCodes.INTERNAL_SERVER_ERROR)
-					.send(err.message);
+					.send(`Sequelize: ${err.message}`);
 			}
 			return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err);
 		}
 	};
 
-const find = async (req: Request, res: Response): Promise<Response> => {
-	const userProfiles = await UserProfile.findAll();
-	return res.send(userProfiles);
-};
-
 const create = async (req: Request, res: Response): Promise<Response> => {
 	const reqSchema = z.object({
 		body: z.object({
-			authUserId: z.string().uuid(),
+			userId: z.string().uuid(),
 			email: z.string().email(),
 			phoneNo: z.string(),
 			nric: z.string(),
@@ -58,15 +53,20 @@ const create = async (req: Request, res: Response): Promise<Response> => {
 	return res.send(userProfile);
 };
 
+const find = async (req: Request, res: Response): Promise<Response> => {
+	const userProfiles = await UserProfile.findAll();
+	return res.send(userProfiles);
+};
+
 const get = async (req: Request, res: Response): Promise<Response> => {
 	const reqSchema = z.object({
 		params: z.object({
-			authUserId: z.string().uuid()
+			userProfileId: z.string().uuid()
 		})
 	});
 	const { params } = reqSchema.parse(req);
 	const userProfile = await UserProfile.findOne({
-		where: { id: params.authUserId }
+		where: { id: params.userProfileId }
 	});
 	if (userProfile === null) {
 		return res.status(StatusCodes.NOT_FOUND).send();
@@ -77,7 +77,7 @@ const get = async (req: Request, res: Response): Promise<Response> => {
 const update = async (req: Request, res: Response): Promise<Response> => {
 	const reqSchema = z.object({
 		params: z.object({
-			authUserId: z.string().uuid()
+			userProfileId: z.string().uuid()
 		}),
 		body: z.object({
 			email: z.string().email().optional(),
@@ -107,24 +107,25 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 	});
 
 	const { params, body } = reqSchema.parse(req);
-	const userProfile = await UserProfile.update(body, {
-		where: { id: params.authUserId }
+	const [count, userProfileArr] = await UserProfile.update(body, {
+		where: { id: params.userProfileId },
+		returning: true
 	});
-	if (userProfile === null) {
+	if (count === 0) {
 		return res.status(StatusCodes.NOT_FOUND).send();
 	}
-	return res.send(userProfile);
+	return res.send(userProfileArr[0]);
 };
 
 const destroy = async (req: Request, res: Response): Promise<Response> => {
 	const reqSchema = z.object({
 		params: z.object({
-			authUserId: z.string().uuid()
+			userProfileId: z.string().uuid()
 		})
 	});
 	const { params } = reqSchema.parse(req);
 	await UserProfile.destroy({
-		where: { id: params.authUserId }
+		where: { id: params.userProfileId }
 	});
 	return res.send();
 };
