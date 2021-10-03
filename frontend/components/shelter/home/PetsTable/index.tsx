@@ -3,8 +3,8 @@ import { Button, Input, Table } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
 import React, { useState } from "react";
 import styled from "styled-components";
-import SwitchTag from "./SwitchTag";
-import TableName from "./TableNameColumn";
+import SwitchTag from "./components/SwitchTag";
+import TableName from "./components/TableNameColumn";
 
 const Container = styled.div`
 	margin: 24px 34px;
