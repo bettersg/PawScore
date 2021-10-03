@@ -64,13 +64,13 @@ export default {
     await queryInterface.bulkInsert("animal_image", [
       {
         animal_id: ANIMAL_ID_CAT_1,
-        photo_url: "https://picsum.photos/800",
-        thumbnail_url: "https://picsum.photos/200"
+        photo_url: "https://via.placeholder.com/800",
+        thumbnail_url: "hhttps://via.placeholder.com/200"
       },
       {
         animal_id: ANIMAL_ID_DOG_1,
-        photo_url: "https://images.unsplash.com/photo-1599446220101-d3e0c4b74a53?w=634",
-        thumbnail_url: "https://images.unsplash.com/photo-1599446220101-d3e0c4b74a53?w=300"
+        photo_url: "https://via.placeholder.com/800",
+        thumbnail_url: "https://via.placeholder.com/200"
       }
     ]);
   },
