@@ -1,5 +1,6 @@
 import errorhandler from "errorhandler";
 import express from "express";
+import proxy from "express-http-proxy";
 import passport from "passport";
 import "reflect-metadata";
 import { useExpressServer } from 'routing-controllers';
@@ -7,12 +8,12 @@ import config from "./config/config";
 import authStrategy from "./config/passport";
 import setupSession from "./config/session";
 import { AnimalController } from './controllers/animal';
+import { ShelterController } from "./controllers/shelter";
 import { User as UserType } from "./models/user";
 import authRouteSetup from "./routes/auth";
 import bookingRouter from "./routes/booking";
 import uploadRouter from "./routes/upload";
 import { ApiErrorMiddleware } from './utils/error';
-import proxy from "express-http-proxy";
 
 // Handle Express req user
 declare module 'express-serve-static-core' {
@@ -58,7 +59,7 @@ app.use("/api", bookingRouter);
 app.use("/api", uploadRouter);
 
 useExpressServer(app, {
-  controllers: [AnimalController],
+  controllers: [AnimalController, ShelterController],
   development: false,
   defaultErrorHandler: false,
   middlewares: [ApiErrorMiddleware],
@@ -71,6 +72,12 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/', proxy(config.frontendUrl));
 
+// log all routes
+app._router.stack.forEach((r: any) => {
+  if (r.route && r.route.path) {
+    console.log(r.route.path);
+  }
+});
 // start the Express server
 app.listen(port, host, () => {
   console.log(`server started at http://${host}:${port}`);
