@@ -102,7 +102,7 @@ const PetTableDisplay = () => {
 	return (
 		<Container>
 			<div className="flex space-between table-header">
-				Pets
+				<div>Pets</div>
 				<div>
 					<Search
 						placeholder="search by name or ID"
