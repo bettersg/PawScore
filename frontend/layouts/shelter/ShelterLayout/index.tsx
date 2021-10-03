@@ -1,14 +1,17 @@
-import { Layout, Menu } from "antd";
-import logo from "assets/logo.png";
-import Image from "next/image";
+import { Layout } from "antd";
+import HeaderContent from "./HeaderContent";
 import LeftMenu from "./LeftMenu";
 import styles from "./ShelterLayout.module.css";
 
 const { Header, Content } = Layout;
+const { header, sideMenu } = styles;
 
-const ShelterLayout = ({ children }) => {
+type Props = {
+	children: JSX.Element;
+};
+
+const ShelterLayout = ({ children }: Props) => {
 	// const isLoggedIn = true;
-	const { header, sideMenu } = styles;
 
 	const handleEditProfileClick = () => {
 		alert("Edit Profile");
@@ -29,56 +32,14 @@ const ShelterLayout = ({ children }) => {
 				<Layout.Sider width={256} className={sideMenu}>
 					<LeftMenu />
 				</Layout.Sider>
+				<Layout>
+					<Content>
+						<div>{children}</div>
+					</Content>
+				</Layout>
 			</Layout>
-			<Content>
-				<div>{children}</div>
-			</Content>
 		</Layout>
 	);
 };
 
 export default ShelterLayout;
-
-const HeaderContent = ({ handleEditProfileClick, handleSignOutClick }) => {
-	const { headerLogo, menuLogo, headerMenu, headerSubMenu } = styles;
-
-	const accountAvatar = (
-		<Image
-			src="https://via.placeholder.com/32"
-			alt="avatar"
-			width="32"
-			height="32"
-			className={menuLogo}
-		/>
-	);
-
-	return (
-		<>
-			<div className={headerLogo}>
-				<Image src={logo} width="139" height="25" alt="PawScore Logo" />
-			</div>
-			<Menu
-				mode="horizontal"
-				triggerSubMenuAction="click"
-				className={headerMenu}>
-				<Menu.SubMenu
-					key="SubMenu"
-					icon={accountAvatar}
-					title="Your Account"
-					className={headerSubMenu}>
-					<Menu.Item
-						key="edit-profile"
-						onClick={handleEditProfileClick}>
-						Edit Profile
-					</Menu.Item>
-					<Menu.Item
-						key="sign-out"
-						danger
-						onClick={handleSignOutClick}>
-						Sign Out
-					</Menu.Item>
-				</Menu.SubMenu>
-			</Menu>
-		</>
-	);
-};

@@ -8,29 +8,22 @@ const config: any = allConfig.databaseConfig;
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 // These are all the attributes for the model
-interface UserAttributes {
+interface UploadAttributes {
   id: string;
-  username: string;
-  email: string;
-  password: string;
-  role: string;
-  shelterId: string | null;
+  userId: string;
+  originalFilename: string;
+  filename: string;
 }
 
-// Some attributes are optional in `User.build` and `User.create` calls
-// type UserCreationAttributes = Optional<UserAttributes, "id">
-// eslint-disable-next-line 
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+// Some attributes are optional in model.build() or model.create()
+type UploadCreationAttributes = Optional<UploadAttributes, "id">
 
-class User extends Model<UserAttributes, UserCreationAttributes>
-  implements UserAttributes {
+class Upload extends Model<UploadAttributes, UploadCreationAttributes>
+  implements UploadAttributes {
   public id!: string;
-  public username!: string;
-  public email!: string;
-  public password!: string;
-  public role!: string;
-  public shelterId!: string | null;
-  // public preferredName!: string | null; // for nullable fields
+  public userId!: string;
+  public originalFilename!: string;
+  public filename!: string;
 
   // timestamps!
   public readonly createdAt!: Date;
@@ -60,38 +53,31 @@ class User extends Model<UserAttributes, UserCreationAttributes>
   */
 }
 
-User.init(
+Upload.init(
   {
     id: {
       type: DataTypes.UUID,
       defaultValue: UUIDV4,
       primaryKey: true,
     },
-    username: {
-      type: new DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: new DataTypes.STRING,
-      allowNull: false,
-    },
-    password: {
-      type: new DataTypes.STRING,
-      allowNull: false,
-    },
-    role: {
-      type: new DataTypes.ENUM('SHELTER_ADMIN', 'SHELTER_SUPER_ADMIN', 'ADOPTER'),
-      allowNull: false,
-    },
-    shelterId: {
+    userId: {
       type: DataTypes.UUID,
-      allowNull: true,
+      allowNull: false,
+    },
+    originalFilename: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    filename: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {
-    tableName: "user",
+    tableName: "upload",
     sequelize, // passing the `sequelize` instance is required
   }
 );
 
-export { User, UserCreationAttributes, UserAttributes };
+export { Upload, UploadCreationAttributes, UploadAttributes };
+
