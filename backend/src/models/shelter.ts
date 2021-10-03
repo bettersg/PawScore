@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Optional, UUIDV4 } from "sequelize";
 import { sequelize } from "../database";
 
 
@@ -9,11 +9,11 @@ export interface ShelterAttributes {
   country: string;
   contact: string;
   registrationNo: string | null;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
-export class ShelterModel extends Model<ShelterAttributes>
+export type ShelterCreationAttributes = Optional<ShelterAttributes, "id">
+
+export class ShelterModel extends Model<ShelterAttributes, ShelterCreationAttributes>
   implements ShelterAttributes {
   public id!: string;
   public name!: string;
@@ -29,6 +29,7 @@ ShelterModel.init(
   {
     id: {
       type: DataTypes.UUIDV4,
+      defaultValue: UUIDV4,
       primaryKey: true,
     },
     name: {
@@ -50,14 +51,6 @@ ShelterModel.init(
     registrationNo : {
       type: DataTypes.STRING,
       allowNull: true,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
     }
   },
   {

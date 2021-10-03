@@ -75,9 +75,20 @@ app.use('/', proxy(config.frontendUrl));
 // log all routes
 app._router.stack.forEach((r: any) => {
   if (r.route && r.route.path) {
-    console.log(r.route.path);
+    console.debug(r.route.path);
   }
 });
+bookingRouter.stack.forEach((r: any) => {
+  if (r.route && r.route.path) {
+    console.debug(r.route.path);
+  }
+});
+uploadRouter.stack.forEach((r: any) => {
+  if (r.route && r.route.path) {
+    console.debug(r.route.path);
+  }
+});
+// add new routers here
 // start the Express server
 app.listen(port, host, () => {
   console.log(`server started at http://${host}:${port}`);

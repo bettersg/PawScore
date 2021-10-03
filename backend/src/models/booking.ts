@@ -17,9 +17,7 @@ interface BookingAttributes {
 }
 
 // Some attributes are optional in model.build() or model.create()
-// type BookingCreationAttributes = Optional<BookingAttributes, "id">
-// eslint-disable-next-line 
-interface BookingCreationAttributes extends Optional<BookingAttributes, "id"> {}
+type BookingCreationAttributes = Optional<BookingAttributes, "id">
 
 class Booking extends Model<BookingAttributes, BookingCreationAttributes>
   implements BookingAttributes {

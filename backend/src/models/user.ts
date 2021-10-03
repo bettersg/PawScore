@@ -18,9 +18,7 @@ interface UserAttributes {
 }
 
 // Some attributes are optional in `User.build` and `User.create` calls
-// type UserCreationAttributes = Optional<UserAttributes, "id">
-// eslint-disable-next-line 
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+type UserCreationAttributes = Optional<UserAttributes, "id">
 
 class User extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes {

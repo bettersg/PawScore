@@ -1,7 +1,7 @@
-import { Controller, Get, OnUndefined, Param } from 'routing-controllers';
-import { ShelterAttributes, ShelterModel } from "../models/shelter";
+import { Body, Get, JsonController, OnUndefined, Param, Post } from 'routing-controllers';
+import { ShelterAttributes, ShelterCreationAttributes, ShelterModel } from "../models/shelter";
 
-@Controller('/api/shelter')
+@JsonController('/api/shelter')
 export class ShelterController {
   @Get('/')
   async getAll(): Promise<ShelterAttributes[]> {
@@ -14,5 +14,19 @@ export class ShelterController {
   async getById(@Param("id") id: string): Promise<ShelterAttributes | undefined> {
     const animal = await ShelterModel.findByPk(id);
     return animal?.get({ plain: true });
+  }
+
+  @Post('/')
+  @OnUndefined(201)
+  async create(@Body() shelter: ShelterCreationAttributes): Promise<void>{
+    const data:ShelterCreationAttributes = {
+      name: shelter.name,
+      address: shelter.address,
+      country: shelter.country,
+      contact: shelter.contact,
+      registrationNo: shelter.registrationNo,
+    }
+    const s = await ShelterModel.create(data);
+    console.debug(`Saved shelter ${s.id}`);
   }
 }
