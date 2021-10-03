@@ -1,9 +1,10 @@
 import { ImportOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Input, Table } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
+import { PetData, Species, Status } from "common/enums";
 import React, { useState } from "react";
 import styled from "styled-components";
-import SwitchTag from "./components/SwitchTag";
+import TablePill, { TablePillType } from "./components/Pill";
 import TableName from "./components/TableNameColumn";
 
 const Container = styled.div`
@@ -19,7 +20,7 @@ const PetTableDisplay = () => {
 	const { Search } = Input;
 	const onSearch = () => {};
 
-	const columns = [
+	const columns: ColumnsType<PetData> = [
 		{
 			title: "ID",
 			dataIndex: "key",
@@ -29,106 +30,72 @@ const PetTableDisplay = () => {
 		{
 			title: "Name",
 			dataIndex: "name",
-			sorter: (a, b) => a.name.localeCompare(b.name),
+			sorter: (a, b) => a.name.localeCompare(b.name), // TODO: Do we need localeCompare?
 			render: (name, record) => (
 				<TableName name={name} image={record.image} />
 			)
 		},
 		{
 			title: "Visibility",
-			dataIndex: "visibility",
-			onFilter: (value, record) => record.visibility.indexOf(value) === 0,
+			dataIndex: "visible",
+			onFilter: (value, record) => record.visible === value,
 			filters: [
 				{
 					text: "No",
-					value: "no"
+					value: false
 				},
 				{
 					text: "Yes",
-					value: "yes"
+					value: true
 				}
 			],
-			render: (visibility) => (
-				<SwitchTag type="visibility" value={visibility.toLowerCase()} />
+			render: (visible: boolean) => (
+				<TablePill type={TablePillType.VISIBILITY} value={visible} />
 			)
 		},
 		{
 			title: "Species",
 			dataIndex: "species",
-			onFilter: (value, record) => record.species.indexOf(value) === 0,
-			filters: [
-				{
-					text: "Cat",
-					value: "cat"
-				},
-				{
-					text: "Dog",
-					value: "dog"
-				},
-				{
-					text: "Rabbit",
-					value: "rabbit"
-				},
-				{
-					text: "Horse",
-					value: "horse"
-				}
-			],
-			render: (species: string) => (
-				<SwitchTag type="species" value={species.toLowerCase()} />
+			onFilter: (value, record) => record.species === value,
+			filters: Object.entries(Species).map(([, status]) => ({
+				text: status,
+				value: status
+			})),
+			render: (species: Species) => (
+				<TablePill type={TablePillType.SPECIES} value={species} />
 			)
 		},
 		{
 			title: "Status",
 			dataIndex: "status",
-			onFilter: (value, record) => record.status.indexOf(value) === 0,
-			filters: [
-				{
-					text: "Healthy",
-					value: "healthy"
-				},
-				{
-					text: "Sick",
-					value: "sick"
-				},
-				{
-					text: "Fostered",
-					value: "fostered"
-				},
-				{
-					text: "Adopted",
-					value: "adopted"
-				}
-			],
-			render: (status: string) => (
-				<SwitchTag type="status" value={status.toLowerCase()} />
+			onFilter: (value, record) => record.status === value,
+			filters: Object.entries(Status).map(([, status]) => ({
+				text: status,
+				value: status
+			})),
+			render: (status: Status) => (
+				<TablePill type={TablePillType.STATUS} value={status} />
 			)
 		},
 		{
 			title: "Action",
 			dataIndex: "action",
-			render: () => <a>View pet details</a>
+			render: (onClick: () => void) => (
+				<a onClick={onClick}>View pet details</a>
+			)
 		}
 	];
 
-	const data: {
-		key: number;
-		name: string;
-		image: string;
-		visibility: string;
-		species: string;
-		status: string;
-		action: string;
-	}[] = [];
+	const mockData: PetData[] = [];
 	for (let i = 0; i < 80; i++) {
-		data.push({
+		mockData.push({
 			key: i,
 			name: `Fluttershy ${i}`,
 			image: "",
-			visibility: "yes",
-			species: "rabbit",
-			status: "adopted",
-			action: ""
+			visible: Math.random() > 0.5 ? true : false,
+			species: Species.RABBIT,
+			status: Status.ADOPTED,
+			action: () => alert("clicked")
 		});
 	}
 
@@ -158,9 +125,9 @@ const PetTableDisplay = () => {
 			</div>
 			<Table
 				columns={columns}
-				dataSource={data}
+				dataSource={mockData}
 				pagination={{ pageSize: 10 }}
-				scroll={{ y: 640 }}
+				scroll={{ y: 640 }} // TODO: update to use dynamic window height calculation
 			/>
 		</Container>
 	);
