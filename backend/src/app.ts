@@ -72,20 +72,20 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/', proxy(config.frontendUrl));
 
-// log all routes
+// logging of routes...
 app._router.stack.forEach((r: any) => {
   if (r.route && r.route.path) {
-    console.debug(r.route.path);
+    console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
   }
 });
 bookingRouter.stack.forEach((r: any) => {
   if (r.route && r.route.path) {
-    console.debug(r.route.path);
+    console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
   }
 });
 uploadRouter.stack.forEach((r: any) => {
   if (r.route && r.route.path) {
-    console.debug(r.route.path);
+    console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
   }
 });
 // add new routers here
