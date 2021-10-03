@@ -1,8 +1,16 @@
-import { Table, Input, Button, Space } from "antd";
-import { PlusOutlined, ImportOutlined } from "@ant-design/icons";
+import { ImportOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Input, Table } from "antd";
+import { ColumnsType } from "antd/lib/table/interface";
+import React, { useState } from "react";
+import styled from "styled-components";
 import SwitchTag from "./SwitchTag";
 import TableName from "./TableNameColumn";
-import React, { useState } from "react";
+
+const Container = styled.div`
+	margin: 24px 34px;
+	padding: 24px;
+	background: var(--color-header-background);
+`;
 
 const PetTableDisplay = () => {
 	const [searchText, setSearchText] = useState("");
@@ -125,7 +133,7 @@ const PetTableDisplay = () => {
 	}
 
 	return (
-		<div>
+		<Container>
 			<div className="flex space-between table-header">
 				Pets
 				<div>
@@ -154,7 +162,7 @@ const PetTableDisplay = () => {
 				pagination={{ pageSize: 10 }}
 				scroll={{ y: 640 }}
 			/>
-		</div>
+		</Container>
 	);
 };
 
