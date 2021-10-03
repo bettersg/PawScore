@@ -18,7 +18,7 @@ export enum Species {
 export type PetData = {
 	key: number;
 	name: string;
-	image: string;
+	image?: string;
 	visible: boolean;
 	species: Species;
 	status: Status;

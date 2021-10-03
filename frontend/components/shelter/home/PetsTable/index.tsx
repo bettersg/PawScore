@@ -5,7 +5,7 @@ import { PetData, Species, Status } from "common/enums";
 import React, { useState } from "react";
 import styled from "styled-components";
 import TablePill, { TablePillType } from "./components/Pill";
-import TableName from "./components/TableNameColumn";
+import TableName from "./components/Name";
 
 const Container = styled.div`
 	margin: 24px 34px;
@@ -31,7 +31,7 @@ const PetTableDisplay = () => {
 			title: "Name",
 			dataIndex: "name",
 			sorter: (a, b) => a.name.localeCompare(b.name), // TODO: Do we need localeCompare?
-			render: (name, record) => (
+			render: (name: string, record) => (
 				<TableName name={name} image={record.image} />
 			)
 		},
@@ -91,7 +91,7 @@ const PetTableDisplay = () => {
 		mockData.push({
 			key: i,
 			name: `Fluttershy ${i}`,
-			image: "",
+			// image: "",
 			visible: Math.random() > 0.5 ? true : false,
 			species: Species.RABBIT,
 			status: Status.ADOPTED,
