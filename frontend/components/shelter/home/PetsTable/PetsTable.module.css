@@ -1,0 +1,18 @@
+.tableHeader {
+	display: flex;
+	justify-content: space-between;
+	padding: 1em;
+}
+
+.tableHeader:first-child {
+	font-size: 16px;
+	font-weight: 500;
+}
+
+a.action {
+	color: hsla(265, 64%, 50%, 1);
+}
+
+a.action:hover {
+	color: hsla(263, 71%, 39%, 1);
+}

@@ -6,6 +6,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import TablePill, { TablePillType } from "./components/Pill";
 import TableName from "./components/Name";
+import styles from "./PetsTable.module.css";
+
+const { tableHeader, action } = styles;
 
 const Container = styled.div`
 	margin: 24px 34px;
@@ -30,7 +33,7 @@ const PetTableDisplay = () => {
 		{
 			title: "Name",
 			dataIndex: "name",
-			sorter: (a, b) => a.name.localeCompare(b.name), // TODO: Do we need localeCompare?
+			sorter: (a, b) => a.name.localeCompare(b.name),
 			render: (name: string, record) => (
 				<TableName name={name} image={record.image} />
 			)
@@ -81,7 +84,9 @@ const PetTableDisplay = () => {
 			title: "Action",
 			dataIndex: "action",
 			render: (onClick: () => void) => (
-				<a onClick={onClick}>View pet details</a>
+				<a className={action} onClick={onClick}>
+					View pet details
+				</a>
 			)
 		}
 	];
@@ -101,7 +106,7 @@ const PetTableDisplay = () => {
 
 	return (
 		<Container>
-			<div className="flex space-between table-header">
+			<div className={tableHeader}>
 				<div>Pets</div>
 				<div>
 					<Search
