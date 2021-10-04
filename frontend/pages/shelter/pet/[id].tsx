@@ -1,17 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import { EditOutlined } from "@ant-design/icons";
-import {
-	Breadcrumb,
-	Button, Form, Space,
-	Table,
-	Tabs,
-	Tag
-} from "antd";
+import { Breadcrumb, Button, Form, Space, Table, Tabs, Tag } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Title from "antd/lib/typography/Title";
 import dayjs from "dayjs";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
 import { useRouter } from "next/dist/client/router";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import styled from "styled-components";
@@ -75,12 +69,10 @@ const adopterCols = [
 		key: "name",
 		render: (text: Adopter["name"]) => (
 			<div style={{ display: "flex", alignItems: "center" }}>
-				<Image
-					objectFit="cover"
+				<img
 					src="https://via.placeholder.com/22"
-					alt="Logo"
-					width="22"
-					height="22"
+					alt={text}
+					style={{ width: 22, height: 22 }}
 				/>
 				<span style={{ marginLeft: 8 }}>{text}</span>
 			</div>
@@ -271,42 +263,14 @@ export default function PetDetails() {
 const ImageGallery = () => {
 	return (
 		<GridContainer>
-			<Image
-				src="https://via.placeholder.com/86"
-				alt="Logo"
-				width="86"
-				height="86"
-			/>
-			<Image
-				src="https://via.placeholder.com/86"
-				alt="Logo"
-				width="86"
-				height="86"
-			/>
-			<Image
-				src="https://via.placeholder.com/86"
-				alt="Logo"
-				width="86"
-				height="86"
-			/>
-			<Image
-				src="https://via.placeholder.com/86"
-				alt="Logo"
-				width="86"
-				height="86"
-			/>
-			<Image
-				src="https://via.placeholder.com/86"
-				alt="Logo"
-				width="86"
-				height="86"
-			/>
-			<Image
-				src="https://via.placeholder.com/86"
-				alt="Logo"
-				width="86"
-				height="86"
-			/>
+			{[0, 1, 2, 3, 4, 5].map((_, index) => (
+				<img
+					key={index}
+					src="https://via.placeholder.com/86"
+					alt="Pet Image"
+					style={{ width: 86, height: 86 }}
+				/>
+			))}
 		</GridContainer>
 	);
 };
