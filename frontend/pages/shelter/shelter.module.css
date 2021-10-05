@@ -1,19 +1,33 @@
 .subtitle {
 	text-align: center;
 	font-size: small;
-    color: #666;
+	color: #666;
 }
 
 .loginContainer {
-    margin: 200px auto;
+	margin: 200px auto;
 	padding: 60px 40px;
 	background-color: white;
 }
 
 .loginFormForgot {
-    float: right;
+	float: right;
+	color: var(--color-golden-purple);
 }
 
 .loginFormButton {
-    width: 100%;
+	width: 100%;
+}
+
+.quickSignInButton {
+	color: rgba(0, 0, 0, 0.45);
+	border: transparent;
+}
+
+.quickSignInButton:hover {
+	color: var(--color-golden-purple);
+}
+
+.signInRow {
+	align-items: center;
 }

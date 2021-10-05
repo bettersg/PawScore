@@ -1,0 +1,4 @@
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
+.ant-tabs-tab:hover {
+	color: var(--color-golden-purple) !important;
+}

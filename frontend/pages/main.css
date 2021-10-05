@@ -1,6 +1,8 @@
 @import "layouts/common/colors.css";
+@import "layouts/common/forms.css";
 @import "layouts/common/menus.css";
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import "layouts/common/tabs.css";
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 body {
 	color: #000000;

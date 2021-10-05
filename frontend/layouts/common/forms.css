@@ -1,0 +1,13 @@
+a:hover {
+	color: var(--color-golden-purple);
+	text-decoration: underline;
+}
+
+.ant-input-affix-wrapper-focused,
+.ant-input-affix-wrapper:hover {
+	border-color: var(--color-golden-purple) !important;
+}
+
+.ant-checkbox-checked {
+	color: var(--color-golden-purple);
+}

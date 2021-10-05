@@ -19,7 +19,10 @@
     color: var(--color-golden-purple) !important;
 }
 
-.ant-menu-item-selected,
+.ant-menu-item-selected {
+	color: var(--color-golden-purple) !important;
+}
+
 .ant-menu-light .ant-menu-item:hover {
     color: var(--color-golden-purple) !important;
     background-color: var(--color-light-purple) !important;
