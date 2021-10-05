@@ -24,7 +24,7 @@ const ShelterLogin = () => {
 
 	return (
 		<ShelterLoginLayout>
-			<Row>
+			<Row className={styles.rowItem}>
 				<Col span={6} offset={9}>
 					<div className={styles.loginContainer}>
 						<LogoHeader />

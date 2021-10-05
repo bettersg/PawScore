@@ -1,3 +1,7 @@
+.rowItem {
+	background-color: var(--color-background);
+}
+
 .subtitle {
 	text-align: center;
 	font-size: small;
