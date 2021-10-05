@@ -1,6 +1,6 @@
 import ShelterLoginLayout from "layouts/shelter/ShelterLoginLayout";
 import { Button, Checkbox, Col, Form, Input, Row, Tabs } from "antd";
-import { UserOutlined, LockOutlined, GoogleSquareFilled, FacebookFilled } from "@ant-design/icons";
+import { UserOutlined, LockOutlined, GoogleOutlined, FacebookFilled } from "@ant-design/icons";
 import styles from "./shelter.module.css";
 
 const { TabPane } = Tabs;
@@ -109,7 +109,7 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 			</Button>
 		</Form.Item>
 		<Form.Item>
-			<Row className={styles.signInRow}>Quick Sign-in: <Button className={styles.quickSignInButton} icon={<GoogleSquareFilled />} /> <Button className={styles.quickSignInButton} icon={<FacebookFilled />} /></Row>
+			<Row className={styles.signInRow}>Quick Sign-in: <Button size="large" className={styles.quickSignInButton} icon={<GoogleOutlined />} /> <Button size="large" className={styles.quickSignInButton} icon={<FacebookFilled />} /></Row>
 		</Form.Item>
 	</Form>
 );
@@ -155,7 +155,7 @@ const SignUpForm  = ({ onFinish }: LoginFormProps) => (
 			</Button>
 		</Form.Item>
 		<Form.Item>
-			<Row className={styles.signInRow}>Sign up with: <Button className={styles.quickSignInButton} icon={<GoogleSquareFilled />} /> <Button className={styles.quickSignInButton} icon={<FacebookFilled />} /></Row>
+			<Row className={styles.signInRow}>Sign up with: <Button size="large" className={styles.quickSignInButton} icon={<GoogleOutlined />} /> <Button size="large" className={styles.quickSignInButton} icon={<FacebookFilled />} /></Row>
 		</Form.Item>
 	</Form>
 );
