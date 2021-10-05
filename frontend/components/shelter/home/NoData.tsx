@@ -1,6 +1,5 @@
 import { Button } from "antd";
 import styled from "styled-components";
-import Image from "next/image";
 
 const CenteredDiv = styled.div`
 	display: flex;
@@ -18,7 +17,7 @@ const NoData = () => {
 	return (
 		<Container>
 			<CenteredDiv>
-				<Image
+				<img
 					src="https://via.placeholder.com/97"
 					alt="Logo"
 					width="97"
