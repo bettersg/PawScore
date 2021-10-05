@@ -1,6 +1,6 @@
 import ShelterLoginLayout from "layouts/shelter/ShelterLoginLayout";
-import { Button, Checkbox, Col, Form, Input, Row, Space, Tabs } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Col, Form, Input, Row, Tabs } from "antd";
+import { UserOutlined, LockOutlined, GoogleSquareFilled, FacebookFilled } from "@ant-design/icons";
 import styles from "./shelter.module.css";
 
 const { TabPane } = Tabs;
@@ -9,7 +9,7 @@ const logo = "/logo.png";
 type FormValues = {
 	username: string;
 	password: string;
-	remember: boolean;
+	remember?: boolean;
 };
 
 type LoginFormProps = {
@@ -33,7 +33,7 @@ const ShelterLogin = () => {
 								<LoginForm onFinish={onFinish} />
 							</TabPane>
 							<TabPane tab="Signup" key="2">
-								Content of Tab Pane 2
+								<SignUpForm onFinish={onFinish} />
 							</TabPane>
 						</Tabs>
 					</div>
@@ -47,7 +47,7 @@ export default ShelterLogin;
 
 const LogoHeader = () => (
 	<>
-		<Row>
+		<Row justify={"center"}>
 			<img
 				src={logo}
 				style={{ width: 139, height: 25, margin: "10px auto" }}
@@ -85,7 +85,7 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 					message: "Please input your Password!"
 				}
 			]}>
-			<Input
+			<Input.Password
 				prefix={<LockOutlined className="site-form-item-icon" />}
 				type="password"
 				placeholder="Password"
@@ -107,6 +107,55 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 				className={styles.loginFormButton}>
 				Login
 			</Button>
+		</Form.Item>
+		<Form.Item>
+			<Row className={styles.signInRow}>Quick Sign-in: <Button className={styles.quickSignInButton} icon={<GoogleSquareFilled />} /> <Button className={styles.quickSignInButton} icon={<FacebookFilled />} /></Row>
+		</Form.Item>
+	</Form>
+);
+
+const SignUpForm  = ({ onFinish }: LoginFormProps) => (
+	<Form
+		name="signup"
+		className="signup-form"
+		onFinish={onFinish}>
+		<Form.Item
+			name="username"
+			rules={[
+				{
+					required: true,
+					message: "Please input your Username!"
+				}
+			]}>
+			<Input
+				prefix={<UserOutlined className="site-form-item-icon" />}
+				placeholder="Username"
+			/>
+		</Form.Item>
+		<Form.Item
+			name="password"
+			rules={[
+				{
+					required: true,
+					message: "Please input your Password!"
+				}
+			]}>
+			<Input.Password
+				prefix={<LockOutlined className="site-form-item-icon" />}
+				type="password"
+				placeholder="Password"
+			/>
+		</Form.Item>
+		<Form.Item>
+			<Button
+				type="primary"
+				htmlType="submit"
+				className={styles.loginFormButton}>
+				Sign Up
+			</Button>
+		</Form.Item>
+		<Form.Item>
+			<Row className={styles.signInRow}>Sign up with: <Button className={styles.quickSignInButton} icon={<GoogleSquareFilled />} /> <Button className={styles.quickSignInButton} icon={<FacebookFilled />} /></Row>
 		</Form.Item>
 	</Form>
 );
