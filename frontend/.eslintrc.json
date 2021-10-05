@@ -1,6 +1,14 @@
 {
 	"extends": "next/core-web-vitals",
 	"rules": {
-		"react/display-name": "off"
+		"react/display-name": "off",
+		"@next/next/no-img-element": "off",
+		"no-restricted-imports": [
+			"error",
+			{
+				"name": "next/image",
+				"message": "Do not use the next/image to maintain the ability to perform a static HTML export (See: https://nextjs.org/docs/advanced-features/static-html-export)"
+			}
+		]
 	}
 }
