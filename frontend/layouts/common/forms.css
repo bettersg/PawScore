@@ -8,6 +8,7 @@ a:hover {
 	border-color: var(--color-golden-purple) !important;
 }
 
-.ant-checkbox-checked {
-	color: var(--color-golden-purple);
+.ant-checkbox-checked .ant-checkbox-inner {
+	background-color: var(--color-golden-purple);
+	border-color: var(--color-golden-purple);
 }

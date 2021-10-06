@@ -73,7 +73,7 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 				}
 			]}>
 			<Input
-				prefix={<UserOutlined className="site-form-item-icon" />}
+				prefix={<UserOutlined className={styles.inputFieldIcons} />}
 				placeholder="Username"
 			/>
 		</Form.Item>
@@ -86,7 +86,7 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 				}
 			]}>
 			<Input.Password
-				prefix={<LockOutlined className="site-form-item-icon" />}
+				prefix={<LockOutlined className={styles.inputFieldIcons} />}
 				type="password"
 				placeholder="Password"
 			/>
@@ -128,7 +128,7 @@ const SignUpForm  = ({ onFinish }: LoginFormProps) => (
 				}
 			]}>
 			<Input
-				prefix={<UserOutlined className="site-form-item-icon" />}
+				prefix={<UserOutlined className={styles.inputFieldIcons} />}
 				placeholder="Username"
 			/>
 		</Form.Item>
@@ -141,7 +141,7 @@ const SignUpForm  = ({ onFinish }: LoginFormProps) => (
 				}
 			]}>
 			<Input.Password
-				prefix={<LockOutlined className="site-form-item-icon" />}
+				prefix={<LockOutlined className={styles.inputFieldIcons} />}
 				type="password"
 				placeholder="Password"
 			/>
