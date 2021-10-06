@@ -1,4 +1,16 @@
-.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
 .ant-tabs-tab:hover {
 	color: var(--color-golden-purple) !important;
+	border-bottom: 2px solid var(--color-golden-purple) !important;
+	z-index: 2;
+}
+.ant-tabs-tab.ant-tabs-tab-active {
+	border-bottom: 2px solid var(--color-golden-purple) !important;
+	z-index: 2;
+}
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+	color: var(--color-golden-purple) !important;
+}
+
+.ant-tabs-ink-bar {
+	background: var(--color-golden-purple) !important;
 }
