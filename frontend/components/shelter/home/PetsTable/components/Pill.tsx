@@ -27,24 +27,24 @@ type StatusProps = {
 };
 type TablePillProps = VisibilityProps | SpeciesProps | StatusProps;
 
-const TablePill = ({ type, value }: TablePillProps) => {
+const TablePill = (props: TablePillProps) => {
 	let data: {
 		color: PillColor;
 		text: string;
 	};
 
-	switch (type) {
+	switch (props.type) {
 		case TablePillType.VISIBILITY:
 			data = {
-				color: value ? PillColor.GREEN : PillColor.RED,
-				text: value ? "yes" : "no"
+				color: props.value ? PillColor.GREEN : PillColor.RED,
+				text: props.value ? "yes" : "no"
 			};
 			break;
 		case TablePillType.SPECIES:
-			data = SpeciesTags[value as Species];
+			data = SpeciesTags[props.value];
 			break;
 		case TablePillType.STATUS:
-			data = StatusTags[value as Status];
+			data = StatusTags[props.value];
 			break;
 		default:
 			data = {
