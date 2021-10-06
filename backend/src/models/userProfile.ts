@@ -1,23 +1,10 @@
 import {
-	Sequelize,
-	Model,
-	Optional,
-	DataTypes,
-	UUIDV4,
-	Association
+	Association, DataTypes, Model,
+	Optional, UUIDV4
 } from "sequelize";
+import { sequelize } from "../database";
 import { User } from "./user";
-
-// Initializing sequelize
-import allConfig from "../config/config";
-// eslint-disable-next-line
-const config: any = allConfig.databaseConfig;
-const sequelize = new Sequelize(
-	config.database,
-	config.username,
-	config.password,
-	config
-);
+import { UserAnimalApplicationModel } from "./userAnimalApplication";
 
 // These are all the attributes for the model
 interface UserProfileAttributes {
@@ -33,6 +20,8 @@ interface UserProfileAttributes {
 	occupation: string;
 	address: string;
 	postalCode: string;
+
+	userAnimalApplications?: UserAnimalApplicationModel[];
 }
 
 // eslint-disable-next-line
@@ -60,9 +49,12 @@ class UserProfile
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
 
+	public readonly userAnimalApplications?: UserAnimalApplicationModel[];
+
 	public readonly user!: User;
 	public static associations: {
 		user: Association<User, UserProfile>;
+		userAnimalApplications: Association<User, UserAnimalApplicationModel>;
 	};
 }
 
@@ -123,5 +115,11 @@ UserProfile.init(
 		sequelize // passing the `sequelize` instance is required
 	}
 );
+
+UserProfile.hasMany(UserAnimalApplicationModel, {
+	sourceKey: "id",
+	foreignKey: "userProfileId",
+	as: "userAnimalApplications"
+});
 
 export { UserProfile, UserProfileCreationAttributes, UserProfileAttributes };
