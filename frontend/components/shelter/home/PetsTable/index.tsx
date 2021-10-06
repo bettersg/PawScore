@@ -2,7 +2,7 @@ import { ImportOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Input, Table } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
 import { PetData, Species, Status } from "common/enums";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import TablePill, { TablePillType } from "./components/Pill";
 import TableName from "./components/Name";
@@ -17,8 +17,9 @@ const Container = styled.div`
 `;
 
 const PetTableDisplay = () => {
-	const [searchText, setSearchText] = useState("");
-	const [searchedColumn, setSearchedColumn] = useState("");
+	/* commenting out for now as not implemented yet */
+	// const [searchText, setSearchText] = useState("");
+	// const [searchedColumn, setSearchedColumn] = useState("");
 
 	const { Search } = Input;
 	const onSearch = () => {};
