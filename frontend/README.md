@@ -4,6 +4,8 @@
 
 -   (to help with cleaner code)
     -   install Prettier extension on VSC
+        -   choose Prettier as your default formatter
+        -   enable format on save
     -   install Eslint extension on VSC
 -   Useful resources
     -   NextJs basic features (<https://nextjs.org/docs/basic-features/pages>)
