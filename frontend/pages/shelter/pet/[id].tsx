@@ -1,6 +1,7 @@
 import { EditOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, Form, Space, Table, Tabs, Tag } from "antd";
 import { Content } from "antd/lib/layout/layout";
+import { ColumnsType } from "antd/lib/table/interface";
 import Title from "antd/lib/typography/Title";
 import dayjs from "dayjs";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
@@ -54,29 +55,29 @@ const adopterData: Adopter[] = [
 	}
 ];
 
-const adopterCols = [
+const adopterCols: ColumnsType<Adopter> = [
 	{
 		title: "Application Id",
 		dataIndex: "key",
 		key: "key",
-		render: (text: Adopter["key"]) => <span>{text}</span>,
-		sorter: (a: Adopter, b: Adopter) => a.key.localeCompare(b.key)
+		render: (key: Adopter["key"]) => <span>{key}</span>,
+		sorter: (a, b) => a.key.localeCompare(b.key)
 	},
 	{
 		title: "Name",
 		dataIndex: "name",
 		key: "name",
-		render: (text: Adopter["name"]) => (
+		render: (name: Adopter["name"]) => (
 			<div style={{ display: "flex", alignItems: "center" }}>
 				<img
 					src="https://via.placeholder.com/22"
-					alt={text}
+					alt={name}
 					style={{ width: 22, height: 22 }}
 				/>
-				<span style={{ marginLeft: 8 }}>{text}</span>
+				<span style={{ marginLeft: 8 }}>{name}</span>
 			</div>
 		),
-		sorter: (a: Adopter, b: Adopter) => a.name.localeCompare(b.name)
+		sorter: (a, b) => a.name.localeCompare(b.name)
 	},
 	{
 		title: "Date Of Application",
@@ -85,15 +86,15 @@ const adopterCols = [
 		render: (applicationDate: Adopter["applicationDate"]) => (
 			<span>{dayjs(applicationDate).format("DD/MM/YYYY")}</span>
 		),
-		sorter: (a: Adopter, b: Adopter) =>
+		sorter: (a, b) =>
 			a.applicationDate.getTime() - b.applicationDate.getTime()
 	},
 	{
 		title: "Quiz Score",
 		dataIndex: "score",
 		key: "score",
-		render: (text: Adopter["score"]) => <span>{text}</span>,
-		sorter: (a: Adopter, b: Adopter) => a.score - b.score,
+		render: (score: Adopter["score"]) => <span>{score}</span>,
+		sorter: (a, b) => a.score - b.score,
 		filters: [
 			{
 				text: ">= 20",
@@ -104,7 +105,7 @@ const adopterCols = [
 				value: 40
 			}
 		],
-		onFilter: (value: any, record: Adopter) => record.score >= value
+		onFilter: (value, record) => record.score >= value
 	},
 	{
 		title: "Status",
@@ -157,102 +158,102 @@ export default function PetDetails() {
 
 	return (
 		<ShelterLayout>
-				<Container>
-					<Breadcrumb separator=">">
-						<Breadcrumb.Item>Pets</Breadcrumb.Item>
+			<Container>
+				<Breadcrumb separator=">">
+					<Breadcrumb.Item>Pets</Breadcrumb.Item>
 						<Breadcrumb.Item href="">
 							View Pet Details
 						</Breadcrumb.Item>
-					</Breadcrumb>
-					<InnerContent>
-						<PetDetailHeader>
-							<Title level={5}>Pet Details</Title>
-							<Button
-								type="primary"
-								icon={<EditOutlined />}
-								href={`${id}/edit`}>
-								Edit
-							</Button>
-						</PetDetailHeader>
-						<div>
-							<Form labelCol={{ span: 2 }}>
-								<Form.Item label="Photos">
-									<ImageGallery />
-								</Form.Item>
-							</Form>
-							<FormContainer>
-								<FormDivFlex>
-									<Form
-										labelCol={{ span: 6 }}
-										layout="horizontal">
+				</Breadcrumb>
+				<InnerContent>
+					<PetDetailHeader>
+						<Title level={5}>Pet Details</Title>
+						<Button
+							type="primary"
+							icon={<EditOutlined />}
+							href={`${id}/edit`}>
+							Edit
+						</Button>
+					</PetDetailHeader>
+					<div>
+						<Form labelCol={{ span: 2 }}>
+							<Form.Item label="Photos">
+								<ImageGallery />
+							</Form.Item>
+						</Form>
+						<FormContainer>
+							<FormDivFlex>
+								<Form
+									labelCol={{ span: 6 }}
+									layout="horizontal">
 										<Form.Item
 											label="Id"
 											labelAlign="right">
-											<span>1233</span>
-										</Form.Item>
-										<Form.Item
-											label="Visibility"
-											labelAlign="right">
-											<span>No</span>
-										</Form.Item>
-										<Form.Item
-											label="Status"
-											labelAlign="right">
-											<span>Healthy</span>
-										</Form.Item>
-										<Form.Item
-											label="Date of Birth"
-											labelAlign="right">
-											<span>0 years 3 months</span>
-										</Form.Item>
+										<span>1233</span>
+									</Form.Item>
+									<Form.Item
+										label="Visibility"
+										labelAlign="right">
+										<span>No</span>
+									</Form.Item>
+									<Form.Item
+										label="Status"
+										labelAlign="right">
+										<span>Healthy</span>
+									</Form.Item>
+									<Form.Item
+										label="Date of Birth"
+										labelAlign="right">
+										<span>0 years 3 months</span>
+									</Form.Item>
 										<Form.Item
 											label="Breed"
 											labelAlign="right">
-											<span>British Shorthair</span>
-										</Form.Item>
-									</Form>
-								</FormDivFlex>
-								<FormDivFlex>
-									<Form labelCol={{ span: 8 }}>
-										<Form.Item label="Name">
-											<span>Cat 1</span>
-										</Form.Item>
-										<Form.Item label="Species">
-											<span>Cat</span>
-										</Form.Item>
-										<Form.Item label="Date Acquired">
-											<span>2020-11-20</span>
-										</Form.Item>
-										<Form.Item label="Medical Problems">
-											<Tag>Problem 1</Tag>
-											<Tag>Problem 2</Tag>
-											<Tag>Problem 3</Tag>
-										</Form.Item>
-									</Form>
-								</FormDivFlex>
-							</FormContainer>
-						</div>
-					</InnerContent>
-				</Container>
-				<Container>
-					<InnerContent>
-						<Title level={5}>Prospective Adopters</Title>
-						<Tabs defaultActiveKey="1">
-							<Tabs.TabPane tab="Adopters" key="tab-adopters">
-								<Table
-									dataSource={adopterData}
-									columns={adopterCols}
-								/>
-							</Tabs.TabPane>
-							<Tabs.TabPane tab="Fosterers" key="tab-fosterers">
-								Content of Tab Pane 2
-							</Tabs.TabPane>
-							<Tabs.TabPane tab="Donations" key="tab-donations">
-								Content of Tab Pane 3
-							</Tabs.TabPane>
-						</Tabs>
-					</InnerContent>
-				</Container>
+										<span>British Shorthair</span>
+									</Form.Item>
+								</Form>
+							</FormDivFlex>
+							<FormDivFlex>
+								<Form labelCol={{ span: 8 }}>
+									<Form.Item label="Name">
+										<span>Cat 1</span>
+									</Form.Item>
+									<Form.Item label="Species">
+										<span>Cat</span>
+									</Form.Item>
+									<Form.Item label="Date Acquired">
+										<span>2020-11-20</span>
+									</Form.Item>
+									<Form.Item label="Medical Problems">
+										<Tag>Problem 1</Tag>
+										<Tag>Problem 2</Tag>
+										<Tag>Problem 3</Tag>
+									</Form.Item>
+								</Form>
+							</FormDivFlex>
+						</FormContainer>
+					</div>
+				</InnerContent>
+			</Container>
+			<Container>
+				<InnerContent>
+					<Title level={5}>Prospective Adopters</Title>
+					<Tabs defaultActiveKey="1">
+						<Tabs.TabPane tab="Adopters" key="tab-adopters">
+							<Table
+								dataSource={adopterData}
+								columns={adopterCols}
+							/>
+						</Tabs.TabPane>
+						<Tabs.TabPane tab="Fosterers" key="tab-fosterers">
+							Content of Tab Pane 2
+						</Tabs.TabPane>
+						<Tabs.TabPane tab="Donations" key="tab-donations">
+							Content of Tab Pane 3
+						</Tabs.TabPane>
+					</Tabs>
+				</InnerContent>
+			</Container>
 		</ShelterLayout>
 	);
 }

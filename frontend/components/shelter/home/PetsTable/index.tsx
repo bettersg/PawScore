@@ -8,7 +8,7 @@ import TablePill, { TablePillType } from "./components/Pill";
 import TableName from "./components/Name";
 import styles from "./PetsTable.module.css";
 
-const { tableHeader, action } = styles;
+const { tableHeader, actionButton } = styles;
 
 const Container = styled.div`
 	margin: 24px 34px;
@@ -35,7 +35,7 @@ const PetTableDisplay = () => {
 			title: "Name",
 			dataIndex: "name",
 			sorter: (a, b) => a.name.localeCompare(b.name),
-			render: (name: string, record) => (
+			render: (name: PetData["name"], record) => (
 				<TableName name={name} image={record.image} />
 			)
 		},
@@ -53,7 +53,7 @@ const PetTableDisplay = () => {
 					value: true
 				}
 			],
-			render: (visible: boolean) => (
+			render: (visible: PetData["visible"]) => (
 				<TablePill type={TablePillType.VISIBILITY} value={visible} />
 			)
 		},
@@ -65,7 +65,7 @@ const PetTableDisplay = () => {
 				text: status,
 				value: status
 			})),
-			render: (species: Species) => (
+			render: (species: PetData["species"]) => (
 				<TablePill type={TablePillType.SPECIES} value={species} />
 			)
 		},
@@ -77,15 +77,15 @@ const PetTableDisplay = () => {
 				text: status,
 				value: status
 			})),
-			render: (status: Status) => (
+			render: (status: PetData["status"]) => (
 				<TablePill type={TablePillType.STATUS} value={status} />
 			)
 		},
 		{
 			title: "Action",
 			dataIndex: "action",
-			render: (onClick: () => void) => (
-				<a className={action} onClick={onClick}>
+			render: (action: PetData["action"]) => (
+				<a className={actionButton} onClick={action}>
 					View pet details
 				</a>
 			)

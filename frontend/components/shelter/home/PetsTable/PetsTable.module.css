@@ -9,10 +9,10 @@
 	font-weight: 500;
 }
 
-a.action {
+a.actionButton {
 	color: hsla(265, 64%, 50%, 1);
 }
 
-a.action:hover {
+a.actionButton:hover {
 	color: hsla(263, 71%, 39%, 1);
 }
