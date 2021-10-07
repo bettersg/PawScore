@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { EditOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, Form, Space, Table, Tabs, Tag } from "antd";
 import { Content } from "antd/lib/layout/layout";
