@@ -157,7 +157,6 @@ export default function PetDetails() {
 
 	return (
 		<ShelterLayout>
-			<>
 				<Container>
 					<Breadcrumb separator=">">
 						<Breadcrumb.Item>Pets</Breadcrumb.Item>
@@ -254,7 +253,6 @@ export default function PetDetails() {
 						</Tabs>
 					</InnerContent>
 				</Container>
-			</>
 		</ShelterLayout>
 	);
 }
