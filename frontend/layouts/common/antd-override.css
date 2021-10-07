@@ -1,0 +1,76 @@
+:root {
+	--menu-header-menu-height: 64px;
+	--menu-left-menu-width: 256px;
+}
+
+/* ========================================================================== */
+/* MENU */
+/* ========================================================================== */
+.ant-menu-item:active {
+	background: var(--color-light-purple) !important;
+}
+
+.ant-menu-item:active,
+.ant-menu-item a:hover,
+.ant-menu-item a:active,
+.ant-menu-item-active,
+.ant-menu-submenu-selected,
+.ant-menu-light .ant-menu-submenu-title:hover,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-active,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open {
+	color: var(--color-golden-purple) !important;
+}
+
+.ant-menu-item-selected,
+.ant-menu-light .ant-menu-item:hover {
+	color: var(--color-golden-purple) !important;
+	background-color: var(--color-light-purple) !important;
+}
+
+.ant-menu-item-selected:after {
+	border-right: 3px solid var(--color-golden-purple) !important;
+}
+
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected::after {
+	border-bottom: 2px solid var(--color-golden-purple) !important;
+}
+
+/* ========================================================================== */
+/* BUTTON */
+/* ========================================================================== */
+.ant-btn-primary {
+	background: hsla(263, 71%, 39%, 1);
+	border-color: hsla(263, 71%, 39%, 1);
+	font-size: 14px;
+	line-height: 22px;
+}
+
+.ant-btn-primary:hover {
+	background: hsla(263, 71%, 55%, 1);
+	border-color: hsla(263, 71%, 55%, 1);
+}
+
+.ant-btn-default {
+	background: #ffffff;
+	border: 1px solid #d9d9d9;
+	box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.016);
+	border-radius: 2px;
+}
+
+.ant-btn-default:hover {
+	background: #ffffff;
+	border: 1px solid hsla(263, 71%, 65%, 1);
+	color: hsla(263, 71%, 30%, 1);
+}
+
+/* ========================================================================== */
+/* SEARCH BAR */
+/* ========================================================================== */
+.ant-input-search .ant-input:hover,
+.ant-input-search .ant-input:focus {
+	border-color: hsla(263, 71%, 39%, 1);
+}
