@@ -1,0 +1,8 @@
+.hero-header {
+	background-color: var(--color-header-background);
+	/* padding: 0;
+	position: relative;
+	line-height: 0;
+	display: flex;
+	justify-content: space-between; */
+}
