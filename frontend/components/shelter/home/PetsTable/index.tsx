@@ -9,6 +9,7 @@ import TableName from "./components/Name";
 import styles from "./PetsTable.module.css";
 
 const { tableHeader, actionButton } = styles;
+const { Search } = Input;
 
 const Container = styled.div`
 	margin: 24px 34px;
@@ -20,9 +21,12 @@ const PetTableDisplay = () => {
 	/* commenting out for now as not implemented yet */
 	// const [searchText, setSearchText] = useState("");
 	// const [searchedColumn, setSearchedColumn] = useState("");
-
-	const { Search } = Input;
-	const onSearch = () => {};
+	const onSearch = () => {
+		console.log("search");
+	};
+	const onViewMore = (id: number) => {
+		console.log("clicked view more ", id);
+	};
 
 	const columns: ColumnsType<PetData> = [
 		{
@@ -83,9 +87,9 @@ const PetTableDisplay = () => {
 		},
 		{
 			title: "Action",
-			dataIndex: "action",
-			render: (action: PetData["action"]) => (
-				<a className={actionButton} onClick={action}>
+			dataIndex: "key",
+			render: (key: PetData["key"]) => (
+				<a className={actionButton} onClick={() => onViewMore(key)}>
 					View pet details
 				</a>
 			)
@@ -100,8 +104,7 @@ const PetTableDisplay = () => {
 			// image: "",
 			visible: Math.random() > 0.5 ? true : false,
 			species: Species.RABBIT,
-			status: Status.ADOPTED,
-			action: () => alert("clicked")
+			status: Status.ADOPTED
 		});
 	}
 

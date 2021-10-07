@@ -22,7 +22,6 @@ export type PetData = {
 	visible: boolean;
 	species: Species;
 	status: Status;
-	action: () => void;
 };
 
 // =============================================================================
