@@ -7,16 +7,24 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start -p 3000",
-		"lint": "next lint"
+		"lint": "next lint",
+		"test": "jest test"
 	},
 	"author": "Better.sg",
 	"devDependencies": {
+		"@testing-library/jest-dom": "^5.14.1",
+		"@testing-library/react": "^12.1.2",
+		"@types/jest": "^27.0.2",
 		"@types/node": "^16.7.1",
 		"@types/react": "^17.0.19",
 		"@types/styled-components": "^5.1.14",
+		"babel-jest": "^27.2.4",
 		"eslint": "7.32.0",
 		"eslint-config-next": "11.1.0",
+		"identity-obj-proxy": "^3.0.0",
+		"jest": "^27.2.4",
 		"prettier": "2.3.2",
+		"react-test-renderer": "^17.0.2",
 		"typescript": "^4.3.5"
 	},
 	"dependencies": {
