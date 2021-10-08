@@ -16,12 +16,14 @@ export enum Species {
 }
 
 export type PetData = {
-	key: number;
+	key: string;
 	name: string;
-	image?: string;
+	images?: string[];
 	visible: boolean;
 	species: Species;
 	status: Status;
+	acquired: Date;
+	breed: string;
 };
 
 // =============================================================================

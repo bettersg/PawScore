@@ -24,23 +24,31 @@ const PetTableDisplay = () => {
 	const onSearch = () => {
 		console.log("search");
 	};
-	const onViewMore = (id: number) => {
+	const onViewMore = (id: string) => {
 		console.log("clicked view more ", id);
 	};
 
-	const columns: ColumnsType<PetData> = [
+	const columns: ColumnsType<Omit<PetData, "acquired" | "breed">> = [
 		{
 			title: "ID",
 			dataIndex: "key",
 			defaultSortOrder: "ascend",
-			sorter: (a, b) => a.key - b.key
+			sorter: (a, b) => {
+				if (a.key > b.key) {
+					return 1;
+				}
+				if (b.key > a.key) {
+					return -1;
+				}
+				return 0;
+			}
 		},
 		{
 			title: "Name",
 			dataIndex: "name",
 			sorter: (a, b) => a.name.localeCompare(b.name),
 			render: (name: PetData["name"], record) => (
-				<TableName name={name} image={record.image} />
+				<TableName name={name} image={record.images} />
 			)
 		},
 		{
@@ -96,10 +104,10 @@ const PetTableDisplay = () => {
 		}
 	];
 
-	const mockData: PetData[] = [];
+	const mockData: Omit<PetData, "acquired" | "breed">[] = [];
 	for (let i = 0; i < 80; i++) {
 		mockData.push({
-			key: i,
+			key: "" + i,
 			name: `Fluttershy ${i}`,
 			// image: "",
 			visible: Math.random() > 0.5 ? true : false,
