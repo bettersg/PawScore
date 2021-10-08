@@ -201,7 +201,8 @@ type PetDetailsSectionProps = {
 	petData: PetData;
 };
 const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
-	const { key, images, visible, breed, name, species, acquired } = petData;
+	const { key, images, visible, breed, name, species, acquired, status } =
+		petData;
 	return (
 		<InnerContent>
 			<PetDetailHeader>
@@ -248,7 +249,7 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 								<span>{species}</span>
 							</Form.Item>
 							<Form.Item label="Date Acquired">
-								<span>{acquired}</span>
+								<span>{acquired.toDateString()}</span>
 							</Form.Item>
 							<Form.Item label="Medical Problems">
 								<Tag>Problem 1</Tag>
