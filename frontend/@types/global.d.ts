@@ -6,4 +6,5 @@ interface Adopter {
 	applicationDate: Date;
 	score: number;
 	status: Status;
+	image: string;
 }

@@ -3,11 +3,12 @@ import { Breadcrumb, Button, Form, Space, Table, Tabs, Tag } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { ColumnsType } from "antd/lib/table/interface";
 import Title from "antd/lib/typography/Title";
+import { PetData, PillColor, Species, Status } from "common/enums";
 import dayjs from "dayjs";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const adopterData: Adopter[] = [
@@ -16,42 +17,48 @@ const adopterData: Adopter[] = [
 		name: "Adopter 1",
 		applicationDate: new Date(2021, 8, 18),
 		score: 20,
-		status: "pending"
+		status: "pending",
+		image: "https://via.placeholder.com/22"
 	},
 	{
 		key: "2",
 		name: "Adopter 2",
 		applicationDate: new Date(2021, 8, 19),
 		score: 17,
-		status: "rejected"
+		status: "rejected",
+		image: "https://via.placeholder.com/22"
 	},
 	{
 		key: "3",
 		name: "Adopter 3",
 		applicationDate: new Date(2021, 8, 20),
 		score: 20,
-		status: "pending"
+		status: "pending",
+		image: "https://via.placeholder.com/22"
 	},
 	{
 		key: "4",
 		name: "Adopter 4",
 		applicationDate: new Date(2021, 8, 21),
 		score: 45,
-		status: "pending"
+		status: "pending",
+		image: "https://via.placeholder.com/22"
 	},
 	{
 		key: "5",
 		name: "Adopter 5",
 		applicationDate: new Date(2021, 8, 22),
 		score: 28,
-		status: "pending"
+		status: "pending",
+		image: "https://via.placeholder.com/22"
 	},
 	{
 		key: "6",
 		name: "Adopter 6",
 		applicationDate: new Date(2021, 8, 25),
 		score: 62,
-		status: "pending"
+		status: "pending",
+		image: "https://via.placeholder.com/22"
 	}
 ];
 
@@ -67,10 +74,10 @@ const adopterCols: ColumnsType<Adopter> = [
 		title: "Name",
 		dataIndex: "name",
 		key: "name",
-		render: (name: Adopter["name"]) => (
+		render: (name: Adopter["name"], record) => (
 			<div style={{ display: "flex", alignItems: "center" }}>
 				<img
-					src="https://via.placeholder.com/22"
+					src={record.image}
 					alt={name}
 					style={{ width: 22, height: 22 }}
 				/>
@@ -114,11 +121,11 @@ const adopterCols: ColumnsType<Adopter> = [
 		render: (status: Adopter["status"]) => {
 			switch (status) {
 				case "rejected":
-					return <Tag color="red">rejected</Tag>;
+					return <Tag color={PillColor.RED}>rejected</Tag>;
 				case "pending":
-					return <Tag color="orange">pending</Tag>;
+					return <Tag color={PillColor.ORANGE}>pending</Tag>;
 				default:
-					return <Tag color="purple">unknown</Tag>;
+					return <Tag color={PillColor.PURPLE}>unknown</Tag>;
 			}
 		},
 		filters: [
@@ -151,9 +158,27 @@ const adopterCols: ColumnsType<Adopter> = [
 export default function PetDetails() {
 	const router = useRouter();
 	const { id } = router.query;
+	const [petData, setPetData] = useState<PetData>();
 
 	useEffect(() => {
 		console.log(`Fetching pet info ${id}`);
+		const pd: PetData = {
+			key: id as string,
+			name: "Cat 1",
+			images: [
+				"https://via.placeholder.com/86",
+				"https://via.placeholder.com/86",
+				"https://via.placeholder.com/86",
+				"https://via.placeholder.com/86",
+				"https://via.placeholder.com/86"
+			],
+			visible: false,
+			species: Species.CAT,
+			status: Status.HEALTHY,
+			acquired: new Date(),
+			breed: "Shorthair cat"
+		};
+		setPetData(pd);
 	}, [id]);
 
 	return (
@@ -161,115 +186,118 @@ export default function PetDetails() {
 			<Container>
 				<Breadcrumb separator=">">
 					<Breadcrumb.Item>Pets</Breadcrumb.Item>
-						<Breadcrumb.Item href="">
-							View Pet Details
-						</Breadcrumb.Item>
+					<Breadcrumb.Item href="">View Pet Details</Breadcrumb.Item>
 				</Breadcrumb>
-				<InnerContent>
-					<PetDetailHeader>
-						<Title level={5}>Pet Details</Title>
-						<Button
-							type="primary"
-							icon={<EditOutlined />}
-							href={`${id}/edit`}>
-							Edit
-						</Button>
-					</PetDetailHeader>
-					<div>
-						<Form labelCol={{ span: 2 }}>
-							<Form.Item label="Photos">
-								<ImageGallery />
-							</Form.Item>
-						</Form>
-						<FormContainer>
-							<FormDivFlex>
-								<Form
-									labelCol={{ span: 6 }}
-									layout="horizontal">
-										<Form.Item
-											label="Id"
-											labelAlign="right">
-										<span>1233</span>
-									</Form.Item>
-									<Form.Item
-										label="Visibility"
-										labelAlign="right">
-										<span>No</span>
-									</Form.Item>
-									<Form.Item
-										label="Status"
-										labelAlign="right">
-										<span>Healthy</span>
-									</Form.Item>
-									<Form.Item
-										label="Date of Birth"
-										labelAlign="right">
-										<span>0 years 3 months</span>
-									</Form.Item>
-										<Form.Item
-											label="Breed"
-											labelAlign="right">
-										<span>British Shorthair</span>
-									</Form.Item>
-								</Form>
-							</FormDivFlex>
-							<FormDivFlex>
-								<Form labelCol={{ span: 8 }}>
-									<Form.Item label="Name">
-										<span>Cat 1</span>
-									</Form.Item>
-									<Form.Item label="Species">
-										<span>Cat</span>
-									</Form.Item>
-									<Form.Item label="Date Acquired">
-										<span>2020-11-20</span>
-									</Form.Item>
-									<Form.Item label="Medical Problems">
-										<Tag>Problem 1</Tag>
-										<Tag>Problem 2</Tag>
-										<Tag>Problem 3</Tag>
-									</Form.Item>
-								</Form>
-							</FormDivFlex>
-						</FormContainer>
-					</div>
-				</InnerContent>
+				{petData && <PetDetailsSection petData={petData} />}
 			</Container>
 			<Container>
-				<InnerContent>
-					<Title level={5}>Prospective Adopters</Title>
-					<Tabs defaultActiveKey="1">
-						<Tabs.TabPane tab="Adopters" key="tab-adopters">
-							<Table
-								dataSource={adopterData}
-								columns={adopterCols}
-							/>
-						</Tabs.TabPane>
-						<Tabs.TabPane tab="Fosterers" key="tab-fosterers">
-							Content of Tab Pane 2
-						</Tabs.TabPane>
-						<Tabs.TabPane tab="Donations" key="tab-donations">
-							Content of Tab Pane 3
-						</Tabs.TabPane>
-					</Tabs>
-				</InnerContent>
+				<ProspectiveAdopters />
 			</Container>
 		</ShelterLayout>
 	);
 }
 
-const ImageGallery = () => {
+type PetDetailsSectionProps = {
+	petData: PetData;
+};
+const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
+	const { key, images, visible, breed, name, species, acquired } = petData;
+	return (
+		<InnerContent>
+			<PetDetailHeader>
+				<Title level={5}>Pet Details</Title>
+				<Button
+					type="primary"
+					icon={<EditOutlined />}
+					href={`${key}/edit`}>
+					Edit
+				</Button>
+			</PetDetailHeader>
+			<div>
+				<Form labelCol={{ span: 2 }}>
+					<Form.Item label="Photos">
+						<ImageGallery images={images} />
+					</Form.Item>
+				</Form>
+				<FormContainer>
+					<FormDivFlex>
+						<Form labelCol={{ span: 6 }} layout="horizontal">
+							<Form.Item label="Id" labelAlign="right">
+								<span>{key}</span>
+							</Form.Item>
+							<Form.Item label="Visibility" labelAlign="right">
+								<span>{visible ? "Yes" : "No"}</span>
+							</Form.Item>
+							<Form.Item label="Status" labelAlign="right">
+								<span>{status}</span>
+							</Form.Item>
+							<Form.Item label="Date of Birth" labelAlign="right">
+								<span>0 years 3 months</span>
+							</Form.Item>
+							<Form.Item label="Breed" labelAlign="right">
+								<span>{breed}</span>
+							</Form.Item>
+						</Form>
+					</FormDivFlex>
+					<FormDivFlex>
+						<Form labelCol={{ span: 8 }}>
+							<Form.Item label="Name">
+								<span>{name}</span>
+							</Form.Item>
+							<Form.Item label="Species">
+								<span>{species}</span>
+							</Form.Item>
+							<Form.Item label="Date Acquired">
+								<span>{acquired}</span>
+							</Form.Item>
+							<Form.Item label="Medical Problems">
+								<Tag>Problem 1</Tag>
+								<Tag>Problem 2</Tag>
+								<Tag>Problem 3</Tag>
+							</Form.Item>
+						</Form>
+					</FormDivFlex>
+				</FormContainer>
+			</div>
+		</InnerContent>
+	);
+};
+
+type ImageGalleryProps = {
+	images?: string[];
+};
+const ImageGallery = ({ images }: ImageGalleryProps) => {
 	return (
 		<GridContainer>
-			{[0, 1, 2, 3, 4, 5].map((_, index) => (
-				<img
-					key={index}
-					src="https://via.placeholder.com/86"
-					alt="Pet Image"
-					style={{ width: 86, height: 86 }}
-				/>
-			))}
+			{images &&
+				images.map((image, index) => (
+					<img
+						key={index}
+						src={image}
+						alt="Pet Image"
+						style={{ width: 86, height: 86 }}
+					/>
+				))}
 		</GridContainer>
+	);
+};
+
+const ProspectiveAdopters = () => {
+	return (
+		<InnerContent>
+			<Title level={5}>Prospective Adopters</Title>
+			<Tabs defaultActiveKey="1">
+				<Tabs.TabPane tab="Adopters" key="tab-adopters">
+					<Table dataSource={adopterData} columns={adopterCols} />
+				</Tabs.TabPane>
+				<Tabs.TabPane tab="Fosterers" key="tab-fosterers">
+					Content of Tab Pane 2
+				</Tabs.TabPane>
+				<Tabs.TabPane tab="Donations" key="tab-donations">
+					Content of Tab Pane 3
+				</Tabs.TabPane>
+			</Tabs>
+		</InnerContent>
 	);
 };
 
