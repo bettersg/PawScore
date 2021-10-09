@@ -2,25 +2,30 @@ import { AbilityBuilder, Ability } from "@casl/ability";
 
 import { User as UserType } from "../models/user";
 
+/**
+ * https://casl.js.org/v5/en/guide/intro#inverted-rules
+ * Note that `cannot` rules get overwritten by `can` rules, hence they should be
+ * placed after `can` rules.
+ * While collating `can` rules, there might be duplicates. This should not
+ * affect performance.
+ */
 function defineRulesFor(user: UserType): Ability {
-	const { can, rules } = new AbilityBuilder(Ability);
+	const { can, cannot, rules } = new AbilityBuilder(Ability);
 
-	// If no user, no rules
 	if (!user) return new Ability(rules);
 
-	switch (user.role) {
-		case "1":
-			can("manage", "all");
-			break;
-		case "2":
-			can("read", "Profile");
-			break;
-		default:
-			// TODO remove
-			can("read", "Profile");
-			// anonymous users can't do anything
-			break;
+	if (user.roles.includes("SHELTER_ADMIN")) {
+		can("manage", "all");
 	}
+	if (user.roles.includes("SHELTER_SUPER_ADMIN")) {
+		can("read", "Profile");
+	}
+	if (user.roles.includes("ADOPTER")) {
+		can("read", "Profile");
+	}
+	// TODO remove
+	can("read", "Profile");
+	cannot("read", "Profile");
 
 	return new Ability(rules);
 }
