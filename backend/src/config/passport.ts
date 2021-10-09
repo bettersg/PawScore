@@ -58,7 +58,7 @@ const authStrategy = (passport: passport.PassportStatic): void => {
 							username,
 							email: req.body.email,
 							password: userPasswordHash,
-							role: "ADOPTER",
+							roles: ["ADOPTER"],
 							shelterId: null
 						};
 						User.create(data).then((newUser: User) => {

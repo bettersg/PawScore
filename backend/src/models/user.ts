@@ -18,7 +18,7 @@ interface UserAttributes {
 	username: string;
 	email: string;
 	password: string;
-	role: string;
+	roles: string[];
 	shelterId: string | null;
 }
 
@@ -35,7 +35,7 @@ class User
 	public username!: string;
 	public email!: string;
 	public password!: string;
-	public role!: string;
+	public roles!: string[];
 	public shelterId!: string | null;
 	// public preferredName!: string | null; // for nullable fields
 
@@ -86,12 +86,8 @@ User.init(
 			type: new DataTypes.STRING(),
 			allowNull: false
 		},
-		role: {
-			type: new DataTypes.ENUM(
-				"SHELTER_ADMIN",
-				"SHELTER_SUPER_ADMIN",
-				"ADOPTER"
-			),
+		roles: {
+			type: DataTypes.JSONB,
 			allowNull: false
 		},
 		shelterId: {

@@ -17,6 +17,7 @@
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
+		"@casl/ability": "^5.4.3",
 		"@google-cloud/storage": "^5.14.1",
 		"@types/bcrypt": "^5.0.0",
 		"@types/connect-pg-simple": "^4.2.4",
