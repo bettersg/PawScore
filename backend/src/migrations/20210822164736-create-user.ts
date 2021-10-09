@@ -1,8 +1,8 @@
 import { QueryInterface } from "sequelize";
 
 export default {
-  up: async (queryInterface: QueryInterface): Promise<void> => {
-    await queryInterface.sequelize.query(`
+	up: async (queryInterface: QueryInterface): Promise<void> => {
+		await queryInterface.sequelize.query(`
     CREATE TYPE user_role as ENUM('SHELTER_ADMIN', 'SHELTER_SUPER_ADMIN', 'ADOPTER');
     CREATE TABLE "user"
     (
@@ -16,9 +16,8 @@ export default {
         updated_at TIMESTAMP        DEFAULT current_timestamp
     );
     `);
-
-  },
-  down: async (queryInterface: QueryInterface): Promise<void> => {
-    await queryInterface.dropTable('user');
-  }
+	},
+	down: async (queryInterface: QueryInterface): Promise<void> => {
+		await queryInterface.dropTable("user");
+	}
 };
