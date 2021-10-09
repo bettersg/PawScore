@@ -1,0 +1,15 @@
+{
+  "folders": [
+    {
+      "path": "./backend"
+    },
+    {
+      "path": "./frontend"
+    },
+    {
+      "name": "PawScore",
+      "path": "."
+    }
+  ],
+  "settings": {}
+}
