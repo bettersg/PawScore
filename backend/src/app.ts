@@ -3,6 +3,7 @@ import express from "express";
 import passport from "passport";
 import "reflect-metadata";
 import { useExpressServer } from "routing-controllers";
+import { Ability } from "@casl/ability";
 import config from "./config/config";
 import authStrategy from "./config/passport";
 import setupSession from "./config/session";
@@ -14,6 +15,7 @@ import uploadRouter from "./routes/upload";
 import userProfileRouter from "./routes/userProfile";
 import { ApiErrorMiddleware } from "./utils/error";
 import proxy from "express-http-proxy";
+import { setupPermissions } from "./authorization";
 
 // Handle Express req user
 declare module "express-serve-static-core" {
@@ -23,6 +25,7 @@ declare module "express-serve-static-core" {
 		// available for non-logged in routes. Making User always present in type
 		// definition avoids copious type checking when using req.user.
 		user: User;
+		ability: Ability;
 	}
 }
 
@@ -45,6 +48,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 authStrategy(passport);
+
+setupPermissions(app);
 
 // Set global headers
 app.use(

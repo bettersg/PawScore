@@ -3,16 +3,23 @@ import { z } from "zod";
 import { StatusCodes } from "http-status-codes";
 import { UserProfile } from "../models/userProfile";
 import { BaseError } from "sequelize";
+import { ForbiddenError } from "@casl/ability";
 
 type ControllerItem = (req: Request, res: Response) => Promise<Response>;
 
 const controllerWrapper =
 	(controllerItem: ControllerItem) => async (req: Request, res: Response) => {
 		try {
+			// ForbiddenError.from(req.ability)
+			// 	.setMessage("You cannot update posts")
+			// 	.throwUnlessCan("update", "Post");
 			return await controllerItem(req, res);
 		} catch (err) {
 			if (err instanceof z.ZodError) {
 				return res.status(StatusCodes.BAD_REQUEST).send(err.issues);
+			}
+			if (err instanceof ForbiddenError) {
+				return res.status(StatusCodes.FORBIDDEN).send(err.message);
 			}
 			if (err instanceof BaseError) {
 				return res
