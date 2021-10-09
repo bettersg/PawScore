@@ -15,17 +15,17 @@ import uploadRouter from "./routes/upload";
 import userProfileRouter from "./routes/userProfile";
 import { ApiErrorMiddleware } from "./utils/error";
 import proxy from "express-http-proxy";
-import { setupPermissions } from "./authorization";
+import { Actions, setupPermissions, Subjects } from "./authorization";
 
 // Handle Express req user
 declare module "express-serve-static-core" {
 	export type User = UserType;
 	export interface Request {
-		// User should always be available when isLoggedIn is used. User may not be
-		// available for non-logged in routes. Making User always present in type
-		// definition avoids copious type checking when using req.user.
+		// User and ability should always be available when isLoggedIn is used. They
+		// may not be available for non-logged in routes. Making them always present
+		// in type definition avoids copious type checking when using req.xxxx.
 		user: User;
-		ability: Ability;
+		ability: Ability<[Actions, Subjects]>;
 	}
 }
 
