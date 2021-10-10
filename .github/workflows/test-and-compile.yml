@@ -36,3 +36,4 @@ jobs:
       - name: Compile Typescript
         working-directory: ./frontend
         run: npm run build
+
