@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button } from "./Button";
 import styled from "styled-components";
 import {
 	PICTURE_ONE,
@@ -7,33 +7,41 @@ import {
 	VerticalDivider
 } from "../common";
 
-const Hero = () => (
-	<Container>
-		<HeroSection>
-			<HeroHeader>
-				Want to make a difference for our animal friends? You can help
-				them by
-			</HeroHeader>
-			<AdoptButton size="large">Adopt</AdoptButton>
-			<div className="donate">Or donate to our animals</div>
-		</HeroSection>
-		<VerticalDivider />
-		<HeroSection>
-			<div>
-				<img src={PICTURE_ONE} alt="pic_1" width="220" />
-			</div>
-			<div>
+const Hero = () => {
+	const handleAdoptClick = () => {
+		alert("adopt");
+	};
+	return (
+		<Container>
+			<HeroSection>
+				<HeroHeader>
+					Want to make a difference for our animal friends? You can
+					help them by
+				</HeroHeader>
+				<Button type="hero" onClick={handleAdoptClick}>
+					Adopt
+				</Button>
+				<div className="donate">Or donate to our animals</div>
+				{/* TODO: Update this ^^^ to link */}
+			</HeroSection>
+			<VerticalDivider />
+			<HeroSection>
 				<div>
-					<img src={PICTURE_TWO} alt="pic_2" width="263" />
+					<img src={PICTURE_ONE} alt="pic_1" width="220" />
 				</div>
-				<ImgDivider />
 				<div>
-					<img src={PICTURE_THREE} alt="pic_3" width="263" />
+					<div>
+						<img src={PICTURE_TWO} alt="pic_2" width="263" />
+					</div>
+					<ImgDivider />
+					<div>
+						<img src={PICTURE_THREE} alt="pic_3" width="263" />
+					</div>
 				</div>
-			</div>
-		</HeroSection>
-	</Container>
-);
+			</HeroSection>
+		</Container>
+	);
+};
 export default Hero;
 
 // =============================================================================
@@ -77,16 +85,6 @@ const HeroHeader = styled.div`
 	font-size: 40px;
 	line-height: 50px;
 	margin-bottom: 70px;
-`;
-
-const AdoptButton = styled(Button)`
-	background: var(--color-orange);
-	border-color: var(--color-orange);
-	border-radius: 7px;
-
-	font-family: Poppins;
-	font-size: 18px;
-	color: #11025a;
 `;
 
 const ImgDivider = styled.div`

@@ -6,6 +6,7 @@ import {
 	PICTURE_TWO,
 	VerticalDivider
 } from "../common";
+import { Button } from "./Button";
 
 const image1 = <img src={PICTURE_ONE} alt="step-1" width="452" height="491" />;
 const image2 = (
@@ -13,35 +14,55 @@ const image2 = (
 );
 const image3 = <img src={PICTURE_TWO} alt="step-3" width="447" height="432" />;
 
-const Content = () => (
-	<Container>
-		<Header>How it works</Header>
-		<ContentStep step={1} image={image1}>
-			<StepTitle>Choose your pet</StepTitle>
-			<p>
-				You give us your preference of your dream pets, there are many
-				pets, we believe there is one just for you
-			</p>
-		</ContentStep>
-		<ContentStep reverse step={2} image={image2}>
-			<StepTitle>Take quiz</StepTitle>
-			<p>
-				This 10 mins quiz is the first step to help us understand if you
-				are ready for adopting/fostering pet. Don’t worry, our intention
-				is to give you a guideline on how to be a good pet owner{" "}
-				{`:)` /* so that it doesn't mess with bracket linter */}
-			</p>
-		</ContentStep>
-		<ContentStep step={3} image={image3}>
-			<StepTitle>Get result</StepTitle>
-			<p>
-				Your result will come out immediately. Don’t worry if you are
-				not qualified, check out our online tutorials and retake our
-				quiz or you can consider donating to our animals
-			</p>
-		</ContentStep>
-	</Container>
-);
+const Content = () => {
+	const handleGetStarted = () => {
+		alert("get started");
+	};
+
+	const handleGoToQuiz = () => {
+		alert("go to quiz");
+	};
+
+	return (
+		<Container>
+			<Header>How it works</Header>
+			<ContentStep step={1} image={image1}>
+				<StepTitle>Choose your pet</StepTitle>
+				<p>
+					You give us your preference of your dream pets, there are
+					many pets, we believe there is one just for you
+				</p>
+				<Button type="content" onClick={handleGetStarted}>
+					Get started
+				</Button>
+			</ContentStep>
+			<ContentStep reverse step={2} image={image2}>
+				<StepTitle>Take quiz</StepTitle>
+				<p>
+					This 10 mins quiz is the first step to help us understand if
+					you are ready for adopting/fostering pet. Don’t worry, our
+					intention is to give you a guideline on how to be a good pet
+					owner{" "}
+					{`:)` /* so that it doesn't mess with bracket linter */}
+				</p>
+				<Button type="content" onClick={handleGoToQuiz}>
+					Go to quiz now
+				</Button>
+			</ContentStep>
+			<ContentStep step={3} image={image3}>
+				<StepTitle>Get result</StepTitle>
+				<p>
+					Your result will come out immediately. Don’t worry if you
+					are not qualified, check out our online tutorials and retake
+					our quiz or you can consider donating to our animals
+				</p>
+				<Button type="content" onClick={handleGetStarted}>
+					Get started
+				</Button>
+			</ContentStep>
+		</Container>
+	);
+};
 export default Content;
 
 type ContentBlockProps = {
@@ -105,6 +126,7 @@ const Block = styled.div`
 			line-height: 35px;
 			letter-spacing: 0.04em;
 			color: #797777;
+			margin-bottom: 50px;
 		}
 
 		img {
