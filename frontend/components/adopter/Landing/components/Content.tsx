@@ -7,39 +7,11 @@ import {
 	VerticalDivider
 } from "../common";
 
-const image1 = (
-	<img
-		src={PICTURE_ONE}
-		alt="step-1"
-		width="452"
-		height="491"
-		style={{
-			objectFit: "cover"
-		}}
-	/>
-);
+const image1 = <img src={PICTURE_ONE} alt="step-1" width="452" height="491" />;
 const image2 = (
-	<img
-		src={PICTURE_THREE}
-		alt="step-2"
-		width="489"
-		height="452"
-		style={{
-			objectFit: "cover"
-		}}
-	/>
+	<img src={PICTURE_THREE} alt="step-2" width="489" height="452" />
 );
-const image3 = (
-	<img
-		src={PICTURE_TWO}
-		alt="step-3"
-		width="447"
-		height="432"
-		style={{
-			objectFit: "cover"
-		}}
-	/>
-);
+const image3 = <img src={PICTURE_TWO} alt="step-3" width="447" height="432" />;
 
 const Content = () => (
 	<Container>
@@ -133,6 +105,11 @@ const Block = styled.div`
 			line-height: 35px;
 			letter-spacing: 0.04em;
 			color: #797777;
+		}
+
+		img {
+			border-radius: 7px;
+			object-fit: cover;
 		}
 	}
 `;
