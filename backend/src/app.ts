@@ -77,26 +77,32 @@ useExpressServer(app, {
 
 // Swagger docs route
 if (process.env.NODE_ENV === "development") {
-	app.use("/docs", express.static(__dirname + "/../../docs/"));
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const swaggerUi = require('swagger-ui-express');
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const YAML = require('yamljs');
+	const swaggerDocument = YAML.load('../docs/pawscore-swagger.yaml');
+
+	app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
 
 app.use("/", proxy(config.frontendUrl));
 
 // logging of routes...
 app._router.stack.forEach((r: any) => {
-  if (r.route && r.route.path) {
-    console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
-  }
+	if (r.route && r.route.path) {
+		console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
+	}
 });
 bookingRouter.stack.forEach((r: any) => {
-  if (r.route && r.route.path) {
-    console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
-  }
+	if (r.route && r.route.path) {
+		console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
+	}
 });
 uploadRouter.stack.forEach((r: any) => {
-  if (r.route && r.route.path) {
-    console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
-  }
+	if (r.route && r.route.path) {
+		console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
+	}
 });
 // add new routers here
 // start the Express server

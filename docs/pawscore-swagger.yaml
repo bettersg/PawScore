@@ -28,6 +28,8 @@ tags:
   description: View and manage user profile
 - name: shelter
   description: View and manage shelters
+- name: adoption application 
+  description: View and manage adoption applications (user_animal_applications table)
 paths:
   /register:
     post:
@@ -285,6 +287,29 @@ paths:
       responses:
         200:
           description: Returns a specific shelter
+  /adoption-application:
+    get:
+      tags:
+      - adoption application
+      summary: Retrieve all adoption applications (user_animal_applications table)
+      responses:
+        200:
+          description: Returns list of adoption applications
+    post:
+      tags:
+      - adoption application
+      summary: Create a new adoption application
+      responses:
+        201:
+          description: Created
+  /adoption-application/{id}:
+    get:
+      tags:
+      - adoption application
+      summary: Retrieve individual adoption application
+      responses:
+        200:
+          description: Returns a specific adoption application
 
 components:
   schemas:
