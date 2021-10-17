@@ -7,6 +7,7 @@ import { useExpressServer } from "routing-controllers";
 import config from "./config/config";
 import authStrategy from "./config/passport";
 import setupSession from "./config/session";
+import { AdoptionApplicationController } from "./controllers/adoptionApplication";
 import { AnimalController } from "./controllers/animal";
 import { ShelterController } from "./controllers/shelter";
 import { User as UserType } from "./models/user";
@@ -68,7 +69,7 @@ app.use("/api", uploadRouter);
 app.use("/api", userProfileRouter);
 
 useExpressServer(app, {
-	controllers: [AnimalController, ShelterController],
+	controllers: [AnimalController, ShelterController, AdoptionApplicationController],
 	development: false,
 	defaultErrorHandler: false,
 	middlewares: [ApiErrorMiddleware],
