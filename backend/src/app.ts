@@ -3,8 +3,7 @@ import express from "express";
 import proxy from "express-http-proxy";
 import passport from "passport";
 import "reflect-metadata";
-import { useExpressServer } from 'routing-controllers';
-import cors from "cors";
+import { useExpressServer } from "routing-controllers";
 import config from "./config/config";
 import authStrategy from "./config/passport";
 import setupSession from "./config/session";
@@ -32,8 +31,7 @@ const app = express();
 const port = config.expressPort;
 const host = config.expressHost;
 
-app.use(express.json({ limit: '20mb' }));
-app.use(cors());
+app.use(express.json({ limit: "20mb" }));
 
 // error handler
 if (process.env.NODE_ENV === "development") {
