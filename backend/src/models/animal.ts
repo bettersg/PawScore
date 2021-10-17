@@ -4,6 +4,7 @@ import { numericStringtoFloat } from "../utils/modelType";
 import { AdoptionStatus } from "./adoptionStatus";
 import { AnimalImageAttributes, AnimalImageModel } from "./animalImage";
 import { Species } from "./species";
+import { UserAnimalApplicationModel } from "./userAnimalApplication";
 
 export interface AnimalAttributes {
   id: string;
@@ -29,6 +30,7 @@ export interface AnimalAttributes {
   updatedAt: Date;
 
   animalImages?: AnimalImageAttributes[];
+  userAnimalApplications?: UserAnimalApplicationModel[];
 }
 
 // Some attributes are optional in `Animal.build` and `Animal.create` calls
@@ -59,9 +61,11 @@ export class AnimalModel extends Model<AnimalAttributes, AnimalCreationAttribute
   public readonly updatedAt!: Date;
 
   public readonly animalImages?: AnimalImageModel[];
+  public readonly userAnimalApplications?: UserAnimalApplicationModel[];
 
   public static associations: {
     animalImages: Association<AnimalModel, AnimalImageModel>;
+    userAnimalApplications: Association<AnimalModel, UserAnimalApplicationModel>;
   };
 }
 
@@ -155,4 +159,10 @@ AnimalModel.hasMany(AnimalImageModel, {
   sourceKey: "id",
   foreignKey: "animalId",
   as: "animalImages"
+});
+
+AnimalModel.hasMany(UserAnimalApplicationModel, {
+  sourceKey: "id",
+  foreignKey: "animalId",
+  as: "userAnimalApplications"
 });

@@ -9,7 +9,7 @@ export default {
         user_profile_id     UUID REFERENCES user_profile (id),
         animal_id           UUID REFERENCES animal (id),
         application_type    VARCHAR REFERENCES application_type (type),      -- adoption or fostering
-        application_status  varchar REFERENCES application_status (status), -- pending, etc
+        application_status  VARCHAR REFERENCES application_status (status),  -- pending, etc
         reason_for_adoption VARCHAR,
         rejection_reason    VARCHAR,
         adoption_fee        NUMERIC NOT NULL,

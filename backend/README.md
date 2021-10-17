@@ -94,3 +94,7 @@ CRUD & other controller functions should be store within `controllers` directory
 
 ## Contributing
 You may review on Trello on the tasks available and pick the tasks that's not taken. Please mark that you're on a task to prevent duplicated efforts.
+
+
+## Swagger docs
+Backend docs are written manually in `docs/pawscore-swagger.yaml`. To view docs, navigate to `http://localhost:5000/api-docs/`
