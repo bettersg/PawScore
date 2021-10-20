@@ -1,0 +1,39 @@
+# Runs jest tests and builds tsc to look for typescript errors.
+name: Test and Compile Backend and Frontend
+on:
+  pull_request:
+    branches: [master]
+jobs:
+  Test-Compile-Backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install Packages
+        working-directory: ./backend
+        run: npm install
+      - name: Run Tests
+        working-directory: ./backend
+        run: npm test
+      - name: Compile Typescript
+        working-directory: ./backend
+        run: npm run build
+  Test-Compile-Frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install Packages
+        working-directory: ./frontend
+        run: npm install
+      - name: Run Tests
+        working-directory: ./frontend
+        run: npm test
+      - name: Compile Typescript
+        working-directory: ./frontend
+        run: npm run build
+
