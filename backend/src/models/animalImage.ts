@@ -9,8 +9,7 @@ export interface AnimalImageAttributes {
   updatedAt: Date;
 }
 
-// eslint-disable-next-line 
-export interface AnimalImageCreationAttributes extends AnimalImageAttributes { }
+export type AnimalImageCreationAttributes = AnimalImageAttributes
 
 export class AnimalImageModel extends Model<AnimalImageAttributes, AnimalImageCreationAttributes>
   implements AnimalImageAttributes {

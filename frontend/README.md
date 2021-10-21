@@ -4,6 +4,8 @@
 
 -   (to help with cleaner code)
     -   install Prettier extension on VSC
+        -   choose Prettier as your default formatter
+        -   enable format on save
     -   install Eslint extension on VSC
 -   Useful resources
     -   NextJs basic features (<https://nextjs.org/docs/basic-features/pages>)
@@ -20,6 +22,19 @@ The app can be viewed at <http://localhost:3000>
 
 ## Conventions
 
+### **Build and Deployment**
+
+The intention is to build and export the frontend application using [static HTML export](https://nextjs.org/docs/advanced-features/static-html-export).
+
+Make sure that the following commands run without errors.
+
+```
+npx next build
+npx next export
+```
+
+**Note**: Please do not use `next/image` as the [server side automatic image optimisation](https://nextjs.org/docs/basic-features/image-optimization) will prevent the ability for a static HTML export. Use `<img>` instead.
+
 ### **Page URLS**
 
 Next js does auto routing with folders in the `pages` folder.
@@ -30,8 +45,8 @@ Nested folders like `frontend/pages/this-page/that-page` will link to `baseurl/t
 
 **Implemented Pages**
 
-* /shelter/home
-* /shelter/login
+-   /shelter/home
+-   /shelter/login
 
 ### **Absolute imports**
 

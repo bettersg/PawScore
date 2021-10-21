@@ -1,6 +1,5 @@
 import { Menu } from "antd";
 import { MenuClickEventHandler } from "rc-menu/lib/interface";
-import Image from "next/image";
 import styles from "./ShelterLayout.module.css";
 
 const logo = "/logo.png";
@@ -17,7 +16,7 @@ const HeaderContent = ({
 	handleSignOutClick
 }: Props) => {
 	const accountAvatar = (
-		<Image
+		<img
 			src="https://via.placeholder.com/32"
 			alt="avatar"
 			width="32"

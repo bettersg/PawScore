@@ -28,7 +28,7 @@ const ShelterLogin = () => {
 				<Col span={6} offset={9}>
 					<div className={styles.loginContainer}>
 						<LogoHeader />
-						<Tabs defaultActiveKey="1">
+						<Tabs defaultActiveKey="1" className={styles.tabs}>
 							<TabPane tab="Login" key="1">
 								<LoginForm onFinish={onFinish} />
 							</TabPane>
@@ -71,10 +71,12 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 					required: true,
 					message: "Please input your Username!"
 				}
-			]}>
+			]}
+			>
 			<Input
 				prefix={<UserOutlined className={styles.inputFieldIcons} />}
 				placeholder="Username"
+				className={styles.inputField}
 			/>
 		</Form.Item>
 		<Form.Item
@@ -89,6 +91,7 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 				prefix={<LockOutlined className={styles.inputFieldIcons} />}
 				type="password"
 				placeholder="Password"
+				className={styles.inputField}
 			/>
 		</Form.Item>
 		<Form.Item>
@@ -130,6 +133,7 @@ const SignUpForm  = ({ onFinish }: LoginFormProps) => (
 			<Input
 				prefix={<UserOutlined className={styles.inputFieldIcons} />}
 				placeholder="Username"
+				className={styles.inputField}
 			/>
 		</Form.Item>
 		<Form.Item
@@ -144,6 +148,7 @@ const SignUpForm  = ({ onFinish }: LoginFormProps) => (
 				prefix={<LockOutlined className={styles.inputFieldIcons} />}
 				type="password"
 				placeholder="Password"
+				className={styles.inputField}
 			/>
 		</Form.Item>
 		<Form.Item>

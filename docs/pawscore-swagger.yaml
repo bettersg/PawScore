@@ -24,6 +24,10 @@ tags:
   description: Upload & download of file attachments
 - name: animal
   description: View and manage shelter animals
+- name: user profile
+  description: View and manage user profile
+- name: shelter
+  description: View and manage shelters
 paths:
   /register:
     post:
@@ -184,6 +188,104 @@ paths:
                 $ref: '#/components/schemas/Animal'
         404:
           description: Animal with the specified id was not found
+  /user-profile:
+    get:
+      tags:
+        - user profile
+      summary: Retrieve all user profiles
+      operationId: getUserProfiles
+      responses:
+        200:
+          description: Returns list of user profiles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserProfile'
+    post:
+      tags:
+      - user profile
+      summary: Create a new user profile
+      operationId: createUserProfile
+      requestBody:
+        description: Create a new user profile
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+  /user-profile/{userProfileId}:
+    get:
+      tags:
+        - user profile
+      summary: Retrieve user profile
+      operationId: getUserProfile
+      responses:
+        200:
+          description: Returns a specific user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+    put:
+      tags:
+        - user profile
+      summary: Update user profile
+      operationId: putUserProfile
+      requestBody:
+        description: Updates a user profile
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseUserProfile'
+        required: true
+      responses:
+        200:
+          description: Returns updated user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+    delete:
+      tags:
+        - user profile
+      summary: Delete user profile
+      operationId: deleteUserProfile
+      responses:
+        200:
+          description: Deletes a specific user profile
+  /shelter:
+    get:
+      tags:
+      - shelter
+      summary: Retrieve all shelters
+      responses:
+        200:
+          description: Returns list of shelters
+    post:
+      tags:
+      - shelter
+      summary: Create a new shelter
+      responses:
+        201:
+          description: Created
+  /shelter/{shelterId}:
+    get:
+      tags:
+      - shelter
+      summary: Retrieve shelter
+      responses:
+        200:
+          description: Returns a specific shelter
+
 components:
   schemas:
     ApiResponse:
@@ -294,6 +396,68 @@ components:
         updatedAt:
           type: string
           format: date-time
+    Shelter:
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        country:
+          type: string
+        contact:
+          type: string
+        registrationNo:
+          type: string
+          nullable: true
+    BaseUserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        authUserId:
+          type: string
+          format: uuid
+        email:
+          type: string
+        phoneNo:
+          type: string
+        nric:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dob:
+          type: string
+          format: date
+          description: Format as "YYYY-MM-DD"
+        gender:
+          type: string
+          enum: [F, M]
+        occupation:
+          type: string
+        address:
+          type: string
+        postalCode:
+          type: string
+    UserProfile:
+      allOf:
+        - $ref: '#/components/schemas/BaseUserProfile'
+      required:
+        - id
+        - authUserId
+        - email
+        - phoneNo
+        - nric
+        - firstName
+        - lastName
+        - dob
+        - gender
+        - occupation
+        - address
+        - postalCode
   securitySchemes:
     cookieAuth:
       type: apiKey

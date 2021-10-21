@@ -39,3 +39,19 @@
 .signInRow {
 	align-items: center;
 }
+
+.tabs {
+	color: var(--color-golden-purple);
+}
+
+.tabs:active {
+	color: var(--color-golden-purple);
+}
+
+.tabs:hover {
+	color: var(--color-golden-purple);
+}
+
+.inputField:hover, .inputField:active {
+	border-color: var(--color-golden-purple);
+}

@@ -6,7 +6,7 @@ export default {
     CREATE TABLE user_profile
     (
         id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-        auth_user_id UUID REFERENCES auth_user (id),
+        user_id      UUID REFERENCES "user" (id),
         email        VARCHAR NOT NULL UNIQUE,
         phone_no     VARCHAR NOT NULL,
         nric         VARCHAR UNIQUE, -- Putting it as optional first

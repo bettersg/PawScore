@@ -1,4 +1,5 @@
 import { Layout } from "antd";
+import { ReactNode } from "react";
 import HeaderContent from "./HeaderContent";
 import LeftMenu from "./LeftMenu";
 import styles from "./ShelterLayout.module.css";
@@ -7,7 +8,7 @@ const { Header, Content } = Layout;
 const { header, sideMenu } = styles;
 
 type Props = {
-	children: JSX.Element;
+	children: ReactNode;
 };
 
 const ShelterLayout = ({ children }: Props) => {
