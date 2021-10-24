@@ -8,7 +8,6 @@ a:hover {
 	text-decoration: underline;
 }
 
-
 /* ========================================================================== */
 /* MENU */
 /* ========================================================================== */
@@ -41,7 +40,8 @@ a:hover {
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover::after,
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open::after,
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected::after,
-.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected::after {
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after {
 	border-bottom: 2px solid var(--color-golden-purple) !important;
 }
 
