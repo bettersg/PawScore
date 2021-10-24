@@ -1,5 +1,5 @@
 .header {
-	background-color: var(--color-header-background);
+	background-color: var(--color-white);
 	padding: 0;
 	position: relative;
 	line-height: 0;
@@ -31,5 +31,5 @@
 
 .sideMenu {
 	height: calc(100vh - var(--menu-header-menu-height));
-	background-color: var(--color-header-background);
+	background-color: var(--color-white);
 }
