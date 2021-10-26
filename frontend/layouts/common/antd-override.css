@@ -3,6 +3,11 @@
 	--menu-left-menu-width: 256px;
 }
 
+a:hover {
+	color: var(--color-golden-purple);
+	text-decoration: underline;
+}
+
 /* ========================================================================== */
 /* MENU */
 /* ========================================================================== */
@@ -35,7 +40,8 @@
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover::after,
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open::after,
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected::after,
-.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected::after {
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected::after,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after {
 	border-bottom: 2px solid var(--color-golden-purple) !important;
 }
 
@@ -43,28 +49,28 @@
 /* BUTTON */
 /* ========================================================================== */
 .ant-btn-primary {
-	background: hsla(263, 71%, 39%, 1);
-	border-color: hsla(263, 71%, 39%, 1);
+	background: var(--color-golden-purple);
+	border-color: var(--color-golden-purple);
 	font-size: 14px;
 	line-height: 22px;
 }
 
 .ant-btn-primary:hover {
-	background: hsla(263, 71%, 55%, 1);
-	border-color: hsla(263, 71%, 55%, 1);
+	background: var(--color-golden-purple-hover);
+	border-color: var(--color-golden-purple-hover);
 }
 
 .ant-btn-default {
-	background: #ffffff;
-	border: 1px solid #d9d9d9;
+	background: var(--color-white);
+	border: 1px solid var(--color-neutral);
 	box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.016);
 	border-radius: 2px;
 }
 
 .ant-btn-default:hover {
-	background: #ffffff;
-	border: 1px solid hsla(263, 71%, 65%, 1);
-	color: hsla(263, 71%, 30%, 1);
+	background: var(--color-white);
+	border: 1px solid var(--color-golden-purple);
+	color: var(--color-golden-purple-hover);
 }
 
 /* ========================================================================== */
@@ -72,5 +78,44 @@
 /* ========================================================================== */
 .ant-input-search .ant-input:hover,
 .ant-input-search .ant-input:focus {
-	border-color: hsla(263, 71%, 39%, 1);
+	border-color: var(--color-golden-purple-hover);
+}
+
+/* ========================================================================== */
+/* FORMS */
+/* ========================================================================== */
+.ant-input-affix-wrapper-focused,
+.ant-input-affix-wrapper:hover {
+	border-color: var(--color-golden-purple) !important;
+}
+
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+	border-color: var(--color-golden-purple);
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+	background-color: var(--color-golden-purple);
+	border-color: var(--color-golden-purple);
+}
+
+/* ========================================================================== */
+/* Tabs */
+/* ========================================================================== */
+.ant-tabs-tab:hover {
+	color: var(--color-golden-purple) !important;
+	border-bottom: 2px solid var(--color-golden-purple) !important;
+	z-index: 2;
+}
+.ant-tabs-tab.ant-tabs-tab-active {
+	border-bottom: 2px solid var(--color-golden-purple) !important;
+	z-index: 2;
+}
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+	color: var(--color-golden-purple) !important;
+}
+
+.ant-tabs-ink-bar {
+	background: var(--color-golden-purple) !important;
 }
