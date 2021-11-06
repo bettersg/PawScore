@@ -1,112 +1,55 @@
+import { Col, Row, Tabs } from "antd";
+import LoginForm from "components/shelter/login/LoginForm";
+import LogoHeader from "components/shelter/login/LogoHeader";
+import SignUpForm from "components/shelter/login/SignUpForm";
 import ShelterLoginLayout from "layouts/shelter/ShelterLoginLayout";
-import { Button, Checkbox, Col, Form, Input, Row, Space, Tabs } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import styles from "./shelter.module.css";
+import styled from "styled-components";
 
 const { TabPane } = Tabs;
-const logo = "/logo.png";
-
-type FormValues = {
-	username: string;
-	password: string;
-	remember: boolean;
-};
-
-type LoginFormProps = {
-	onFinish: (values: FormValues) => void;
-};
 
 const ShelterLogin = () => {
-	const onFinish = (values: FormValues) => {
+	const onFinish = (values: LoginFormValues) => {
 		alert("login");
 		console.log("Received values of form: ", values);
 	};
 
 	return (
 		<ShelterLoginLayout>
-			<Row>
+			<Container>
 				<Col span={6} offset={9}>
-					<div className={styles.loginContainer}>
+					<LoginContainer>
 						<LogoHeader />
-						<Tabs defaultActiveKey="1">
+						<StyledTabs defaultActiveKey="1">
 							<TabPane tab="Login" key="1">
 								<LoginForm onFinish={onFinish} />
 							</TabPane>
 							<TabPane tab="Signup" key="2">
-								Content of Tab Pane 2
+								<SignUpForm onFinish={onFinish} />
 							</TabPane>
-						</Tabs>
-					</div>
+						</StyledTabs>
+					</LoginContainer>
 				</Col>
-			</Row>
+			</Container>
 		</ShelterLoginLayout>
 	);
 };
 
 export default ShelterLogin;
 
-const LogoHeader = () => (
-	<>
-		<Row>
-			<img
-				src={logo}
-				style={{ width: 139, height: 25, margin: "10px auto" }}
-				alt="PawScore Logo"
-			/>
-		</Row>
-		<p className={styles.subtitle}>Making pet adoptions fuss free</p>
-	</>
-);
+// =============================================================================
+// Styled Components
+// =============================================================================
 
-const LoginForm = ({ onFinish }: LoginFormProps) => (
-	<Form
-		name="normal_login"
-		className="login-form"
-		initialValues={{ remember: true }}
-		onFinish={onFinish}>
-		<Form.Item
-			name="username"
-			rules={[
-				{
-					required: true,
-					message: "Please input your Username!"
-				}
-			]}>
-			<Input
-				prefix={<UserOutlined className="site-form-item-icon" />}
-				placeholder="Username"
-			/>
-		</Form.Item>
-		<Form.Item
-			name="password"
-			rules={[
-				{
-					required: true,
-					message: "Please input your Password!"
-				}
-			]}>
-			<Input
-				prefix={<LockOutlined className="site-form-item-icon" />}
-				type="password"
-				placeholder="Password"
-			/>
-		</Form.Item>
-		<Form.Item>
-			<Form.Item name="remember" valuePropName="checked" noStyle>
-				<Checkbox>Remember me</Checkbox>
-			</Form.Item>
+const Container = styled(Row)`
+	background-color: var(--color-background);
+`;
 
-			<a className={styles.loginFormForgot} href="">
-				Forgot password
-			</a>
-		</Form.Item>
-		<Form.Item>
-			<Button
-				type="primary"
-				htmlType="submit"
-				className={styles.loginFormButton}>
-				Login
-			</Button>
-		</Form.Item>
-	</Form>
-);
+const LoginContainer = styled.div`
+	margin: 200px auto;
+	padding: 60px 40px;
+	background-color: var(--color-white);
+`;
+
+const StyledTabs = styled(Tabs)`
+	color: var(--color-golden-purple);
+`;

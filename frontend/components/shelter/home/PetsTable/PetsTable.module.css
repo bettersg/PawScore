@@ -9,10 +9,10 @@
 	font-weight: 500;
 }
 
-a.action {
-	color: hsla(265, 64%, 50%, 1);
+a.actionButton {
+	color: var(--color-golden-purple);
 }
 
-a.action:hover {
-	color: hsla(263, 71%, 39%, 1);
+a.actionButton:hover {
+	color: var(--color-golden-purple-hover);
 }

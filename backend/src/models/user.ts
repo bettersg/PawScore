@@ -1,9 +1,9 @@
-"use strict";
-import { Sequelize, Model, Optional, DataTypes, UUIDV4 } from "sequelize";
-
+'use strict';
+import { DataTypes, Model, Optional, Sequelize, UUIDV4 } from "sequelize";
 // Initializing sequelize
 import allConfig from "../config/config";
-// eslint-disable-next-line
+
+// eslint-disable-next-line 
 const config: any = allConfig.databaseConfig;
 const sequelize = new Sequelize(
 	config.database,
@@ -38,6 +38,7 @@ class User
 	public roles!: string[];
 	public shelterId!: string | null;
 	// public preferredName!: string | null; // for nullable fields
+
 
 	// timestamps!
 	public readonly createdAt!: Date;

@@ -8,35 +8,47 @@ import TablePill, { TablePillType } from "./components/Pill";
 import TableName from "./components/Name";
 import styles from "./PetsTable.module.css";
 
-const { tableHeader, action } = styles;
+const { tableHeader, actionButton } = styles;
+const { Search } = Input;
 
 const Container = styled.div`
 	margin: 24px 34px;
 	padding: 24px;
-	background: var(--color-header-background);
+	background: var(--color-white);
 `;
 
 const PetTableDisplay = () => {
 	/* commenting out for now as not implemented yet */
 	// const [searchText, setSearchText] = useState("");
 	// const [searchedColumn, setSearchedColumn] = useState("");
+	const onSearch = () => {
+		console.log("search");
+	};
+	const onViewMore = (id: string) => {
+		console.log("clicked view more ", id);
+	};
 
-	const { Search } = Input;
-	const onSearch = () => {};
-
-	const columns: ColumnsType<PetData> = [
+	const columns: ColumnsType<Omit<PetData, "acquired" | "breed">> = [
 		{
 			title: "ID",
 			dataIndex: "key",
 			defaultSortOrder: "ascend",
-			sorter: (a, b) => a.key - b.key
+			sorter: (a, b) => {
+				if (a.key > b.key) {
+					return 1;
+				}
+				if (b.key > a.key) {
+					return -1;
+				}
+				return 0;
+			}
 		},
 		{
 			title: "Name",
 			dataIndex: "name",
 			sorter: (a, b) => a.name.localeCompare(b.name),
-			render: (name: string, record) => (
-				<TableName name={name} image={record.image} />
+			render: (name: PetData["name"], record) => (
+				<TableName name={name} image={record.images} />
 			)
 		},
 		{
@@ -53,7 +65,7 @@ const PetTableDisplay = () => {
 					value: true
 				}
 			],
-			render: (visible: boolean) => (
+			render: (visible: PetData["visible"]) => (
 				<TablePill type={TablePillType.VISIBILITY} value={visible} />
 			)
 		},
@@ -65,7 +77,7 @@ const PetTableDisplay = () => {
 				text: status,
 				value: status
 			})),
-			render: (species: Species) => (
+			render: (species: PetData["species"]) => (
 				<TablePill type={TablePillType.SPECIES} value={species} />
 			)
 		},
@@ -77,31 +89,30 @@ const PetTableDisplay = () => {
 				text: status,
 				value: status
 			})),
-			render: (status: Status) => (
+			render: (status: PetData["status"]) => (
 				<TablePill type={TablePillType.STATUS} value={status} />
 			)
 		},
 		{
 			title: "Action",
-			dataIndex: "action",
-			render: (onClick: () => void) => (
-				<a className={action} onClick={onClick}>
+			dataIndex: "key",
+			render: (key: PetData["key"]) => (
+				<a className={actionButton} onClick={() => onViewMore(key)}>
 					View pet details
 				</a>
 			)
 		}
 	];
 
-	const mockData: PetData[] = [];
+	const mockData: Omit<PetData, "acquired" | "breed">[] = [];
 	for (let i = 0; i < 80; i++) {
 		mockData.push({
-			key: i,
+			key: "" + i,
 			name: `Fluttershy ${i}`,
 			// image: "",
 			visible: Math.random() > 0.5 ? true : false,
 			species: Species.RABBIT,
-			status: Status.ADOPTED,
-			action: () => alert("clicked")
+			status: Status.ADOPTED
 		});
 	}
 

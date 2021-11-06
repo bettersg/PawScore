@@ -1,6 +1,8 @@
 :root {
-	--color-header-background: #ffffff;
+	--color-white: #ffffff;
 	--color-neutral: #f5f5f5;
 	--color-golden-purple: #722ed1;
+	--color-golden-purple-hover: hsla(263, 71%, 39%, 1);
 	--color-light-purple: #f9f0ff;
+	--color-background: #fbf5f1;
 }

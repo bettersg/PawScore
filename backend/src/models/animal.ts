@@ -32,8 +32,7 @@ export interface AnimalAttributes {
 }
 
 // Some attributes are optional in `Animal.build` and `Animal.create` calls
-// eslint-disable-next-line 
-export interface AnimalCreationAttributes extends Optional<AnimalAttributes, "id"> { }
+export type AnimalCreationAttributes = Optional<AnimalAttributes, "id">
 
 export class AnimalModel extends Model<AnimalAttributes, AnimalCreationAttributes>
   implements AnimalAttributes {

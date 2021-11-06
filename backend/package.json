@@ -8,7 +8,7 @@
 		"build": "tsc",
 		"prestart": "npm run build",
 		"start": "node .",
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "jest test",
 		"db:migrate": "npx ts-node ./node_modules/sequelize-cli/lib/sequelize db:migrate",
 		"db:migrate:undo": "npx ts-node ./node_modules/sequelize-cli/lib/sequelize db:migrate:undo:all",
 		"db:seed": "npx ts-node ./node_modules/sequelize-cli/lib/sequelize db:seed:all",
@@ -18,6 +18,9 @@
 	"license": "MIT",
 	"dependencies": {
 		"@casl/ability": "^5.4.3",
+		"@babel/core": "^7.15.8",
+		"@babel/preset-env": "^7.15.8",
+		"@babel/preset-typescript": "^7.15.0",
 		"@google-cloud/storage": "^5.14.1",
 		"@types/bcrypt": "^5.0.0",
 		"@types/connect-pg-simple": "^4.2.4",
@@ -28,6 +31,7 @@
 		"@types/passport": "^1.0.7",
 		"@types/passport-local": "^1.0.34",
 		"@types/validator": "^13.6.3",
+		"babel-jest": "^27.2.4",
 		"bcrypt": "^5.0.1",
 		"class-transformer": "^0.4.0",
 		"class-validator": "^0.13.1",
@@ -47,12 +51,14 @@
 	},
 	"devDependencies": {
 		"@types/errorhandler": "^1.5.0",
+		"@types/jest": "^27.0.2",
 		"@typescript-eslint/eslint-plugin": "^4.29.3",
 		"@typescript-eslint/parser": "^4.29.3",
 		"errorhandler": "^1.5.1",
 		"eslint": "^7.32.0",
-		"sequelize-cli": "^6.2.0",
 		"ts-node": "^10.2.1",
+		"jest": "^27.2.4",
+		"sequelize-cli": "^6.2.0",
 		"typescript": "^4.3.5"
 	}
 }

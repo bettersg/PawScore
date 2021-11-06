@@ -12,3 +12,11 @@ body {
 	letter-spacing: 0em;
 	background-color: var(--color-neutral);
 }
+
+a {
+	color: var(--color-golden-purple);
+}
+/* a:hover {
+	color: var(--color-light-purple);
+	TODO: Update hover colour for links
+} */
