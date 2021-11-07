@@ -4,13 +4,35 @@ import LogoHeader from "components/shelter/login/LogoHeader";
 import SignUpForm from "components/shelter/login/SignUpForm";
 import ShelterLoginLayout from "layouts/shelter/ShelterLoginLayout";
 import styled from "styled-components";
+import createAxiosInstance from "api/createAxiosInstance";
+import { LoginFormValues } from "types";
 
 const { TabPane } = Tabs;
 
 const ShelterLogin = () => {
-	const onFinish = (values: LoginFormValues) => {
-		alert("login");
-		console.log("Received values of form: ", values);
+	const onSubmitLogin = async (values: LoginFormValues) => {
+		try {
+			const axios = createAxiosInstance();
+			const {
+				data: { payload }
+			} = await axios.post("/api/login", values);
+			window.location.assign("/shelter/home");
+		} catch (err) {
+			// TODO: handle error in UI
+			console.log(err);
+		}
+	};
+	const onSubmitSignup = async (values: LoginFormValues) => {
+		try {
+			const axios = createAxiosInstance();
+			const {
+				data: { payload }
+			} = await axios.post("/api/register", values);
+			window.location.assign("/shelter/home");
+		} catch (err) {
+			// TODO: handle error in UI
+			console.log(err);
+		}
 	};
 
 	return (
@@ -21,10 +43,10 @@ const ShelterLogin = () => {
 						<LogoHeader />
 						<StyledTabs defaultActiveKey="1">
 							<TabPane tab="Login" key="1">
-								<LoginForm onFinish={onFinish} />
+								<LoginForm onFinish={onSubmitLogin} />
 							</TabPane>
 							<TabPane tab="Signup" key="2">
-								<SignUpForm onFinish={onFinish} />
+								<SignUpForm onFinish={onSubmitSignup} />
 							</TabPane>
 						</StyledTabs>
 					</LoginContainer>

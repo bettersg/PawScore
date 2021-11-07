@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Input, Button, QuickSignInButton } from "./components";
 import styles from "./IconStyle.module.css";
+import { LoginFormValues } from "types";
 
 type LoginFormProps = {
 	onFinish: (values: LoginFormValues) => void;
@@ -19,16 +20,17 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 		initialValues={{ remember: true }}
 		onFinish={onFinish}>
 		<Form.Item
-			name="username"
+			name="email"
 			rules={[
 				{
+					type: "email",
 					required: true,
-					message: "Please input your Username!"
+					message: "Please input a valid Email!"
 				}
 			]}>
 			<Input
 				prefix={<UserOutlined className={styles.inputFieldIcons} />}
-				placeholder="Username"
+				placeholder="Email"
 			/>
 		</Form.Item>
 		<Form.Item
@@ -45,7 +47,7 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 				placeholder="Password"
 			/>
 		</Form.Item>
-		<Form.Item>
+		{/* <Form.Item>
 			<Form.Item name="remember" valuePropName="checked" noStyle>
 				<Checkbox>Remember me</Checkbox>
 			</Form.Item>
@@ -53,19 +55,19 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 			<a style={{ float: "right" }} href="">
 				Forgot password
 			</a>
-		</Form.Item>
+		</Form.Item> */}
 		<Form.Item>
 			<Button type="primary" htmlType="submit">
 				Login
 			</Button>
 		</Form.Item>
-		<Form.Item>
+		{/* <Form.Item>
 			<Row style={{ alignItems: "center" }}>
 				Quick Sign-in:{" "}
 				<QuickSignInButton size="large" icon={<GoogleOutlined />} />{" "}
 				<QuickSignInButton size="large" icon={<FacebookFilled />} />
 			</Row>
-		</Form.Item>
+		</Form.Item> */}
 	</Form>
 );
 

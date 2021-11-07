@@ -29,7 +29,7 @@ const authStrategy = (passport: passport.PassportStatic): void => {
 		"local-signup",
 		new LocalStrategy(
 			{
-				usernameField: "username",
+				usernameField: "email",
 				passwordField: "password",
 				passReqToCallback: true // allows us to pass back the entire request to the callback
 			},
@@ -78,7 +78,7 @@ const authStrategy = (passport: passport.PassportStatic): void => {
 		"local-login",
 		new LocalStrategy(
 			{
-				usernameField: "username",
+				usernameField: "email",
 				passwordField: "password",
 				passReqToCallback: false
 			},

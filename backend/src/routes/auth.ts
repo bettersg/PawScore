@@ -9,7 +9,7 @@ const authRouteSetup = (app: express.Application, passport: passport.PassportSta
     passport.authenticate('local-signup', (error: Error, user: User, info) => {
       if (error !== null) {
         const result = {"status": "failed", "message": "Failed to register"};
-        res.end(JSON.stringify(result));
+        return res.status(400).send(JSON.stringify(result));
       } else {
         req.login(user, (loginErr: Error) => {
           if (loginErr) {
@@ -31,7 +31,7 @@ const authRouteSetup = (app: express.Application, passport: passport.PassportSta
       }
       if (!user) {
         const result = {"status": "failure", "message": "You have entered an incorrect username or password"};
-        return res.end(JSON.stringify(result));
+        return res.status(400).send(JSON.stringify(result));
       }
       req.login(user, (loginErr: Error) => {
         if (loginErr) {
@@ -44,7 +44,7 @@ const authRouteSetup = (app: express.Application, passport: passport.PassportSta
     })(req, res, next);
   });
 
-  app.get('/api/logout', (req: express.Request, res: express.Response) => {
+  app.post('/api/logout', (req: express.Request, res: express.Response) => {
     req.logout();
     res.redirect('/');
   });

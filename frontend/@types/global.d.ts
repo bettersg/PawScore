@@ -8,9 +8,3 @@ interface Adopter {
 	status: Status;
 	image: string;
 }
-
-type LoginFormValues = {
-	username: string;
-	password: string;
-	remember?: boolean;
-};
