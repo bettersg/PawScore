@@ -49,11 +49,30 @@ const create = async (req: Request, res: Response): Promise<Response> => {
 		})
 	});
 	const { body } = reqSchema.parse(req);
+
+	// CHECK PERMISSIONS
+	if (req.ability.can("create", "UserProfile")) {
+		// Continue
+	} else if (req.ability.can("create:self", "UserProfile")) {
+		if (body.userId !== req.user.id) {
+			return res.status(StatusCodes.FORBIDDEN).send();
+		}
+	} else {
+		return res.status(StatusCodes.FORBIDDEN).send();
+	}
+
 	const userProfile = await UserProfile.create(body);
 	return res.send(userProfile);
 };
 
 const find = async (req: Request, res: Response): Promise<Response> => {
+	// CHECK PERMISSIONS
+	if (!req.ability.can("find", "UserProfile")) {
+		return res.status(StatusCodes.FORBIDDEN).send();
+	} else {
+		return res.status(StatusCodes.FORBIDDEN).send();
+	}
+
 	const userProfiles = await UserProfile.findAll();
 	return res.send(userProfiles);
 };
@@ -65,12 +84,25 @@ const get = async (req: Request, res: Response): Promise<Response> => {
 		})
 	});
 	const { params } = reqSchema.parse(req);
+
 	const userProfile = await UserProfile.findOne({
 		where: { id: params.userProfileId }
 	});
 	if (userProfile === null) {
 		return res.status(StatusCodes.NOT_FOUND).send();
 	}
+
+	// CHECK PERMISSIONS
+	if (req.ability.can("read", "UserProfile")) {
+		// Continue
+	} else if (req.ability.can("read:self", "UserProfile")) {
+		if (userProfile.userId !== req.user.id) {
+			return res.status(StatusCodes.FORBIDDEN).send();
+		}
+	} else {
+		return res.status(StatusCodes.FORBIDDEN).send();
+	}
+
 	return res.send(userProfile);
 };
 
@@ -107,6 +139,21 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 	});
 
 	const { params, body } = reqSchema.parse(req);
+
+	// CHECK PERMISSIONS
+	if (req.ability.can("update", "UserProfile")) {
+		// Continue
+	} else if (req.ability.can("update:self", "UserProfile")) {
+		const userProfile = await UserProfile.findOne({
+			where: { id: params.userProfileId }
+		});
+		if (userProfile?.userId !== req.user.id) {
+			return res.status(StatusCodes.FORBIDDEN).send();
+		}
+	} else {
+		return res.status(StatusCodes.FORBIDDEN).send();
+	}
+
 	const [count, userProfileArr] = await UserProfile.update(body, {
 		where: { id: params.userProfileId },
 		returning: true
@@ -124,6 +171,21 @@ const destroy = async (req: Request, res: Response): Promise<Response> => {
 		})
 	});
 	const { params } = reqSchema.parse(req);
+
+	// CHECK PERMISSIONS
+	if (req.ability.can("delete", "UserProfile")) {
+		// Continue
+	} else if (req.ability.can("delete:self", "UserProfile")) {
+		const userProfile = await UserProfile.findOne({
+			where: { id: params.userProfileId }
+		});
+		if (userProfile?.userId !== req.user.id) {
+			return res.status(StatusCodes.FORBIDDEN).send();
+		}
+	} else {
+		return res.status(StatusCodes.FORBIDDEN).send();
+	}
+
 	await UserProfile.destroy({
 		where: { id: params.userProfileId }
 	});
