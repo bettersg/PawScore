@@ -32,7 +32,7 @@ export interface AnimalAttributes {
 }
 
 // Some attributes are optional in `Animal.build` and `Animal.create` calls
-export type AnimalCreationAttributes = Optional<AnimalAttributes, "id">
+export type AnimalCreationAttributes = Optional<AnimalAttributes, "id" | "createdAt" | "updatedAt">
 
 export class AnimalModel extends Model<AnimalAttributes, AnimalCreationAttributes>
   implements AnimalAttributes {
@@ -70,6 +70,7 @@ AnimalModel.init(
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true
     },
     shelterId: {
       type: DataTypes.UUIDV4,

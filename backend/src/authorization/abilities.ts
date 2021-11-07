@@ -33,7 +33,7 @@ export type Subjects =
 	| "User"
 	| "UserProfile"
 	| "all";
-type AppAbility = Ability<[Actions, Subjects]>;
+export type AppAbility = Ability<[Actions, Subjects]>;
 
 /**
  * https://casl.js.org/v5/en/guide/intro#inverted-rules
@@ -54,7 +54,8 @@ function defineRulesFor(user: UserType): Ability<[Actions, Subjects]> {
 	cannot("delete", "UserProfile");
 
 	if (user.roles.includes("SHELTER_ADMIN")) {
-		// can("update:shelter", "Animal");
+		can("create:shelter", "Animal");
+		can("update:shelter", "Animal");
 	}
 	if (user.roles.includes("SHELTER_SUPER_ADMIN")) {
 		// can("create:shelter", "Animal");
