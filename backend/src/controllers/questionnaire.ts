@@ -33,6 +33,7 @@ export class QuestionnaireController {
 		return animal?.get({ plain: true });
 	}
 
+	// TODO: should be subresource
 	@Post("/")
 	@HttpCode(201)
 	async create(@Body() body: unknown): Promise<void> {
@@ -41,6 +42,7 @@ export class QuestionnaireController {
 		console.debug(`Created questionnaire ${questionnaire.id}`);
 	}
 
+	// TODO: should be subresource
 	@Put("/:id")
 	@HttpCode(201)
 	async update(

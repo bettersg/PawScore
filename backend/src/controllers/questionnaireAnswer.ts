@@ -27,7 +27,7 @@ export class QuestionnaireAnswerController {
 		return animal?.get({ plain: true });
 	}
 
-	// NANI: part of POST /user/questionnaireAnswer or part of POST /application?
+	// TODO: should be subresource
 	@Post("/")
 	@HttpCode(201)
 	async create(@Body() body: unknown): Promise<void> {
@@ -38,7 +38,7 @@ export class QuestionnaireAnswerController {
 		console.debug(`Created questionnaireAnswer ${questionnaireAnswer.id}`);
 	}
 
-	// NANI: can user update?
+	// TODO: should be subresource, permissions checking
 	@Put("/:id")
 	@HttpCode(201)
 	async update(

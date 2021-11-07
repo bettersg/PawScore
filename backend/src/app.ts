@@ -8,6 +8,8 @@ import config from "./config/config";
 import authStrategy from "./config/passport";
 import setupSession from "./config/session";
 import { AnimalController } from "./controllers/animal";
+import { QuestionnaireController } from "./controllers/questionnaire";
+import { QuestionnaireAnswerController } from "./controllers/questionnaireAnswer";
 import { ShelterController } from "./controllers/shelter";
 import { User as UserType } from "./models/user";
 import authRouteSetup from "./routes/auth";
@@ -68,7 +70,7 @@ app.use("/api", uploadRouter);
 app.use("/api", userProfileRouter);
 
 useExpressServer(app, {
-	controllers: [AnimalController, ShelterController],
+	controllers: [AnimalController, ShelterController, QuestionnaireController, QuestionnaireAnswerController],
 	development: false,
 	defaultErrorHandler: false,
 	middlewares: [ApiErrorMiddleware],
@@ -83,19 +85,19 @@ app.use("/", proxy(config.frontendUrl));
 
 // logging of routes...
 app._router.stack.forEach((r: any) => {
-  if (r.route && r.route.path) {
-    console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
-  }
+	if (r.route && r.route.path) {
+		console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
+	}
 });
 bookingRouter.stack.forEach((r: any) => {
-  if (r.route && r.route.path) {
-    console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
-  }
+	if (r.route && r.route.path) {
+		console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
+	}
 });
 uploadRouter.stack.forEach((r: any) => {
-  if (r.route && r.route.path) {
-    console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
-  }
+	if (r.route && r.route.path) {
+		console.debug(`${Object.keys(r.route.methods).join(', ')} -> ${r.route.path}`);
+	}
 });
 // add new routers here
 // start the Express server
