@@ -1,12 +1,36 @@
 import { Breadcrumb } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import { PetData, Species, Status } from "common/enums";
+import { FurLength, PetData, Sex, Species, Status } from "common/enums";
 import PetDetailsSection from "components/shelter/pet/PetDetailsSection";
 import ProspectiveAdopters from "components/shelter/pet/ProspectiveAdopters";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
 import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+
+export const defaultPet: PetData = {
+	key: "",
+	name: "Cat 1",
+	images: [
+		"https://via.placeholder.com/86",
+		"https://via.placeholder.com/86",
+		"https://via.placeholder.com/86",
+		"https://via.placeholder.com/86",
+		"https://via.placeholder.com/86"
+	],
+	visible: false,
+	species: Species.CAT,
+	status: Status.HEALTHY,
+	acquired: new Date(),
+	breed: "Shorthair cat",
+	sex: Sex.MALE,
+	furLength: FurLength.SHORT,
+	medicalIssues: ["asthma"],
+	sterilised: "yes",
+	dateOfBirth: new Date(),
+	furColor: ["white", "brown"],
+	toiletTrained: true
+};
 
 export default function PetDetails() {
 	const router = useRouter();
@@ -17,20 +41,8 @@ export default function PetDetails() {
 	useEffect(() => {
 		console.log(`Fetching pet info ${id}`);
 		const pd: PetData = {
+			...defaultPet,
 			key: id as string,
-			name: "Cat 1",
-			images: [
-				"https://via.placeholder.com/86",
-				"https://via.placeholder.com/86",
-				"https://via.placeholder.com/86",
-				"https://via.placeholder.com/86",
-				"https://via.placeholder.com/86"
-			],
-			visible: false,
-			species: Species.CAT,
-			status: Status.HEALTHY,
-			acquired: new Date(),
-			breed: "Shorthair cat"
 		};
 
 		const adopterData: Adopter[] = [
