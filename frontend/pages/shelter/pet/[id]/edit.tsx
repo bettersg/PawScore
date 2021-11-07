@@ -38,7 +38,6 @@ export default function EditPetDetails() {
 		isYesNo?: boolean
 	) => {
 		if (!e.target.value) return;
-		console.log("radio1 checked", e.target.value);
 		const val = isYesNo
 			? e.target.value === "yes"
 				? true
@@ -57,7 +56,6 @@ export default function EditPetDetails() {
 		key: keyof Pick<PetData, "medicalIssues">
 	) => {
 		if (!value) return;
-		console.log("onMultipleChange", value);
 		setPet((prev) => {
 			return {
 				...prev,
@@ -71,7 +69,6 @@ export default function EditPetDetails() {
 		key: keyof Pick<PetData, "species" | "furLength" | "breed">
 	) => {
 		if (!value) return;
-		console.log("onSelectChange", value);
 		setPet((prev) => {
 			return {
 				...prev,
