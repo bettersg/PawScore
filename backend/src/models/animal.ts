@@ -32,9 +32,13 @@ export interface AnimalAttributes {
 }
 
 // Some attributes are optional in `Animal.build` and `Animal.create` calls
-export type AnimalCreationAttributes = Optional<AnimalAttributes, "id" | "createdAt" | "updatedAt">
+export type AnimalCreationAttributes = Optional<
+  AnimalAttributes,
+  "id" | "createdAt" | "updatedAt"
+>;
 
-export class AnimalModel extends Model<AnimalAttributes, AnimalCreationAttributes>
+export class AnimalModel
+  extends Model<AnimalAttributes, AnimalCreationAttributes>
   implements AnimalAttributes {
   public id!: string;
   public shelterId!: string;
@@ -74,11 +78,11 @@ AnimalModel.init(
     },
     shelterId: {
       type: DataTypes.UUIDV4,
-      allowNull: false,
+      allowNull: false
     },
     adoptionStatus: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     species: {
       type: DataTypes.STRING,
@@ -139,16 +143,16 @@ AnimalModel.init(
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: false
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: false
     }
   },
   {
     tableName: "animal",
-    sequelize, // passing the `sequelize` instance is required
+    sequelize // passing the `sequelize` instance is required
   }
 );
 

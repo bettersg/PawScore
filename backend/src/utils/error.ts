@@ -1,10 +1,18 @@
-import express from 'express';
-import { Middleware, ExpressErrorMiddlewareInterface, HttpError } from 'routing-controllers';
-import { z } from 'zod';
+import express from "express";
+import {
+  ExpressErrorMiddlewareInterface,
+  HttpError,
+  Middleware
+} from "routing-controllers";
+import { z } from "zod";
 
-@Middleware({ type: 'after' })
+@Middleware({ type: "after" })
 export class ApiErrorMiddleware implements ExpressErrorMiddlewareInterface {
-  error(error: HttpError | Error, request: express.Request, response: express.Response): void {
+  error(
+    error: HttpError | Error,
+    request: express.Request,
+    response: express.Response
+  ): void {
     console.log("[ERROR]", error);
     if (error instanceof HttpError) {
       response.status(error.httpCode).json({ message: error.message });

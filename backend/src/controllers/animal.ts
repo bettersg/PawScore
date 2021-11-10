@@ -1,44 +1,71 @@
-import express from 'express';
-import { BadRequestError, Body, Controller, ForbiddenError, Get, NotFoundError, OnUndefined, Param, Post, Put, Req, Session, UnauthorizedError } from 'routing-controllers';
-import { AdoptionStatus } from '../models/adoptionStatus';
-import { Species } from '../models/species';
-import { z } from 'zod';
-import { AppAbility } from '../authorization/abilities';
-import { SessionAbility } from '../helpers/auth';
+import express from "express";
+import {
+  BadRequestError,
+  Body,
+  Controller,
+  ForbiddenError,
+  Get,
+  NotFoundError,
+  OnUndefined,
+  Param,
+  Post,
+  Put,
+  Req
+} from "routing-controllers";
+import { z } from "zod";
+import { AppAbility } from "../authorization/abilities";
+import { SessionAbility } from "../helpers/auth";
+import { AdoptionStatus } from "../models/adoptionStatus";
 import { AnimalAttributes, AnimalModel } from "../models/animal";
+import { Species } from "../models/species";
 
-@Controller('/api/animal')
+@Controller("/api/animal")
 export class AnimalController {
-  @Get('/')
+  @Get("/")
   async getAll(): Promise<AnimalAttributes[]> {
-    const animals = await AnimalModel.findAll({ include: [AnimalModel.associations.animalImages] });
-    return animals.map(v => v.get({ plain: true }));
+    const animals = await AnimalModel.findAll({
+      include: [AnimalModel.associations.animalImages]
+    });
+    return animals.map((v) => v.get({ plain: true }));
   }
 
-  @Get('/:id')
+  @Get("/:id")
   @OnUndefined(404)
-  async getById(@Param("id") id: string): Promise<AnimalAttributes | undefined> {
-    const animal = await AnimalModel.findByPk(id, { include: [AnimalModel.associations.animalImages] });
+  async getById(
+    @Param("id") id: string
+  ): Promise<AnimalAttributes | undefined> {
+    const animal = await AnimalModel.findByPk(id, {
+      include: [AnimalModel.associations.animalImages]
+    });
     return animal?.get({ plain: true });
   }
 
-  @Post('/')
+  @Post("/")
   @OnUndefined(201)
-  async create(@Body() body: unknown, @SessionAbility() ability: AppAbility, @Req() req: express.Request): Promise<void> {
+  async create(
+    @Body() body: unknown,
+    @SessionAbility() ability: AppAbility,
+    @Req() req: express.Request
+  ): Promise<void> {
     const input = AnimalRequestBodySchema.parse(body);
 
     if (!ability.can("create:shelter", "Animal") || !req.user.shelterId) {
       throw new ForbiddenError();
     }
 
-    const attributes = { ...input, shelterId: req.user.shelterId }
+    const attributes = { ...input, shelterId: req.user.shelterId };
     const animal = await AnimalModel.create(attributes);
-    console.log(`Created animal with id ${animal.id}`)
+    console.log(`Created animal with id ${animal.id}`);
   }
 
-  @Put('/:id')
+  @Put("/:id")
   @OnUndefined(204)
-  async update(@Param("id") id: string, @Body() body: unknown, @SessionAbility() ability: AppAbility, @Req() req: express.Request): Promise<void> {
+  async update(
+    @Param("id") id: string,
+    @Body() body: unknown,
+    @SessionAbility() ability: AppAbility,
+    @Req() req: express.Request
+  ): Promise<void> {
     const input = AnimalRequestBodySchema.parse(body);
     const animal = await AnimalModel.findByPk(id);
 
@@ -46,18 +73,22 @@ export class AnimalController {
       throw new NotFoundError();
     }
 
-    if (!ability.can("update:shelter", "Animal") || !req.user.shelterId || animal.shelterId !== req.user.shelterId) {
+    if (
+      !ability.can("update:shelter", "Animal") ||
+      !req.user.shelterId ||
+      animal.shelterId !== req.user.shelterId
+    ) {
       throw new ForbiddenError();
     }
 
     await animal.update(input);
-    console.log(`Updated animal with id ${animal.id}`)
+    console.log(`Updated animal with id ${animal.id}`);
   }
 
   // example of how errors will be caught and handled by middleware with the appropriate status code and message
-  @Get('/error')
+  @Get("/error")
   async get(): Promise<void> {
-    throw new BadRequestError("Example error")
+    throw new BadRequestError("Example error");
   }
 }
 
