@@ -1,4 +1,5 @@
-import { BadRequestError, Body, Controller, Get, NotFoundError, OnUndefined, Param, Post, Put, Session, UnauthorizedError } from 'routing-controllers';
+import express from 'express';
+import { BadRequestError, Body, Controller, ForbiddenError, Get, NotFoundError, OnUndefined, Param, Post, Put, Req, Session, UnauthorizedError } from 'routing-controllers';
 import { AdoptionStatus } from '../models/adoptionStatus';
 import { Species } from '../models/species';
 import { z } from 'zod';
@@ -23,22 +24,21 @@ export class AnimalController {
 
   @Post('/')
   @OnUndefined(201)
-  async create(@Body() body: unknown, @SessionAbility() ability: AppAbility): Promise<void> {
+  async create(@Body() body: unknown, @SessionAbility() ability: AppAbility, @Req() req: express.Request): Promise<void> {
     const input = AnimalRequestBodySchema.parse(body);
 
-    if (!ability.can("create:shelter", "Animal")) {
-      throw new UnauthorizedError();
+    if (!ability.can("create:shelter", "Animal") || !req.user.shelterId) {
+      throw new ForbiddenError();
     }
 
-    // TODO: get shelterId from session
-    const attributes = { ...input, shelterId: "e9c4fb2c-e5bb-4d14-be23-6c264130be88" }
+    const attributes = { ...input, shelterId: req.user.shelterId }
     const animal = await AnimalModel.create(attributes);
     console.log(`Created animal with id ${animal.id}`)
   }
 
   @Put('/:id')
   @OnUndefined(204)
-  async update(@Param("id") id: string, @Body() body: unknown, @SessionAbility() ability: AppAbility): Promise<void> {
+  async update(@Param("id") id: string, @Body() body: unknown, @SessionAbility() ability: AppAbility, @Req() req: express.Request): Promise<void> {
     const input = AnimalRequestBodySchema.parse(body);
     const animal = await AnimalModel.findByPk(id);
 
@@ -46,10 +46,8 @@ export class AnimalController {
       throw new NotFoundError();
     }
 
-    // TODO: get shelterId from session
-    const shelterId = "e9c4fb2c-e5bb-4d14-be23-6c264130be88";
-    if (!ability.can("update:shelter", "Animal") || animal.shelterId !== shelterId) {
-      throw new UnauthorizedError();
+    if (!ability.can("update:shelter", "Animal") || !req.user.shelterId || animal.shelterId !== req.user.shelterId) {
+      throw new ForbiddenError();
     }
 
     await animal.update(input);

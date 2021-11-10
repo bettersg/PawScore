@@ -3,6 +3,7 @@ import { QueryInterface } from "sequelize";
 const SHELTER_ID = "e9c4fb2c-e5bb-4d14-be23-6c264130be88";
 const ANIMAL_ID_CAT_1 = "377fee7f-37cb-4aaf-a805-b41eaa6bf590";
 const ANIMAL_ID_DOG_1 = "de810095-533e-4be9-80eb-a85baeac835d";
+const SHELTER_ADMIN_ID = "f3b4b2e7-fcf0-4317-9dc3-c5647d4ddca4";
 
 export default {
   up: async (queryInterface: QueryInterface): Promise<void> => {
@@ -13,6 +14,17 @@ export default {
         address: "50 Sungei Tengah Rd, Singapore 699012",
         country: "Singapore",
         contact: "6287 5355"
+      }
+    ]);
+
+    await queryInterface.bulkInsert("user", [
+      {
+        id: SHELTER_ADMIN_ID,
+        username: "spca_admin",
+        email: "admin@spca.com",
+        password: "$2b$08$kSj3WRXt8nJxoblS.syg.eWTej/DKHqEtyKMYPwnnutVlMDKn7BeW", // password
+        roles: JSON.stringify(["SHELTER_ADMIN"]),
+        shelter_id: SHELTER_ID
       }
     ]);
 
