@@ -21,7 +21,7 @@ export default {
       {
         id: SHELTER_ADMIN_ID,
         username: "spca_admin",
-        email: "admin@spca.com",
+        email: "spca_admin@example.com",
         password: "$2b$08$kSj3WRXt8nJxoblS.syg.eWTej/DKHqEtyKMYPwnnutVlMDKn7BeW", // password
         roles: JSON.stringify(["SHELTER_ADMIN"]),
         shelter_id: SHELTER_ID
