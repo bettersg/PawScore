@@ -45,17 +45,17 @@ const authStrategy = (passport: passport.PassportStatic): void => {
 
 				User.findOne({
 					where: {
-						username
+						email: req.body.email
 					}
 				}).then((foundUser: User | null) => {
 					if (foundUser) {
 						return done(Error("Username taken"), null, {
-							message: "That username is already taken"
+							message: "That email address is already taken"
 						});
 					} else {
 						const userPasswordHash = generateHash(password);
 						const data: UserCreationAttributes = {
-							username,
+							username: req.body.username,
 							email: req.body.email,
 							password: userPasswordHash,
 							roles: ["ADOPTER"],
@@ -80,17 +80,22 @@ const authStrategy = (passport: passport.PassportStatic): void => {
 			{
 				usernameField: "email",
 				passwordField: "password",
-				passReqToCallback: false
+				passReqToCallback: true
 			},
-			(username: string, password: string, done) => {
+			(
+				req: express.Request,
+				username: string,
+				password: string,
+				done
+			) => {
 				User.findOne({
 					where: {
-						username
+						email: req.body.email
 					}
 				}).then((userFound: User | null) => {
 					if (userFound === null) {
 						return done(null, null, {
-							message: "Incorrect username."
+							message: "Incorrect email address."
 						});
 					} else if (
 						!bCrypt.compareSync(password, userFound.password)
