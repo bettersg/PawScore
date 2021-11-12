@@ -1,4 +1,4 @@
-import { Association, DataTypes, Model, Optional } from "sequelize";
+import { Association, DataTypes, Model, Optional, UUIDV4 } from "sequelize";
 import { sequelize } from "../database";
 import { numericStringtoFloat } from "../utils/modelType";
 import { AdoptionStatus } from "./adoptionStatus";
@@ -72,9 +72,9 @@ export class AnimalModel
 AnimalModel.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      primaryKey: true
     },
     shelterId: {
       type: DataTypes.UUIDV4,
