@@ -49,12 +49,11 @@ export class AnimalController {
   ): Promise<void> {
     const input = AnimalRequestBodySchema.parse(body);
 
-    if (!ability.can("create:shelter", "Animal") || !req.user.shelterId) {
+    if (!ability.can("create:shelter", "Animal") || input.shelterId !== req.user.shelterId) {
       throw new ForbiddenError();
     }
 
-    const attributes = { ...input, shelterId: req.user.shelterId };
-    const animal = await AnimalModel.create(attributes);
+    const animal = await AnimalModel.create(input);
     console.log(`Created animal with id ${animal.id}`);
   }
 
@@ -93,6 +92,7 @@ export class AnimalController {
 }
 
 const AnimalRequestBodySchema = z.object({
+  shelterId: z.string().uuid(),
   adoptionStatus: z.nativeEnum(AdoptionStatus),
   species: z.nativeEnum(Species),
   name: z.string(),
