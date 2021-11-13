@@ -17,7 +17,10 @@ const Container = styled.div`
 	background: var(--color-white);
 `;
 
-const PetTableDisplay = () => {
+type Props = {
+	pets: Omit<PetData, "acquired" | "breed">[];
+};
+const PetTableDisplay = ({ pets }: Props) => {
 	/* commenting out for now as not implemented yet */
 	// const [searchText, setSearchText] = useState("");
 	// const [searchedColumn, setSearchedColumn] = useState("");
@@ -104,18 +107,6 @@ const PetTableDisplay = () => {
 		}
 	];
 
-	const mockData: Omit<PetData, "acquired" | "breed">[] = [];
-	for (let i = 0; i < 80; i++) {
-		mockData.push({
-			key: "" + i,
-			name: `Fluttershy ${i}`,
-			// image: "",
-			visible: Math.random() > 0.5 ? true : false,
-			species: Species.RABBIT,
-			status: Status.ADOPTED
-		});
-	}
-
 	return (
 		<Container>
 			<div className={tableHeader}>
@@ -142,7 +133,7 @@ const PetTableDisplay = () => {
 			</div>
 			<Table
 				columns={columns}
-				dataSource={mockData}
+				dataSource={pets}
 				pagination={{ pageSize: 10 }}
 				scroll={{ y: 640 }} // TODO: update to use dynamic window height calculation
 			/>
