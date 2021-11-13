@@ -6,6 +6,7 @@ const { defineRulesFor } = abilities;
 
 test("Unauthenticated user has some permissions", () => {
 	const allowable: { [key: string]: string[] } = {
+		UserProfile: ["create:self", "read:self", "update:self"]
 		// Animal: ["read:all"] or something like that
 	};
 	const ability = defineRulesFor();
