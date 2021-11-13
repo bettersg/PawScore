@@ -49,7 +49,7 @@ export default Hero;
 // =============================================================================
 const Container = styled.div`
 	height: 631px;
-	background-color: var(--color-hero-background);
+	background-color: var(--color-background);
 	display: flex;
 	padding: 0 15%;
 	align-items: center;

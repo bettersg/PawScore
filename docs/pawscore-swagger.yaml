@@ -26,6 +26,8 @@ tags:
   description: View and manage shelter animals
 - name: user profile
   description: View and manage user profile
+- name: shelter
+  description: View and manage shelters
 paths:
   /register:
     post:
@@ -260,6 +262,30 @@ paths:
       responses:
         200:
           description: Deletes a specific user profile
+  /shelter:
+    get:
+      tags:
+      - shelter
+      summary: Retrieve all shelters
+      responses:
+        200:
+          description: Returns list of shelters
+    post:
+      tags:
+      - shelter
+      summary: Create a new shelter
+      responses:
+        201:
+          description: Created
+  /shelter/{shelterId}:
+    get:
+      tags:
+      - shelter
+      summary: Retrieve shelter
+      responses:
+        200:
+          description: Returns a specific shelter
+
 components:
   schemas:
     ApiResponse:
@@ -370,6 +396,20 @@ components:
         updatedAt:
           type: string
           format: date-time
+    Shelter:
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        country:
+          type: string
+        contact:
+          type: string
+        registrationNo:
+          type: string
+          nullable: true
     BaseUserProfile:
       type: object
       properties:

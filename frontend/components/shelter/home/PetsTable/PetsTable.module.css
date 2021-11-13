@@ -10,9 +10,9 @@
 }
 
 a.actionButton {
-	color: hsla(265, 64%, 50%, 1);
+	color: var(--color-golden-purple);
 }
 
 a.actionButton:hover {
-	color: hsla(263, 71%, 39%, 1);
+	color: var(--color-golden-purple-hover);
 }

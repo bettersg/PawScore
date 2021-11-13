@@ -14,7 +14,7 @@ const { Search } = Input;
 const Container = styled.div`
 	margin: 24px 34px;
 	padding: 24px;
-	background: var(--color-header-background);
+	background: var(--color-white);
 `;
 
 const PetTableDisplay = () => {

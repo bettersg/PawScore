@@ -25,7 +25,7 @@ export default Donate;
 // Styled Components
 // =============================================================================
 const Container = styled.div`
-	background-color: var(--color-hero-background);
+	background-color: var(--color-background);
 	height: 320px;
 	padding: 0 13%;
 	display: flex;
