@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { Button } from "./Button";
 
-const IMAGE =
-	"https://s3-alpha-sig.figma.com/img/7117/8b1e/93da07b932e65c51a3fac51b1de02016?Expires=1635120000&Signature=dw2amb8nWvzPfSvnqyGQilxgUobiehKyMCT23pdXTOkeHnam9sOYIh1GuXwfwZ21u0pYNiifsqb5AXQp3ZN5MhD~x0Yz3qr0WmTfUZ8PzaIXrmhoiKc5TtXOYACY7o0WuOplTKINfpYKxmd1jly1IO1eUhqa315MzCojo84xzr2xhxhn63v6Rp~PlY-JLl2SOIcxNcplW24rfDQsWq66yFh-Wo88N0mK5sN1f2oQN1k8WYZ0JEjkY8RqYG26FyQ7rvjfOqfGpANj9NcBvGXqBoNibFzNHle18aBwa3zlWxk~VnvE7uczcUYcTrxZFqsaUK7~ZQCGa0IUsijrf6-kHw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA";
+const IMAGE = "/homepage_footer.png";
 
 const Donate = () => {
 	const handleDonateClick = () => {
