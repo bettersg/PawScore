@@ -7,6 +7,7 @@ import {
 	FacebookFilled
 } from "@ant-design/icons";
 import styles from "./IconStyle.module.css";
+import { LoginFormValues } from "types";
 
 type SignUpFormProps = {
 	onFinish: (values: LoginFormValues) => void;
@@ -14,16 +15,16 @@ type SignUpFormProps = {
 const SignUpForm = ({ onFinish }: SignUpFormProps) => (
 	<Form name="signup" className="signup-form" onFinish={onFinish}>
 		<Form.Item
-			name="username"
+			name="email"
 			rules={[
 				{
 					required: true,
-					message: "Please input your Username!"
+					message: "Please input a valid Email!"
 				}
 			]}>
 			<Input
 				prefix={<UserOutlined className={styles.inputFieldIcons} />}
-				placeholder="Username"
+				placeholder="Email"
 			/>
 		</Form.Item>
 		<Form.Item
@@ -31,7 +32,7 @@ const SignUpForm = ({ onFinish }: SignUpFormProps) => (
 			rules={[
 				{
 					required: true,
-					message: "Please input your Password!"
+					message: "Please input a Password!"
 				}
 			]}>
 			<Input.Password
@@ -42,16 +43,16 @@ const SignUpForm = ({ onFinish }: SignUpFormProps) => (
 		</Form.Item>
 		<Form.Item>
 			<Button type="primary" htmlType="submit">
-				Login
+				Sign Up
 			</Button>
 		</Form.Item>
-		<Form.Item>
+		{/* <Form.Item>
 			<Row style={{ alignItems: "center" }}>
 				Sign up with:{" "}
 				<QuickSignInButton size="large" icon={<GoogleOutlined />} />{" "}
 				<QuickSignInButton size="large" icon={<FacebookFilled />} />
 			</Row>
-		</Form.Item>
+		</Form.Item> */}
 	</Form>
 );
 

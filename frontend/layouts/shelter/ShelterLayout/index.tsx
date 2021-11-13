@@ -1,4 +1,5 @@
 import { Layout } from "antd";
+import createAxiosInstance from "api/createAxiosInstance";
 import { ReactNode } from "react";
 import HeaderContent from "./HeaderContent";
 import LeftMenu from "./LeftMenu";
@@ -17,8 +18,17 @@ const ShelterLayout = ({ children }: Props) => {
 	const handleEditProfileClick = () => {
 		alert("Edit Profile");
 	};
-	const handleSignOutClick = () => {
-		alert("Sign Out");
+
+	const onClickSignOut = async () => {
+		try {
+			const axios = createAxiosInstance();
+			const {
+				data: { payload }
+			} = await axios.post("/api/logout");
+			window.location.assign("/shelter/login");
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (
@@ -26,7 +36,7 @@ const ShelterLayout = ({ children }: Props) => {
 			<Header className={header}>
 				<HeaderContent
 					handleEditProfileClick={handleEditProfileClick}
-					handleSignOutClick={handleSignOutClick}
+					handleSignOutClick={onClickSignOut}
 				/>
 			</Header>
 			<Layout>
