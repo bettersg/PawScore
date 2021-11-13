@@ -1,0 +1,49 @@
+.content,
+.hero,
+.donate {
+	padding: 0 20px;
+	font-family: Poppins;
+}
+
+.content,
+.hero {
+	background: var(--color-orange);
+	border-color: var(--color-orange);
+	height: 47px;
+	font-size: 18px;
+}
+.content:hover,
+.hero:hover {
+	border-color: var(--color-orange);
+}
+
+.hero {
+	color: #11025a;
+	width: 95px;
+}
+.hero:hover {
+	color: #11025a;
+}
+
+.content {
+	font-weight: 500;
+	color: var(--color-white);
+}
+.content:hover {
+	color: var(--color-orange);
+}
+
+.donate {
+	background: rgba(25, 0, 148, 1);
+	border-color: rgba(25, 0, 148, 1);
+	height: 50px;
+	width: 221px;
+
+	color: var(--color-white);
+	font-weight: 500;
+	font-size: 20px;
+}
+.donate:hover {
+	border-color: rgba(25, 0, 148, 1);
+	color: rgba(25, 0, 148, 1);
+}
