@@ -1,7 +1,6 @@
 import express from "express";
 import {
   BadRequestError,
-  Body,
   Controller,
   Delete,
   ForbiddenError,
@@ -14,8 +13,6 @@ import {
   Req
 } from "routing-controllers";
 import { z } from "zod";
-import { AppAbility } from "../authorization/abilities";
-import { SessionAbility } from "../helpers/auth";
 import { AdoptionStatus } from "../models/adoptionStatus";
 import { AnimalAttributes, AnimalModel } from "../models/animal";
 import { Species } from "../models/species";
@@ -43,14 +40,13 @@ export class AnimalController {
 
   @Post("/")
   @OnUndefined(201)
-  async create(
-    @Body() body: unknown,
-    @SessionAbility() ability: AppAbility,
-    @Req() req: express.Request
-  ): Promise<void> {
-    const input = AnimalRequestBodySchema.parse(body);
+  async create(@Req() req: express.Request): Promise<void> {
+    const input = AnimalRequestBodySchema.parse(req.body);
 
-    if (!ability.can("create:shelter", "Animal") || input.shelterId !== req.user.shelterId) {
+    if (
+      !req.ability.can("create:shelter", "Animal") ||
+      input.shelterId !== req.user.shelterId
+    ) {
       throw new ForbiddenError();
     }
 
@@ -62,11 +58,9 @@ export class AnimalController {
   @OnUndefined(204)
   async update(
     @Param("id") id: string,
-    @Body() body: unknown,
-    @SessionAbility() ability: AppAbility,
     @Req() req: express.Request
   ): Promise<void> {
-    const input = AnimalRequestBodySchema.parse(body);
+    const input = AnimalRequestBodySchema.parse(req.body);
     const animal = await AnimalModel.findByPk(id);
 
     if (!animal) {
@@ -74,7 +68,7 @@ export class AnimalController {
     }
 
     if (
-      !ability.can("update:shelter", "Animal") ||
+      !req.ability.can("update:shelter", "Animal") ||
       !req.user.shelterId ||
       animal.shelterId !== req.user.shelterId
     ) {
