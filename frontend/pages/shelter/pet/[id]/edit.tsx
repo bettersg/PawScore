@@ -14,7 +14,7 @@ import { FurLength, PetData, Sex, Species } from "common/enums";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
 import moment from "moment";
 import { useRouter } from "next/dist/client/router";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { defaultPet } from "../[id]";
 
@@ -248,6 +248,20 @@ type ImageGalleryProps = {
 };
 
 const ImageGallery = ({ images = [] }: ImageGalleryProps) => {
+	const imageUploadRef = useRef<HTMLInputElement>(null);
+	const [pickedImage, setPickedImage] = useState<File | null>(null);
+	const [preview, setPreview] = useState<string>();
+
+	useEffect(() => {
+		if (!pickedImage) return;
+		const reader = new FileReader();
+		reader.onloadend = () => {
+			setPreview(reader.result as string);
+		};
+
+		reader.readAsDataURL(pickedImage);
+	}, [pickedImage]);
+
 	return (
 		<GridContainer>
 			{images.length > 0 && images.map((image, index) => (
@@ -262,6 +276,28 @@ const ImageGallery = ({ images = [] }: ImageGalleryProps) => {
 					<img src={image} alt="Pet Image" style={{ width: 86, height: 86, margin: 9 }} />
 				</div>
 			))}
+			<div style={{ cursor: "pointer", borderStyle: "dotted", borderWidth: 2, borderColor: "#D9D9D9", borderRadius: 2, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#FAFAFA", flexDirection: "column" }}
+				onClick={() => {
+					if (!imageUploadRef.current) return;
+					imageUploadRef?.current?.click();
+				}}>
+				{!!preview ?
+					<img src={preview} alt={"preview"} style={{ objectFit: "cover", width: 86, height: 86, margin: 9 }} /> :
+					<>
+						<span style={{ color: "#000000D9", fontSize: "20px" }}>+</span>
+						<span style={{ color: "#00000073" }}>Upload</span>
+						<input ref={imageUploadRef} type="file" style={{ display: "none" }}
+							accept="image/*"
+							onChange={(event) => {
+								const file = event?.target?.files?.[0];
+								if (!file) return;
+								if (file && file.type.substr(0, 5) === "image") {
+									setPickedImage(file);
+								}
+							}} />
+					</>
+				}
+			</div>
 		</GridContainer>
 	);
 };
