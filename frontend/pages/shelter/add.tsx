@@ -10,22 +10,33 @@ import {
 } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Title from "antd/lib/typography/Title";
-import { FurLength, PetData, Sex, Species } from "common/enums";
+import { FurLength, PetData, Sex, Species, Status } from "common/enums";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
 import moment from "moment";
 import { useRouter } from "next/dist/client/router";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { defaultPet } from "../[id]";
 
 export default function EditPetDetails() {
 	const router = useRouter();
 	const { id } = router.query;
-	const [pet, setPet] = useState<PetData>(defaultPet);
-
-	useEffect(() => {
-		setPet(defaultPet);
-	}, [id]);
+	const [pet, setPet] = useState<PetData>({
+		key: "",
+		name: "",
+		images: [],
+		visible: true,
+		sex: Sex.MALE,
+		species: Species.CAT,
+		status: Status.HEALTHY,
+		acquired: new Date(),
+		breed: "",
+		furLength: FurLength.SHORT,
+		medicalIssues: [],
+		sterilised: "yes",
+		dateOfBirth: new Date(),
+		furColor: [],
+		toiletTrained: true,
+	});
 
 	const onRadioChange = (e: RadioChangeEvent, key: keyof Pick<PetData, "visible" | "toiletTrained" | "sex" | "sterilised" | "status">, isYesNo?: boolean) => {
 		if (!e.target.value) return;
@@ -48,7 +59,7 @@ export default function EditPetDetails() {
 			<Container>
 				<Breadcrumb separator=">">
 					<Breadcrumb.Item>Pets</Breadcrumb.Item>
-					<Breadcrumb.Item href="">Edit Pet Details</Breadcrumb.Item>
+					<Breadcrumb.Item href="">Add Pet</Breadcrumb.Item>
 				</Breadcrumb>
 				<InnerContent>
 					<PetDetailHeader>
@@ -290,7 +301,7 @@ const ImageGallery = ({ images = [], onChange = () => { } }: ImageGalleryProps) 
 					<GalleryImage src={image} alt="Pet Image" style={{ width: 86, height: 86, margin: 9 }} />
 				</GalleryItem>
 			))}
-			<div style={{ cursor: "pointer", borderStyle: "dotted", borderWidth: 2, borderColor: "#D9D9D9", borderRadius: 2, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#FAFAFA", flexDirection: "column" }}
+			<UploaderContainer
 				onClick={() => {
 					if (!imageUploadRef.current) return;
 					imageUploadRef?.current?.click();
@@ -306,7 +317,7 @@ const ImageGallery = ({ images = [], onChange = () => { } }: ImageGalleryProps) 
 							setPickedImage(file);
 						}
 					}} />
-			</div>
+			</UploaderContainer>
 		</GridContainer>
 	);
 };
@@ -410,3 +421,18 @@ const GalleryImage = styled.img`
 	height: 86;
 	margin: 9;
 `;
+
+const UploaderContainer = styled.div`
+	height: 104px;
+	width: 104px;
+	cursor: pointer;
+	border-style: dotted;
+	border-width: 2px;
+	border-color: #D9D9D9;
+	border-radius: 2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #FAFAFA;
+	flex-direction: column
+`
