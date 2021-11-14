@@ -87,6 +87,7 @@ export default function EditPetDetails() {
 								label="Date Acquired"
 								data={
 									<DatePicker
+										style={{ width: "100%" }}
 										onChange={(val) => onDateChange(val as moment.Moment, "acquired")}
 										defaultValue={moment(pet.acquired)}
 										format="YYYY/MM/DD"
@@ -98,7 +99,7 @@ export default function EditPetDetails() {
 								data={
 									<Select
 										defaultValue={pet.species}
-										style={{ width: 120 }}
+										style={{ width: "100%" }}
 										onChange={(value: string) => onSelectChange(value, "species")}>
 										{Object.values(Species).map((val, index) => (<Select.Option value={val} key={index}>{val}</Select.Option>))}
 									</Select>
@@ -109,7 +110,7 @@ export default function EditPetDetails() {
 								data={
 									<Select
 										value={pet.furLength}
-										style={{ width: 120 }}
+										style={{ width: "100%" }}
 										onChange={(value: string) => onSelectChange(value, "furLength")}>
 										{Object.values(FurLength).map((val, index) => (<Select.Option value={val} key={index}>{val}</Select.Option>))}
 									</Select>
@@ -172,6 +173,7 @@ export default function EditPetDetails() {
 										onChange={(val) => onDateChange(val as moment.Moment, "dateOfBirth")}
 										defaultValue={moment(pet.dateOfBirth)}
 										format="YYYY/MM/DD"
+										style={{ width: "100%" }}
 									/>
 								}
 							/>
@@ -179,6 +181,7 @@ export default function EditPetDetails() {
 								label="Breed"
 								data={
 									<Select
+										style={{ width: "100%" }}
 										value={pet.breed}
 										onChange={(value: string) => onSelectChange(value, "breed")}>
 										<Select.Option value="persian">Persian</Select.Option>
@@ -193,6 +196,7 @@ export default function EditPetDetails() {
 								label="Fur Color"
 								data={
 									<Select
+										style={{ width: "100%" }}
 										mode="multiple"
 										value={pet.furColor}>
 										<Select.Option value="brown">Brown</Select.Option>
