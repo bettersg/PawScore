@@ -1,4 +1,4 @@
-import { EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import {
 	Breadcrumb,
 	Button,
@@ -265,16 +265,13 @@ const ImageGallery = ({ images = [] }: ImageGalleryProps) => {
 	return (
 		<GridContainer>
 			{images.length > 0 && images.map((image, index) => (
-				<div
-					key={index}
-					style={{
-						borderStyle: "solid",
-						borderWidth: 1,
-						borderColor: "#D9D9D9",
-						borderRadius: 2
-					}}>
-					<img src={image} alt="Pet Image" style={{ width: 86, height: 86, margin: 9 }} />
-				</div>
+				<GalleryItem key={index}>
+					<GalleryOverlayAction>
+						<EyeOutlined style={{ cursor: "pointer", fontSize: 16, color: "#FFFFFF" }} />
+						<DeleteOutlined style={{ cursor: "pointer", fontSize: 16, color: "#FFFFFF" }} />
+					</GalleryOverlayAction>
+					<GalleryImage src={image} alt="Pet Image" style={{ width: 86, height: 86, margin: 9 }} />
+				</GalleryItem>
 			))}
 			<div style={{ cursor: "pointer", borderStyle: "dotted", borderWidth: 2, borderColor: "#D9D9D9", borderRadius: 2, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#FAFAFA", flexDirection: "column" }}
 				onClick={() => {
@@ -369,4 +366,35 @@ const DataFieldContainer = styled.div`
 	> div:last-child {
 		padding-left: 8px;
 	}
+`;
+
+const GalleryOverlayAction = styled.div`
+	background-color: #00000080;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0;
+	transition: .2s ease;
+`;
+
+const GalleryItem = styled.div`
+	position: relative;
+	border-style: "solid";
+	border-width: 1px;
+	border-color: "#D9D9D9";
+	border-radius: 2;
+	&:hover ${GalleryOverlayAction} {
+		opacity: 0.8;
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+	}
+`;
+
+const GalleryImage = styled.img`
+	width: 86;
+	height: 86;
+	margin: 9;
 `;
