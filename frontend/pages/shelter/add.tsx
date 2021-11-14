@@ -54,6 +54,10 @@ export default function EditPetDetails() {
 		setPet((prev) => ({ ...prev, [key]: date.toDate() }));
 	};
 
+	const onGalleryChange = (images: []) => {
+		setPet((prev) => ({ ...prev, images }));
+	}
+
 	return (
 		<ShelterLayout>
 			<Container>
@@ -70,7 +74,7 @@ export default function EditPetDetails() {
 						</div>
 					</PetDetailHeader>
 					<div>
-						<DataField required label="Image" data={<ImageGallery images={pet.images} />} marginBottom={36} />
+						<DataField required label="Image" data={<ImageGallery images={pet.images} />} marginBottom={36} onChange={onGalleryChange} />
 					</div>
 					<Flex>
 						<div>
