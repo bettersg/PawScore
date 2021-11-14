@@ -295,11 +295,9 @@ const ImageGallery = ({
 }: ImageGalleryProps) => {
 	const imageUploadRef = useRef<HTMLInputElement>(null);
 	const [pickedImage, setPickedImage] = useState<File | null>(null);
-	const [preview, setPreview] = useState<string>();
 	const [cloned, setCloned] = useState([...images]);
 
 	useEffect(() => {
-		/* TODO: check logic - might be causing infinite useEffect */
 		if (!pickedImage) return;
 		const reader = new FileReader();
 		reader.onloadend = () => {
@@ -312,7 +310,6 @@ const ImageGallery = ({
 	}, [pickedImage]);
 
 	useEffect(() => {
-		/* TODO: check logic - might be causing infinite useEffect */
 		if (!onChange) return;
 		onChange(cloned);
 	}, [cloned, onChange]);

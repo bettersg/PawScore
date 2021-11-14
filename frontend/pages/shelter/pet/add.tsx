@@ -9,13 +9,10 @@ import {
 } from "components/shelter/pet/add/FormComponents";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
 import moment from "moment";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 
 export default function EditPetDetails() {
-	const router = useRouter();
-	const { id } = router.query;
 	const [pet, setPet] = useState<PetData>({
 		key: "",
 		name: "",
@@ -70,10 +67,9 @@ export default function EditPetDetails() {
 		setPet((prev) => ({ ...prev, [key]: date.toDate() }));
 	};
 
-	const updateGallery = (images: string[]) => {
-		/* TODO: check logic - might be causing infinite useEffect */
+	const updateGallery = useCallback((images: string[]) => {
 		setPet((prev) => ({ ...prev, images }));
-	};
+	}, []);
 
 	return (
 		<ShelterLayout>
