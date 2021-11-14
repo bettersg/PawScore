@@ -70,7 +70,7 @@ export default function EditPetDetails() {
 						</div>
 					</PetDetailHeader>
 					<div>
-						<DataField label="Image" data={<ImageGallery images={pet.images} />} marginBottom={36} />
+						<DataField required label="Image" data={<ImageGallery images={pet.images} />} marginBottom={36} />
 					</div>
 					<Flex>
 						<div>
