@@ -245,10 +245,10 @@ export default function EditPetDetails() {
 
 type ImageGalleryProps = {
 	images?: string[];
-	onChange?: string[];
+	onChange?: (images: string[]) => void;
 };
 
-const ImageGallery = ({ images = [] }: ImageGalleryProps) => {
+const ImageGallery = ({ images = [], onChange = () => { } }: ImageGalleryProps) => {
 	const imageUploadRef = useRef<HTMLInputElement>(null);
 	const [pickedImage, setPickedImage] = useState<File | null>(null);
 	const [preview, setPreview] = useState<string>();
@@ -266,13 +266,26 @@ const ImageGallery = ({ images = [] }: ImageGalleryProps) => {
 		reader.readAsDataURL(pickedImage);
 	}, [pickedImage]);
 
+	useEffect(() => {
+		if (!onChange) return;
+		onChange(cloned);
+	}, [cloned]);
+
+	const onDeleteImage = (index: number) => {
+		if (!!cloned[index]) {
+			const arr = [...cloned]
+			arr.splice(index, 1);
+			setCloned(arr);
+		}
+	}
+
 	return (
 		<GridContainer>
 			{cloned.length > 0 && cloned.map((image, index) => (
 				<GalleryItem key={index}>
 					<GalleryOverlayAction>
 						<EyeOutlined style={{ cursor: "pointer", fontSize: 16, color: "#FFFFFF" }} />
-						<DeleteOutlined style={{ cursor: "pointer", fontSize: 16, color: "#FFFFFF" }} />
+						<DeleteOutlined style={{ cursor: "pointer", fontSize: 16, color: "#FFFFFF" }} onClick={() => onDeleteImage(index)} />
 					</GalleryOverlayAction>
 					<GalleryImage src={image} alt="Pet Image" style={{ width: 86, height: 86, margin: 9 }} />
 				</GalleryItem>
