@@ -3,6 +3,7 @@ import {
   BadRequestError,
   Body,
   Controller,
+  Delete,
   ForbiddenError,
   Get,
   NotFoundError,
@@ -82,6 +83,30 @@ export class AnimalController {
 
     await animal.update(input);
     console.log(`Updated animal with id ${animal.id}`);
+  }
+
+  @Delete("/:id")
+  @OnUndefined(204)
+  async delete(
+    @Param("id") id: string,
+    @Req() req: express.Request
+  ): Promise<void> {
+    const animal = await AnimalModel.findByPk(id);
+
+    if (!animal) {
+      throw new NotFoundError();
+    }
+
+    if (
+      !req.ability.can("update:shelter", "Animal") ||
+      !req.user.shelterId ||
+      animal.shelterId !== req.user.shelterId
+    ) {
+      throw new ForbiddenError();
+    }
+
+    await animal.destroy();
+    console.log(`Deleted animal with id ${animal.id}`);
   }
 
   // example of how errors will be caught and handled by middleware with the appropriate status code and message
