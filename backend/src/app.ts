@@ -19,6 +19,7 @@ import userProfileRouter from "./routes/userProfile";
 import healthcheckRouter from "./routes/healthcheck";
 import { ApiErrorMiddleware } from "./utils/error";
 import { Actions, setupPermissions, Subjects } from "./authorization";
+import checkPageAuth from "./helpers/checkPageAuth";
 
 // Handle Express req user
 declare module "express-serve-static-core" {
@@ -60,11 +61,11 @@ app.use(
 	function (
 		req: express.Request,
 		res: express.Response,
-		next: express.NextFunction
+		next: express.NextFunction,
 	) {
 		res.header("Content-Type", "application/json");
 		next(); // http://expressjs.com/guide.html#passing-route control
-	}
+	},
 );
 
 // Routes
@@ -79,7 +80,7 @@ useExpressServer(app, {
 	controllers: [AnimalController, ShelterController, HealthCheckController],
 	development: false,
 	defaultErrorHandler: false,
-	middlewares: [ApiErrorMiddleware]
+	middlewares: [ApiErrorMiddleware],
 });
 
 // Swagger docs route
@@ -87,27 +88,27 @@ if (process.env.NODE_ENV === "development") {
 	app.use("/docs", express.static(__dirname + "/../../docs/"));
 }
 
-// app.use("/", proxy(config.frontendUrl));
+app.use("/", checkPageAuth, proxy(config.frontendUrl));
 
 // logging of routes...
 app._router.stack.forEach((r: any) => {
 	if (r.route && r.route.path) {
 		console.debug(
-			`${Object.keys(r.route.methods).join(", ")} -> ${r.route.path}`
+			`${Object.keys(r.route.methods).join(", ")} -> ${r.route.path}`,
 		);
 	}
 });
 bookingRouter.stack.forEach((r: any) => {
 	if (r.route && r.route.path) {
 		console.debug(
-			`${Object.keys(r.route.methods).join(", ")} -> ${r.route.path}`
+			`${Object.keys(r.route.methods).join(", ")} -> ${r.route.path}`,
 		);
 	}
 });
 uploadRouter.stack.forEach((r: any) => {
 	if (r.route && r.route.path) {
 		console.debug(
-			`${Object.keys(r.route.methods).join(", ")} -> ${r.route.path}`
+			`${Object.keys(r.route.methods).join(", ")} -> ${r.route.path}`,
 		);
 	}
 });
