@@ -3,7 +3,6 @@ import {
 	Breadcrumb,
 	Button,
 	DatePicker,
-	Form,
 	Input,
 	Radio,
 	RadioChangeEvent,
@@ -25,69 +24,23 @@ export default function EditPetDetails() {
 	const [pet, setPet] = useState<PetData>(defaultPet);
 
 	useEffect(() => {
-		console.log(`Fetching pet info ${id}`);
 		setPet(defaultPet);
 	}, [id]);
 
-	const onRadioChange = (
-		e: RadioChangeEvent,
-		key: keyof Pick<
-			PetData,
-			"visible" | "toiletTrained" | "sex" | "sterilised" | "status"
-		>,
-		isYesNo?: boolean
-	) => {
+	const onRadioChange = (e: RadioChangeEvent, key: keyof Pick<PetData, "visible" | "toiletTrained" | "sex" | "sterilised" | "status">, isYesNo?: boolean) => {
 		if (!e.target.value) return;
-		const val = isYesNo
-			? e.target.value === "yes"
-				? true
-				: false
-			: e.target.value;
-		setPet((prev) => {
-			return {
-				...prev,
-				[key]: val
-			};
-		});
+		const val = isYesNo ? e.target.value === "yes" ? true : false : e.target.value;
+		setPet((prev) => ({ ...prev, [key]: val }));
 	};
 
-	const onMultipleChange = (
-		value: string[],
-		key: keyof Pick<PetData, "medicalIssues">
-	) => {
+	const onSelectChange = (value: string | string[], key: keyof Pick<PetData, "species" | "furLength" | "breed" | "medicalIssues">) => {
 		if (!value) return;
-		setPet((prev) => {
-			return {
-				...prev,
-				[key]: value
-			};
-		});
+		setPet((prev) => ({ ...prev, [key]: value }));
 	};
 
-	const onSelectChange = (
-		value: string,
-		key: keyof Pick<PetData, "species" | "furLength" | "breed">
-	) => {
-		if (!value) return;
-		setPet((prev) => {
-			return {
-				...prev,
-				[key]: value
-			};
-		});
-	};
-
-	const onDateChange = (
-		date: moment.Moment,
-		key: keyof Pick<PetData, "acquired" | "dateOfBirth">
-	) => {
+	const onDateChange = (date: moment.Moment, key: keyof Pick<PetData, "acquired" | "dateOfBirth">) => {
 		if (!date) return;
-		setPet((prev) => {
-			return {
-				...prev,
-				[key]: date.toDate()
-			};
-		});
+		setPet((prev) => ({ ...prev, [key]: date.toDate() }));
 	};
 
 	return (
@@ -102,17 +55,11 @@ export default function EditPetDetails() {
 						<Title level={5}>Pet Details</Title>
 						<div>
 							<Button style={{ marginRight: 8 }}>Cancel</Button>
-							<Button type="primary" icon={<EditOutlined />}>
-								Save
-							</Button>
+							<Button type="primary" icon={<EditOutlined />}>Save</Button>
 						</div>
 					</PetDetailHeader>
 					<div>
-						<DataField
-							label="Photos"
-							data={<ImageGallery images={pet.images} />}
-							marginBottom={36}
-						/>
+						<DataField label="Photos" data={<ImageGallery images={pet.images} />} marginBottom={36} />
 					</div>
 					<Flex>
 						<div>
@@ -121,41 +68,26 @@ export default function EditPetDetails() {
 								data={
 									<Radio.Group
 										value={pet.visible ? "yes" : "no"}
-										onChange={(e) =>
-											onRadioChange(e, "visible", true)
-										}>
+										onChange={(e) => onRadioChange(e, "visible", true)}>
 										<Radio value="yes">Yes</Radio>
 										<Radio value="no">No</Radio>
 									</Radio.Group>
-								}
-							/>
+								} />
 							<DataField
 								label="Sex"
 								data={
 									<Radio.Group
-										value={
-											pet.sex === Sex.MALE
-												? "Male"
-												: "Female"
-										}
-										onChange={(e) =>
-											onRadioChange(e, "sex")
-										}>
+										value={pet.sex === Sex.MALE ? "Male" : "Female"}
+										onChange={(e) => onRadioChange(e, "sex")}>
 										<Radio value="Male">Male</Radio>
 										<Radio value="Female">Female</Radio>
 									</Radio.Group>
-								}
-							/>
+								} />
 							<DataField
 								label="Date Acquired"
 								data={
 									<DatePicker
-										onChange={(val) =>
-											onDateChange(
-												val as moment.Moment,
-												"acquired"
-											)
-										}
+										onChange={(val) => onDateChange(val as moment.Moment, "acquired")}
 										defaultValue={moment(pet.acquired)}
 										format="YYYY/MM/DD"
 									/>
@@ -167,18 +99,8 @@ export default function EditPetDetails() {
 									<Select
 										defaultValue={pet.species}
 										style={{ width: 120 }}
-										onChange={(value: string) =>
-											onSelectChange(value, "species")
-										}>
-										{Object.values(Species).map(
-											(val, index) => (
-												<Select.Option
-													value={val}
-													key={index}>
-													{val}
-												</Select.Option>
-											)
-										)}
+										onChange={(value: string) => onSelectChange(value, "species")}>
+										{Object.values(Species).map((val, index) => (<Select.Option value={val} key={index}>{val}</Select.Option>))}
 									</Select>
 								}
 							/>
@@ -188,18 +110,8 @@ export default function EditPetDetails() {
 									<Select
 										value={pet.furLength}
 										style={{ width: 120 }}
-										onChange={(value: string) =>
-											onSelectChange(value, "furLength")
-										}>
-										{Object.values(FurLength).map(
-											(val, index) => (
-												<Select.Option
-													value={val}
-													key={index}>
-													{val}
-												</Select.Option>
-											)
-										)}
+										onChange={(value: string) => onSelectChange(value, "furLength")}>
+										{Object.values(FurLength).map((val, index) => (<Select.Option value={val} key={index}>{val}</Select.Option>))}
 									</Select>
 								}
 							/>
@@ -212,27 +124,12 @@ export default function EditPetDetails() {
 										style={{ width: "100%" }}
 										mode="multiple"
 										defaultValue={pet.medicalIssues ?? []}
-										onChange={(value: string[]) =>
-											onMultipleChange(
-												value,
-												"medicalIssues"
-											)
-										}>
-										<Select.Option value="flu">
-											Flu
-										</Select.Option>
-										<Select.Option value="cough">
-											Cough
-										</Select.Option>
-										<Select.Option value="headache">
-											Headache
-										</Select.Option>
-										<Select.Option value="sorethroat">
-											Sore Throat
-										</Select.Option>
-										<Select.Option value="others">
-											Others
-										</Select.Option>
+										onChange={(value: string[]) => onSelectChange(value, "medicalIssues")}>
+										<Select.Option value="flu">Flu</Select.Option>
+										<Select.Option value="cough">Cough</Select.Option>
+										<Select.Option value="headache">Headache</Select.Option>
+										<Select.Option value="sorethroat">Sore Throat</Select.Option>
+										<Select.Option value="others">Others</Select.Option>
 									</Select>
 								}
 							/>
@@ -241,9 +138,7 @@ export default function EditPetDetails() {
 								data={
 									<Radio.Group
 										value={pet.sterilised}
-										onChange={(e) =>
-											onRadioChange(e, "sterilised")
-										}>
+										onChange={(e) => onRadioChange(e, "sterilised")}>
 										<Radio value="yes">Yes</Radio>
 										<Radio value="no">No</Radio>
 										<Radio value="others">Others</Radio>
@@ -262,9 +157,7 @@ export default function EditPetDetails() {
 								data={
 									<Radio.Group
 										value={pet.status}
-										onChange={(e) =>
-											onRadioChange(e, "status")
-										}>
+										onChange={(e) => onRadioChange(e, "status")}>
 										<Radio value="Healthy">Healthy</Radio>
 										<Radio value="Sick">Sick</Radio>
 										<Radio value="Fostered">Fostered</Radio>
@@ -276,12 +169,7 @@ export default function EditPetDetails() {
 								label="Date of Birth"
 								data={
 									<DatePicker
-										onChange={(val) =>
-											onDateChange(
-												val as moment.Moment,
-												"dateOfBirth"
-											)
-										}
+										onChange={(val) => onDateChange(val as moment.Moment, "dateOfBirth")}
 										defaultValue={moment(pet.dateOfBirth)}
 										format="YYYY/MM/DD"
 									/>
@@ -292,24 +180,12 @@ export default function EditPetDetails() {
 								data={
 									<Select
 										value={pet.breed}
-										onChange={(value: string) =>
-											onSelectChange(value, "breed")
-										}>
-										<Select.Option value="persian">
-											Persian
-										</Select.Option>
-										<Select.Option value="mainecoon">
-											Maine Coon
-										</Select.Option>
-										<Select.Option value="bengal">
-											Bengal
-										</Select.Option>
-										<Select.Option value="britishshorthair">
-											British Shorthair
-										</Select.Option>
-										<Select.Option value="siamese">
-											Siamese
-										</Select.Option>
+										onChange={(value: string) => onSelectChange(value, "breed")}>
+										<Select.Option value="persian">Persian</Select.Option>
+										<Select.Option value="mainecoon">Maine Coon</Select.Option>
+										<Select.Option value="bengal">Bengal</Select.Option>
+										<Select.Option value="britishshorthair">British Shorthair</Select.Option>
+										<Select.Option value="siamese">Siamese</Select.Option>
 									</Select>
 								}
 							/>
@@ -319,15 +195,9 @@ export default function EditPetDetails() {
 									<Select
 										mode="multiple"
 										value={pet.furColor}>
-										<Select.Option value="brown">
-											Brown
-										</Select.Option>
-										<Select.Option value="white">
-											White
-										</Select.Option>
-										<Select.Option value="cgrayat">
-											Gray
-										</Select.Option>
+										<Select.Option value="brown">Brown</Select.Option>
+										<Select.Option value="white">White</Select.Option>
+										<Select.Option value="cgrayat">Gray</Select.Option>
 									</Select>
 								}
 							/>
@@ -337,13 +207,7 @@ export default function EditPetDetails() {
 								data={
 									<Radio.Group
 										value={pet.toiletTrained ? "yes" : "no"}
-										onChange={(e) =>
-											onRadioChange(
-												e,
-												"toiletTrained",
-												true
-											)
-										}>
+										onChange={(e) => onRadioChange(e, "toiletTrained", true)}>
 										<Radio value="yes">Yes</Radio>
 										<Radio value="no">No</Radio>
 									</Radio.Group>
@@ -366,26 +230,21 @@ type ImageGalleryProps = {
 	images?: string[];
 };
 
-const ImageGallery = ({ images }: ImageGalleryProps) => {
+const ImageGallery = ({ images = [] }: ImageGalleryProps) => {
 	return (
 		<GridContainer>
-			{images &&
-				images.map((image, index) => (
-					<div
-						key={index}
-						style={{
-							borderStyle: "solid",
-							borderWidth: 1,
-							borderColor: "#D9D9D9",
-							borderRadius: 2
-						}}>
-						<img
-							src={image}
-							alt="Pet Image"
-							style={{ width: 86, height: 86, margin: 9 }}
-						/>
-					</div>
-				))}
+			{images.length > 0 && images.map((image, index) => (
+				<div
+					key={index}
+					style={{
+						borderStyle: "solid",
+						borderWidth: 1,
+						borderColor: "#D9D9D9",
+						borderRadius: 2
+					}}>
+					<img src={image} alt="Pet Image" style={{ width: 86, height: 86, margin: 9 }} />
+				</div>
+			))}
 		</GridContainer>
 	);
 };
@@ -395,12 +254,10 @@ type DataFieldProps = {
 	data: string | ReactNode;
 	marginBottom?: number;
 };
+
 const DataField = ({ label, data, marginBottom }: DataFieldProps) => {
 	return (
-		<DataFieldContainer
-			style={{
-				marginBottom: marginBottom ?? 24
-			}}>
+		<DataFieldContainer style={{ marginBottom: marginBottom ?? 24 }}>
 			<div className="label">{label} :</div>
 			<div style={{ width: "80%" }}>{data}</div>
 		</DataFieldContainer>
