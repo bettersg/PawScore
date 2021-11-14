@@ -59,7 +59,7 @@ export default function EditPetDetails() {
 						</div>
 					</PetDetailHeader>
 					<div>
-						<DataField label="Photos" data={<ImageGallery images={pet.images} />} marginBottom={36} />
+						<DataField label="Image" data={<ImageGallery images={pet.images} />} marginBottom={36} />
 					</div>
 					<Flex>
 						<div>
@@ -376,6 +376,9 @@ const GalleryOverlayAction = styled.div`
 	right: 0;
 	bottom: 0;
 	opacity: 0;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
 	transition: .2s ease;
 `;
 
@@ -387,9 +390,6 @@ const GalleryItem = styled.div`
 	border-radius: 2;
 	&:hover ${GalleryOverlayAction} {
 		opacity: 0.8;
-		display: flex;
-		justify-content: space-evenly;
-		align-items: center;
 	}
 `;
 
