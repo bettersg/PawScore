@@ -13,8 +13,10 @@ import {
   Req
 } from "routing-controllers";
 import { z } from "zod";
+import { sequelize } from "../database";
 import { AdoptionStatus } from "../models/adoptionStatus";
 import { AnimalAttributes, AnimalModel } from "../models/animal";
+import { AnimalImageModel } from "../models/animalImage";
 import { Species } from "../models/species";
 
 @Controller("/api/animal")
@@ -50,8 +52,30 @@ export class AnimalController {
       throw new ForbiddenError();
     }
 
-    const animal = await AnimalModel.create(input);
+    const animal = await this.createAnimal(input);
     console.log(`Created animal with id ${animal.id}`);
+  }
+
+  private async createAnimal(
+    input: z.infer<typeof AnimalRequestBodySchema>
+  ): Promise<AnimalAttributes> {
+    return await sequelize.transaction(async (transaction) => {
+      const animal = await AnimalModel.create(input, {
+        transaction
+      });
+
+      if (input.animalImages) {
+        const animalImages = input.animalImages.map((image) => ({
+          ...image,
+          animalId: animal.id
+        }));
+        await AnimalImageModel.bulkCreate(animalImages, {
+          transaction
+        });
+      }
+
+      return animal;
+    });
   }
 
   @Put("/:id")
@@ -75,8 +99,34 @@ export class AnimalController {
       throw new ForbiddenError();
     }
 
-    await animal.update(input);
+    await this.updateAnimal(animal, input);
     console.log(`Updated animal with id ${animal.id}`);
+  }
+
+  private async updateAnimal(
+    animal: AnimalModel,
+    input: z.infer<typeof AnimalRequestBodySchema>
+  ): Promise<void> {
+    return await sequelize.transaction(async (transaction) => {
+      await animal.update(input, {
+        transaction
+      });
+
+      await AnimalImageModel.destroy({
+        transaction,
+        where: { animalId: animal.id }
+      });
+
+      if (input.animalImages) {
+        const animalImages = input.animalImages.map((image) => ({
+          ...image,
+          animalId: animal.id
+        }));
+        await AnimalImageModel.bulkCreate(animalImages, {
+          transaction
+        });
+      }
+    });
   }
 
   @Delete("/:id")
@@ -99,6 +149,7 @@ export class AnimalController {
       throw new ForbiddenError();
     }
 
+    // records in animal image table are automatically deleted
     await animal.destroy();
     console.log(`Deleted animal with id ${animal.id}`);
   }
@@ -128,5 +179,13 @@ const AnimalRequestBodySchema = z.object({
   dewormed: z.boolean().nullable(),
   sterilized: z.boolean().nullable(),
   adoptionFee: z.number().nullable(),
-  intakeDate: z.string()
+  intakeDate: z.string(),
+  animalImages: z
+    .object({
+      photoUrl: z.string(),
+      thumbnailUrl: z.string()
+    })
+    .array()
+    .max(3)
+    .optional()
 });

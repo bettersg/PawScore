@@ -2,7 +2,7 @@ import { Association, DataTypes, Model, Optional, UUIDV4 } from "sequelize";
 import { sequelize } from "../database";
 import { numericStringtoFloat } from "../utils/modelType";
 import { AdoptionStatus } from "./adoptionStatus";
-import { AnimalImageAttributes, AnimalImageModel } from "./animalImage";
+import { AnimalImageModel } from "./animalImage";
 import { Species } from "./species";
 
 export interface AnimalAttributes {
@@ -27,8 +27,6 @@ export interface AnimalAttributes {
   intakeDate: string;
   createdAt: Date;
   updatedAt: Date;
-
-  animalImages?: AnimalImageAttributes[];
 }
 
 // Some attributes are optional in `Animal.build` and `Animal.create` calls
