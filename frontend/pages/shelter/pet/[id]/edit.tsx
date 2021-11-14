@@ -155,6 +155,7 @@ export default function EditPetDetails() {
 							/>
 						</div>
 						<div>
+							<div style={{ height: 46 }} />
 							<DataField
 								required
 								label="Name"
