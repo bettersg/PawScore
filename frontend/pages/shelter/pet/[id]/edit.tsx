@@ -245,18 +245,22 @@ export default function EditPetDetails() {
 
 type ImageGalleryProps = {
 	images?: string[];
+	onChange?: string[];
 };
 
 const ImageGallery = ({ images = [] }: ImageGalleryProps) => {
 	const imageUploadRef = useRef<HTMLInputElement>(null);
 	const [pickedImage, setPickedImage] = useState<File | null>(null);
 	const [preview, setPreview] = useState<string>();
+	const [cloned, setCloned] = useState([...images]);
 
 	useEffect(() => {
 		if (!pickedImage) return;
 		const reader = new FileReader();
 		reader.onloadend = () => {
-			setPreview(reader.result as string);
+			setCloned(prev => {
+				return [...prev, reader.result as string];
+			})
 		};
 
 		reader.readAsDataURL(pickedImage);
@@ -264,7 +268,7 @@ const ImageGallery = ({ images = [] }: ImageGalleryProps) => {
 
 	return (
 		<GridContainer>
-			{images.length > 0 && images.map((image, index) => (
+			{cloned.length > 0 && cloned.map((image, index) => (
 				<GalleryItem key={index}>
 					<GalleryOverlayAction>
 						<EyeOutlined style={{ cursor: "pointer", fontSize: 16, color: "#FFFFFF" }} />
@@ -278,22 +282,17 @@ const ImageGallery = ({ images = [] }: ImageGalleryProps) => {
 					if (!imageUploadRef.current) return;
 					imageUploadRef?.current?.click();
 				}}>
-				{!!preview ?
-					<img src={preview} alt={"preview"} style={{ objectFit: "cover", width: 86, height: 86, margin: 9 }} /> :
-					<>
-						<span style={{ color: "#000000D9", fontSize: "20px" }}>+</span>
-						<span style={{ color: "#00000073" }}>Upload</span>
-						<input ref={imageUploadRef} type="file" style={{ display: "none" }}
-							accept="image/*"
-							onChange={(event) => {
-								const file = event?.target?.files?.[0];
-								if (!file) return;
-								if (file && file.type.substr(0, 5) === "image") {
-									setPickedImage(file);
-								}
-							}} />
-					</>
-				}
+				<span style={{ color: "#000000D9", fontSize: "20px" }}>+</span>
+				<span style={{ color: "#00000073" }}>Upload</span>
+				<input ref={imageUploadRef} type="file" style={{ display: "none" }}
+					accept="image/*"
+					onChange={(event) => {
+						const file = event?.target?.files?.[0];
+						if (!file) return;
+						if (file && file.type.substr(0, 5) === "image") {
+							setPickedImage(file);
+						}
+					}} />
 			</div>
 		</GridContainer>
 	);
