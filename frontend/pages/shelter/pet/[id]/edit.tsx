@@ -64,6 +64,7 @@ export default function EditPetDetails() {
 					<Flex>
 						<div>
 							<DataField
+								required
 								label="Visibility"
 								data={
 									<Radio.Group
@@ -74,6 +75,7 @@ export default function EditPetDetails() {
 									</Radio.Group>
 								} />
 							<DataField
+								required
 								label="Sex"
 								data={
 									<Radio.Group
@@ -84,6 +86,7 @@ export default function EditPetDetails() {
 									</Radio.Group>
 								} />
 							<DataField
+								required
 								label="Date Acquired"
 								data={
 									<DatePicker
@@ -106,6 +109,7 @@ export default function EditPetDetails() {
 								}
 							/>
 							<DataField
+								required
 								label="Fur Length"
 								data={
 									<Select
@@ -118,6 +122,7 @@ export default function EditPetDetails() {
 							/>
 
 							<DataField
+								required
 								label="Medical Issues"
 								data={
 									<Select
@@ -135,6 +140,7 @@ export default function EditPetDetails() {
 								}
 							/>
 							<DataField
+								required
 								label="Sterilised"
 								data={
 									<Radio.Group
@@ -150,10 +156,12 @@ export default function EditPetDetails() {
 						</div>
 						<div>
 							<DataField
+								required
 								label="Name"
 								data={<Input value={pet.name} />}
 							/>
 							<DataField
+								required
 								label="Status"
 								data={
 									<Radio.Group
@@ -167,6 +175,7 @@ export default function EditPetDetails() {
 								}
 							/>
 							<DataField
+								required
 								label="Date of Birth"
 								data={
 									<DatePicker
@@ -178,6 +187,7 @@ export default function EditPetDetails() {
 								}
 							/>
 							<DataField
+								required
 								label="Breed"
 								data={
 									<Select
@@ -193,6 +203,7 @@ export default function EditPetDetails() {
 								}
 							/>
 							<DataField
+								required
 								label="Fur Color"
 								data={
 									<Select
@@ -207,6 +218,7 @@ export default function EditPetDetails() {
 							/>
 
 							<DataField
+								required
 								label="Toilet Trained"
 								data={
 									<Radio.Group
@@ -257,12 +269,13 @@ type DataFieldProps = {
 	label: string;
 	data: string | ReactNode;
 	marginBottom?: number;
+	required?: boolean;
 };
 
-const DataField = ({ label, data, marginBottom }: DataFieldProps) => {
+const DataField = ({ label, data, marginBottom, required = false }: DataFieldProps) => {
 	return (
 		<DataFieldContainer style={{ marginBottom: marginBottom ?? 24 }}>
-			<div className="label">{label} :</div>
+			<div className="label">{required && <span style={{ color: "red" }}>* </span>}{label} :</div>
 			<div style={{ width: "80%" }}>{data}</div>
 		</DataFieldContainer>
 	);
