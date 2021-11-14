@@ -5,23 +5,24 @@ import moment from "moment";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-type Images = string[];
-type ImageSectionProps = {
-	images: Images;
-	updateGallery: (images: Images) => void;
-};
-export const ImageSection = ({ images, updateGallery }: ImageSectionProps) => (
+interface ImageSectionProps extends ImageGalleryProps { }
+
+export const ImageSection = ({
+	images = [],
+	onChange = () => { },
+	isEditMode = false
+}: ImageSectionProps) => (
 	<div>
 		<DataField
 			required
 			label="Image"
-			data={<ImageGallery images={images} onChange={updateGallery} />}
+			data={<ImageGallery images={images} onChange={onChange} isEditMode={isEditMode} />}
 			marginBottom={36}
 		/>
 	</div>
 );
 
-type FormSectionProps = {
+interface FormSectionProps {
 	pet: PetData;
 	onRadioChange: (
 		e: RadioChangeEvent,
@@ -43,6 +44,7 @@ type FormSectionProps = {
 		>
 	) => void;
 };
+
 const FormSectionOne = ({
 	pet,
 	onRadioChange,
@@ -260,7 +262,7 @@ export const FormSection = {
 // Secondary Components
 // =============================================================================
 
-type DataFieldProps = {
+interface DataFieldProps {
 	label: string;
 	data: string | ReactNode;
 	marginBottom?: number;
@@ -284,14 +286,16 @@ const DataField = ({
 	);
 };
 
-type ImageGalleryProps = {
+interface ImageGalleryProps {
 	images?: string[];
 	onChange?: (images: string[]) => void;
+	isEditMode?: boolean;
 };
 
 const ImageGallery = ({
 	images = [],
-	onChange = () => {}
+	onChange = () => { },
+	isEditMode = false
 }: ImageGalleryProps) => {
 	const imageUploadRef = useRef<HTMLInputElement>(null);
 	const [pickedImage, setPickedImage] = useState<File | null>(null);
@@ -310,9 +314,9 @@ const ImageGallery = ({
 	}, [pickedImage]);
 
 	useEffect(() => {
-		if (!onChange) return;
+		if (!onChange || !isEditMode) return;
 		onChange(cloned);
-	}, [cloned, onChange]);
+	}, [cloned, isEditMode, onChange]);
 
 	const onDeleteImage = (index: number) => {
 		if (!!cloned[index]) {
@@ -327,6 +331,7 @@ const ImageGallery = ({
 			{cloned.length > 0 &&
 				cloned.map((image, index) => (
 					<GalleryItem key={index}>
+						{isEditMode && (
 						<GalleryOverlayAction>
 							<EyeOutlined
 								style={{
@@ -344,9 +349,11 @@ const ImageGallery = ({
 								onClick={() => onDeleteImage(index)}
 							/>
 						</GalleryOverlayAction>
+						)}
 						<GalleryImage src={image} alt="Pet Image" />
 					</GalleryItem>
 				))}
+			{isEditMode && (
 			<UploaderContainer
 				onClick={() => {
 					if (!imageUploadRef.current) return;
@@ -368,6 +375,7 @@ const ImageGallery = ({
 					}}
 				/>
 			</UploaderContainer>
+			)}
 		</GridContainer>
 	);
 };

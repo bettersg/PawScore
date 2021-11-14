@@ -12,7 +12,7 @@ import moment from "moment";
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 
-export default function EditPetDetails() {
+export default function AddNewPet() {
 	const [pet, setPet] = useState<PetData>({
 		key: "",
 		name: "",
@@ -90,7 +90,8 @@ export default function EditPetDetails() {
 					</PetDetailHeader>
 					<ImageSection
 						images={pet.images}
-						updateGallery={updateGallery}
+						onChange={updateGallery}
+						isEditMode
 					/>
 					<Flex>
 						<FormSection.SectionOne
