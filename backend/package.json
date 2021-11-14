@@ -2,7 +2,7 @@
 	"name": "pawscore-backend",
 	"version": "0.0.1",
 	"description": "",
-	"main": "dist/backend/src/app.js",
+	"main": "dist/src/app.js",
 	"scripts": {
 		"prebuild": "eslint . --ext .ts",
 		"build": "tsc",
