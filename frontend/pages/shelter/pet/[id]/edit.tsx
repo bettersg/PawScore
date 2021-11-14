@@ -384,10 +384,10 @@ const GalleryOverlayAction = styled.div`
 
 const GalleryItem = styled.div`
 	position: relative;
-	border-style: "solid";
+	border-style: solid;
 	border-width: 1px;
-	border-color: "#D9D9D9";
-	border-radius: 2;
+	border-color: #D9D9D9;
+	border-radius: 2px;
 	&:hover ${GalleryOverlayAction} {
 		opacity: 0.8;
 	}
