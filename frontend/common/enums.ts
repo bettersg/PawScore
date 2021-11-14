@@ -17,13 +17,13 @@ export enum Species {
 
 export enum Sex {
 	MALE = "Male",
-	FEMALE = "Female",
+	FEMALE = "Female"
 }
 
 export enum FurLength {
 	LONG = "Long",
 	SHORT = "Short",
-	CUT = "Cut",
+	CUT = "Cut"
 }
 
 export type Sterilised = "yes" | "no" | "others";

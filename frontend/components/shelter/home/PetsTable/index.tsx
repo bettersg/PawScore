@@ -7,6 +7,7 @@ import styled from "styled-components";
 import TableName from "./components/Name";
 import TablePill, { TablePillType } from "./components/Pill";
 import styles from "./PetsTable.module.css";
+import Router from "next/router";
 
 const { tableHeader, actionButton } = styles;
 const { Search } = Input;
@@ -119,7 +120,7 @@ const PetTableDisplay = () => {
 			sterilised: Math.random() > 0.5 ? "yes" : "no",
 			dateOfBirth: new Date(),
 			furColor: [],
-			toiletTrained: Math.random() > 0.5 ? true : false,
+			toiletTrained: Math.random() > 0.5 ? true : false
 		});
 	}
 
@@ -141,7 +142,10 @@ const PetTableDisplay = () => {
 						<ImportOutlined />
 						Integrate with current software
 					</Button>
-					<Button type="primary" style={{ margin: "4px" }}>
+					<Button
+						type="primary"
+						style={{ margin: "4px" }}
+						onClick={() => Router.push("/shelter/pet/add")}>
 						<PlusOutlined />
 						Add New
 					</Button>
