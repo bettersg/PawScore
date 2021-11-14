@@ -54,7 +54,7 @@ export default function EditPetDetails() {
 		setPet((prev) => ({ ...prev, [key]: date.toDate() }));
 	};
 
-	const onGalleryChange = (images: []) => {
+	const onGalleryChange = (images: string[]) => {
 		setPet((prev) => ({ ...prev, images }));
 	}
 
@@ -74,7 +74,7 @@ export default function EditPetDetails() {
 						</div>
 					</PetDetailHeader>
 					<div>
-						<DataField required label="Image" data={<ImageGallery images={pet.images} />} marginBottom={36} onChange={onGalleryChange} />
+						<DataField required label="Image" data={<ImageGallery images={pet.images} onChange={onGalleryChange} />} marginBottom={36} />
 					</div>
 					<Flex>
 						<div>
@@ -284,7 +284,7 @@ const ImageGallery = ({ images = [], onChange = () => { } }: ImageGalleryProps) 
 	useEffect(() => {
 		if (!onChange) return;
 		onChange(cloned);
-	}, [cloned]);
+	}, [cloned, onChange]);
 
 	const onDeleteImage = (index: number) => {
 		if (!!cloned[index]) {
