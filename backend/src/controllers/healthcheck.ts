@@ -1,5 +1,5 @@
+import { Species } from "@contract";
 import { Controller, Get } from "routing-controllers";
-import { Species } from "../../contract";
 
 @Controller("/api/healthcheck")
 export class HealthCheckController {
