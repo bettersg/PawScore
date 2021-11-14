@@ -298,7 +298,7 @@ const ImageGallery = ({ images = [], onChange = () => { } }: ImageGalleryProps) 
 						<EyeOutlined style={{ cursor: "pointer", fontSize: 16, color: "#FFFFFF" }} />
 						<DeleteOutlined style={{ cursor: "pointer", fontSize: 16, color: "#FFFFFF" }} onClick={() => onDeleteImage(index)} />
 					</GalleryOverlayAction>
-					<GalleryImage src={image} alt="Pet Image" style={{ width: 86, height: 86, margin: 9 }} />
+					<GalleryImage src={image} alt="Pet Image" />
 				</GalleryItem>
 			))}
 			<UploaderContainer
@@ -417,9 +417,10 @@ const GalleryItem = styled.div`
 `;
 
 const GalleryImage = styled.img`
-	width: 86;
-	height: 86;
-	margin: 9;
+	width: 86px;
+	height: 86px;
+	margin: 9px;
+	object-fit: contain;
 `;
 
 const UploaderContainer = styled.div`
