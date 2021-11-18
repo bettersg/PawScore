@@ -17,6 +17,7 @@ import uploadRouter from "./routes/upload";
 import userProfileRouter from "./routes/userProfile";
 import { ApiErrorMiddleware } from "./utils/error";
 import { Actions, setupPermissions, Subjects } from "./authorization";
+import checkPageAuth from "./helpers/checkPageAuth";
 
 // Handle Express req user
 declare module "express-serve-static-core" {
@@ -84,7 +85,7 @@ if (process.env.NODE_ENV === "development") {
 	app.use("/docs", express.static(__dirname + "/../../docs/"));
 }
 
-app.use("/", proxy(config.frontendUrl));
+app.use("/", checkPageAuth, proxy(config.frontendUrl));
 
 // logging of routes...
 app._router.stack.forEach((r: any) => {

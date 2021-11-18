@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Express } from "express";
-export { Actions, Subjects } from "./abilities";
+export { Actions, Subjects } from "./types";
 import abilities from "./abilities";
 
 export const setupPermissions = (app: Express): void => {

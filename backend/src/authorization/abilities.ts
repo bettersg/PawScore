@@ -1,39 +1,6 @@
 import { AbilityBuilder, Ability } from "@casl/ability";
-
 import { User as UserType } from "../models/user";
-
-/**
- * `manage` and `all` are special keywords in CASL. manage represents any action
- * and `all` represents any subject.
- */
-export type Actions =
-	| "create"
-	| "create:self"
-	| "create:shelter"
-	| "find"
-	| "find:self"
-	| "find:shelter"
-	| "read"
-	| "read:self"
-	| "read:shelter"
-	| "update"
-	| "update:self"
-	| "update:shelter"
-	| "delete"
-	| "delete:self"
-	| "delete:shelter"
-	| "manage";
-export type Subjects =
-	| "AdoptionStatus"
-	| "Animal"
-	| "AnimalImage"
-	| "Booking"
-	| "Species"
-	| "Upload"
-	| "User"
-	| "UserProfile"
-	| "all";
-export type AppAbility = Ability<[Actions, Subjects]>;
+import { Actions, Subjects, AppAbility } from "./types";
 
 /**
  * https://casl.js.org/v5/en/guide/intro#inverted-rules
@@ -42,7 +9,7 @@ export type AppAbility = Ability<[Actions, Subjects]>;
  * While collating `can` rules, there might be duplicates. This should not
  * affect performance.
  */
-function defineRulesFor(user: UserType): Ability<[Actions, Subjects]> {
+function defineRulesFor(user?: UserType): Ability<[Actions, Subjects]> {
 	const { can, cannot, rules } = new AbilityBuilder<AppAbility>(Ability);
 
 	if (!user) return new Ability(rules);
@@ -81,5 +48,5 @@ function defineRulesFor(user: UserType): Ability<[Actions, Subjects]> {
 }
 
 export default {
-	defineRulesFor
+	defineRulesFor,
 };
