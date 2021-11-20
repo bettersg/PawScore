@@ -3,7 +3,12 @@ import { z } from "zod";
 dotenv.config();
 
 const schema = z.object({
-	NODE_ENV: z.enum(["development", "test", "production"]),
+	NODE_ENV: z.enum([
+		"development",
+		"gcloud-development",
+		"test",
+		"production",
+	]),
 	FRONTEND_URL: z.string(),
 	DB_USER: z.string(),
 	DB_PASS: z.string(),
