@@ -56,7 +56,7 @@ const authStrategy = (passport: passport.PassportStatic): void => {
 					} else {
 						const userPasswordHash = generateHash(password);
 						const data: UserCreationAttributes = {
-							username: req.body.username,
+							username: req.body.username || req.body.email,
 							email: req.body.email,
 							password: userPasswordHash,
 							roles: ["ADOPTER"],
