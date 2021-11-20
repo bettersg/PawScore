@@ -1,14 +1,8 @@
+import { AdoptionStatus } from "@contract";
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database";
 import { toEnumValues } from "../utils/enumUtil";
 
-export enum AdoptionStatus {
-  Ongoing = "Ongoing",
-  Adopted = "Adopted",
-  Archived = "Archived"
-}
-
-// These are all the attributes for the model
 export interface AdoptionStatusAttributes {
   id: string;
   status: AdoptionStatus;

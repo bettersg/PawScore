@@ -32,7 +32,7 @@ export default {
       {
         id: ANIMAL_ID_CAT_1,
         shelter_id: SHELTER_ID,
-        adoption_status: "Ongoing",
+        adoption_status: "Healthy",
         adoption_fee: 50,
         species: "Cat",
         name: "Tom",
@@ -47,13 +47,15 @@ export default {
         fur_length: "long hair",
         vaccinated: false,
         dewormed: false,
-        sterilized: false,
-        intake_date: "2021-08-27"
+        sterilised: false,
+        toilet_trained: true,
+        intake_date: "2021-08-27",
+        visible: true
       },
       {
         id: ANIMAL_ID_DOG_1,
         shelter_id: SHELTER_ID,
-        adoption_status: "Ongoing",
+        adoption_status: "Healthy",
         adoption_fee: 50,
         species: "Dog",
         name: "Toto",
@@ -68,8 +70,10 @@ export default {
         fur_length: "long hair",
         vaccinated: false,
         dewormed: false,
-        sterilized: false,
-        intake_date: "2021-08-29"
+        sterilised: false,
+        toilet_trained: false,
+        intake_date: "2021-08-29",
+        visible: true
       }
     ]);
 
@@ -89,6 +93,7 @@ export default {
   down: async (queryInterface: QueryInterface): Promise<void> => {
     await queryInterface.bulkDelete("animal_image", { animal_id: [ANIMAL_ID_CAT_1, ANIMAL_ID_DOG_1] });
     await queryInterface.bulkDelete("animal", { id: [ANIMAL_ID_CAT_1, ANIMAL_ID_DOG_1] });
+    await queryInterface.bulkDelete("user", { shelter_id: SHELTER_ID });
     await queryInterface.bulkDelete("shelter", { id: SHELTER_ID });
   }
 };

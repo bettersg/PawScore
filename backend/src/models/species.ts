@@ -1,12 +1,7 @@
+import { Species } from "@contract";
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database";
 import { toEnumValues } from "../utils/enumUtil";
-
-export enum Species {
-  Cat = "Cat",
-  Dog = "Dog",
-  Others = "Others"
-}
 
 export interface SpeciesAttributes {
   id: string;

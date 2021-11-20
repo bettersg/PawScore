@@ -3,3 +3,10 @@ export enum Species {
     Dog = "Dog",
     Others = "Others"
 }
+
+export enum AdoptionStatus {
+    Fostered = "Fostered",
+    Adopted = "Adopted",
+    Sick = "Sick",
+    Healthy = "Healthy",
+}

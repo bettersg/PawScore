@@ -13,9 +13,10 @@ export default {
     `);
 
     await queryInterface.bulkInsert("adoption_status", [
-      { status: "Ongoing" },
+      { status: "Fostered" },
       { status: "Adopted" },
-      { status: "Archived" }
+      { status: "Sick" },
+      { status: "Healthy" },
     ]);
   },
   down: async (queryInterface: QueryInterface): Promise<void> => {

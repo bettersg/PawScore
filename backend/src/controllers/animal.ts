@@ -1,3 +1,4 @@
+import { AdoptionStatus, Species } from "@contract";
 import express from "express";
 import {
   BadRequestError,
@@ -14,10 +15,8 @@ import {
 } from "routing-controllers";
 import { z } from "zod";
 import { sequelize } from "../database";
-import { AdoptionStatus } from "../models/adoptionStatus";
 import { AnimalAttributes, AnimalModel } from "../models/animal";
 import { AnimalImageModel } from "../models/animalImage";
-import { Species } from "../models/species";
 
 @Controller("/api/animal")
 export class AnimalController {
@@ -177,9 +176,11 @@ const AnimalRequestBodySchema = z.object({
   furLength: z.string().nullable(),
   vaccinated: z.boolean().nullable(),
   dewormed: z.boolean().nullable(),
-  sterilized: z.boolean().nullable(),
+  sterilised: z.boolean().nullable(),
+  toiletTrained: z.boolean().nullable(),
   adoptionFee: z.number().nullable(),
   intakeDate: z.string(),
+  visible: z.boolean(),
   animalImages: z
     .object({
       photoUrl: z.string(),

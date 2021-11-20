@@ -1,9 +1,8 @@
+import { AdoptionStatus, Species } from "@contract";
 import { Association, DataTypes, Model, Optional, UUIDV4 } from "sequelize";
 import { sequelize } from "../database";
 import { numericStringtoFloat } from "../utils/modelType";
-import { AdoptionStatus } from "./adoptionStatus";
 import { AnimalImageModel } from "./animalImage";
-import { Species } from "./species";
 
 export interface AnimalAttributes {
   id: string;
@@ -22,9 +21,11 @@ export interface AnimalAttributes {
   furLength: string | null;
   vaccinated: boolean | null;
   dewormed: boolean | null;
-  sterilized: boolean | null;
+  sterilised: boolean | null;
+  toiletTrained: boolean | null;
   adoptionFee: number | null;
   intakeDate: string;
+  visible: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -54,9 +55,11 @@ export class AnimalModel
   public furLength!: string | null;
   public vaccinated!: boolean | null;
   public dewormed!: boolean | null;
-  public sterilized!: boolean | null;
+  public sterilised!: boolean | null;
+  public toiletTrained!: boolean | null;
   public adoptionFee!: number | null;
   public intakeDate!: string;
+  public visible!: boolean;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
@@ -128,7 +131,10 @@ AnimalModel.init(
     dewormed: {
       type: DataTypes.BOOLEAN
     },
-    sterilized: {
+    sterilised: {
+      type: DataTypes.BOOLEAN
+    },
+    toiletTrained: {
       type: DataTypes.BOOLEAN
     },
     adoptionFee: {
@@ -138,6 +144,9 @@ AnimalModel.init(
     intakeDate: {
       type: DataTypes.DATEONLY,
       allowNull: false
+    },
+    visible: {
+      type: DataTypes.BOOLEAN
     },
     createdAt: {
       type: DataTypes.DATE,
