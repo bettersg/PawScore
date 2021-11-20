@@ -11,11 +11,13 @@ import authStrategy from "./config/passport";
 import setupSession from "./config/session";
 import { AnimalController } from "./controllers/animal";
 import { ShelterController } from "./controllers/shelter";
+import { HealthCheckController } from "./controllers/healthcheck";
 import { User as UserType } from "./models/user";
 import authRouteSetup from "./routes/auth";
 import bookingRouter from "./routes/booking";
 import uploadRouter from "./routes/upload";
 import userProfileRouter from "./routes/userProfile";
+import healthcheckRouter from "./routes/healthcheck";
 import { ApiErrorMiddleware } from "./utils/error";
 import { Actions, setupPermissions, Subjects } from "./authorization";
 import checkPageAuth from "./helpers/checkPageAuth";
@@ -72,12 +74,13 @@ app.use(
 // Routes
 authRouteSetup(app, passport);
 
+app.use("/api", healthcheckRouter);
 app.use("/api", bookingRouter);
 app.use("/api", uploadRouter);
 app.use("/api", userProfileRouter);
 
 useExpressServer(app, {
-	controllers: [AnimalController, ShelterController],
+	controllers: [AnimalController, ShelterController, HealthCheckController],
 	development: false,
 	defaultErrorHandler: false,
 	middlewares: [ApiErrorMiddleware],

@@ -1,12 +1,11 @@
 import dotenv from "dotenv";
-import path from "path";
 
 const env = process.env.NODE_ENV || "development";
 
 // eslint-disable-next-line
 const config: { [index: string]: any } = new Map<string, any>();
 
-dotenv.config({ path: path.resolve(__dirname + "/../../.env") });
+dotenv.config();
 
 config["development"] = {
 	databaseConfig: {

@@ -9,16 +9,16 @@ export class AnimalController {
     return animals.map(v => v.get({ plain: true }));
   }
 
+  // example of how errors will be caught and handled by middleware with the appropriate status code and message
+  @Get('/error')
+  async get(): Promise<void> {
+    throw new BadRequestError("Example error")
+  }
+
   @Get('/:id')
   @OnUndefined(404)
   async getById(@Param("id") id: string): Promise<AnimalAttributes | undefined> {
     const animal = await AnimalModel.findByPk(id, { include: [AnimalModel.associations.animalImages] });
     return animal?.get({ plain: true });
-  }
-
-  // example of how errors will be caught and handled by middleware with the appropriate status code and message
-  @Get('/error')
-  async get(): Promise<void> {
-    throw new BadRequestError("Example error")
   }
 }
