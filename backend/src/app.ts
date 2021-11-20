@@ -43,7 +43,7 @@ app.use(cors({ credentials: true, origin: config.frontendUrls }));
 app.use(express.json({ limit: "20mb" }));
 
 // error handler
-if (process.env.NODE_ENV === "development") {
+if (config.nodeEnv === "development") {
 	// only use in development
 	app.use(errorhandler());
 }
@@ -87,7 +87,7 @@ useExpressServer(app, {
 });
 
 // Swagger docs route
-if (process.env.NODE_ENV === "development") {
+if (config.nodeEnv === "development") {
 	app.use("/docs", express.static(__dirname + "/../../docs/"));
 }
 
