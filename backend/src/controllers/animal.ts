@@ -29,7 +29,13 @@ export class AnimalController {
     return animals.map((v) => v.get({ plain: true }));
   }
 
-  @Get("/:id")
+  // example of how errors will be caught and handled by middleware with the appropriate status code and message
+  @Get('/error')
+  async get(): Promise<void> {
+    throw new BadRequestError("Example error")
+  }
+
+  @Get('/:id')
   @OnUndefined(404)
   async getById(
     @Param("id") id: string
@@ -152,12 +158,6 @@ export class AnimalController {
     // records in animal image table are automatically deleted
     await animal.destroy();
     console.log(`Deleted animal with id ${animal.id}`);
-  }
-
-  // example of how errors will be caught and handled by middleware with the appropriate status code and message
-  @Get("/error")
-  async get(): Promise<void> {
-    throw new BadRequestError("Example error");
   }
 }
 
