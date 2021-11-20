@@ -22,9 +22,11 @@ export default {
         fur_length      VARCHAR,
         vaccinated      BOOLEAN,
         dewormed        BOOLEAN,
-        sterilized      BOOLEAN,
+        sterilised      BOOLEAN,
+        toilet_trained  BOOLEAN,
         adoption_fee    NUMERIC,
         intake_date     DATE    NOT NULL,
+        visible         BOOLEAN,
     
         created_at      TIMESTAMP        DEFAULT current_timestamp,
         updated_at      TIMESTAMP        DEFAULT current_timestamp

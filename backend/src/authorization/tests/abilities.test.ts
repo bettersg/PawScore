@@ -30,9 +30,27 @@ test("ADMIN has all permissions", () => {
 	});
 });
 
+test("SHELTER_ADMIN has correct permissions", () => {
+	const allowable: { [key: string]: string[] } = {
+		UserProfile: ["create:self", "read:self", "update:self"],
+		Animal: ["create:shelter", "update:shelter"],
+	};
+	const ability = defineRulesFor({ roles: ["SHELTER_ADMIN"] } as UserType);
+	allSubjects.forEach((subject) => {
+		const allowedActionsForSubject = allowable[subject] || [];
+		allActions.forEach((action) => {
+			if (allowedActionsForSubject.includes(action)) {
+				expect(ability.can(action, subject)).toBe(true);
+			} else {
+				expect(ability.can(action, subject)).toBe(false);
+			}
+		});
+	});
+});
+
 test("Basic authenticated user has some permissions", () => {
 	const allowable: { [key: string]: string[] } = {
-		UserProfile: ["create:self", "read:self", "update:self"]
+		UserProfile: ["create:self", "read:self", "update:self"],
 	};
 	const ability = defineRulesFor({ roles: ["A TEST ROLE"] } as UserType);
 	allSubjects.forEach((subject) => {

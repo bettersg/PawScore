@@ -1,12 +1,7 @@
+import { Species } from "@contract";
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database";
 import { toEnumValues } from "../utils/enumUtil";
-
-export enum Species {
-  Cat = "Cat",
-  Dog = "Dog",
-  Others = "Others"
-}
 
 export interface SpeciesAttributes {
   id: string;
@@ -15,7 +10,8 @@ export interface SpeciesAttributes {
   updatedAt: Date;
 }
 
-export class SpeciesModel extends Model<SpeciesAttributes>
+export class SpeciesModel
+  extends Model<SpeciesAttributes>
   implements SpeciesAttributes {
   public id!: string;
   public name!: Species;
@@ -40,10 +36,10 @@ SpeciesModel.init(
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-    }
+    },
   },
   {
     tableName: "species",
     sequelize, // passing the `sequelize` instance is required
-  }
+  },
 );
