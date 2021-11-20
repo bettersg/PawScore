@@ -36,6 +36,8 @@ On GCP
   - Save
 - Create new Cloud Run revision with updated environment variables
   - GCP > Cloud Run > pawscore-backend-dev > Edit & Deploy New Version button on top
+  - In particular, update `FRONTEND_URL` to be the actual URL link in browser
+  - Also updated `NODE_ENV` to `gcloud-development`
 
 On Github
 

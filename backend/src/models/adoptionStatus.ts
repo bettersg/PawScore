@@ -1,4 +1,4 @@
-import { AdoptionStatus } from "@contract";
+import { AdoptionStatus } from "../../../contract";
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database";
 import { toEnumValues } from "../utils/enumUtil";

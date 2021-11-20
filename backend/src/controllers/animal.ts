@@ -1,4 +1,4 @@
-import { AdoptionStatus, Species } from "@contract";
+import { AdoptionStatus, Species } from "../../../contract";
 import express from "express";
 import {
   BadRequestError,

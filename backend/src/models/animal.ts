@@ -1,4 +1,4 @@
-import { AdoptionStatus, Species } from "@contract";
+import { AdoptionStatus, Species } from "../../../contract";
 import { Association, DataTypes, Model, Optional, UUIDV4 } from "sequelize";
 import { sequelize } from "../database";
 import { numericStringtoFloat } from "../utils/modelType";
