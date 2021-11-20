@@ -1,42 +1,38 @@
-name: Build
+name: Build and Deploy to Development
 on:
   push:
     branches:
       - 'master'
 
 jobs:
-  build:
-    name: Build image
+  Build-Deploy-Development:
+    name: Build image, send to Artifact Registry, deploy to Cloud Run
     environment: development
     runs-on: ubuntu-latest
 
     env:
-      HASH: $(git rev-parse --short "$GITHUB_SHA")
-      BRANCH: ${GITHUB_REF##*/}
-      # SERVICE_NAME: ${{ secrets.SERVICE_NAME }}
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      # Setup gcloud CLI
-      - uses: google-github-actions/setup-gcloud@master
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@master
         with:
           service_account_key: ${{ secrets.GC_GITHUB_ACTIONS_SERVICE_ACCOUNT_KEY }}
           project_id: ${{ secrets.PROJECT_ID }}
           export_default_credentials: true
-
-      # Build docker image
-      - name: Image
+      - name: Build docker image
         run: |-
           docker build -f docker/Dockerfile -t asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:latest .
-      # docker build --build-arg -t eu.gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA .
-      # Configure docker to use the gcloud command-line tool as a credential helper
-      - run: |
+      - name: Configure docker to use the gcloud command-line tool as a credential helper
+        run: |
           gcloud auth configure-docker asia-southeast1-docker.pkg.dev
-
-      # Push image to Google Artifact Registry
-      - name: Build
+      - name: Push image to Google Artifact Registry
         run: |-
           docker push asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:latest
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@main
+        with:
+          image: asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:latest
+          service: ${{ secrets.SERVICE_NAME }}
