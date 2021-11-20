@@ -1,5 +1,4 @@
 import {
-	Sequelize,
 	Model,
 	Optional,
 	DataTypes,
@@ -7,17 +6,7 @@ import {
 	Association
 } from "sequelize";
 import { User } from "./user";
-
-// Initializing sequelize
-import allConfig from "../config/config";
-// eslint-disable-next-line
-const config: any = allConfig.databaseConfig;
-const sequelize = new Sequelize(
-	config.database,
-	config.username,
-	config.password,
-	config
-);
+import { sequelize } from "../database";
 
 // These are all the attributes for the model
 interface UserProfileAttributes {
