@@ -11,8 +11,10 @@ import {
   Param,
   Post,
   Put,
+  QueryParams,
   Req
 } from "routing-controllers";
+import { WhereOptions } from "sequelize/types";
 import { z } from "zod";
 import { sequelize } from "../database";
 import { AnimalAttributes, AnimalModel } from "../models/animal";
@@ -21,9 +23,22 @@ import { AnimalImageModel } from "../models/animalImage";
 @Controller("/api/animal")
 export class AnimalController {
   @Get("/")
-  async getAll(): Promise<AnimalAttributes[]> {
+  async getAll(@QueryParams() query: unknown): Promise<AnimalAttributes[]> {
+    const input = GetAnimalRequestQuerySchema.parse(query);
+
+    const whereOptions: WhereOptions<AnimalAttributes> = {};
+
+    if (input.shelterId !== undefined) {
+      whereOptions.shelterId = input.shelterId;
+    }
+
+    if (input.visible !== undefined) {
+      whereOptions.visible = input.visible;
+    }
+
     const animals = await AnimalModel.findAll({
-      include: [AnimalModel.associations.animalImages]
+      where: whereOptions,
+      include: [AnimalModel.associations.animalImages],
     });
     return animals.map((v) => v.get({ plain: true }));
   }
@@ -159,6 +174,11 @@ export class AnimalController {
     console.log(`Deleted animal with id ${animal.id}`);
   }
 }
+
+const GetAnimalRequestQuerySchema = z.object({
+  shelterId: z.string().uuid().optional(),
+  visible: z.enum(["true", "false"]).optional().transform((val) => val === "true")
+});
 
 const AnimalRequestBodySchema = z.object({
   shelterId: z.string().uuid(),
