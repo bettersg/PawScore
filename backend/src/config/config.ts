@@ -1,70 +1,79 @@
 import dotenv from "dotenv";
-
-const env = process.env.NODE_ENV || "development";
-
-// eslint-disable-next-line
-const config: { [index: string]: any } = new Map<string, any>();
-
+import { z } from "zod";
 dotenv.config();
 
-config["development"] = {
-	databaseConfig: {
-		username: process.env.DB_USER,
-		password: process.env.DB_PASS,
-		database: process.env.DB_DATABASE,
-		host: process.env.DB_HOST,
-		dialect: "postgres",
-		define: {
-			underscored: true,
-			underscoredAll: true
-		}
+const schema = z.object({
+	NODE_ENV: z.enum(["development", "test", "production"]),
+	FRONTEND_URL: z.string(),
+	DB_USER: z.string(),
+	DB_PASS: z.string(),
+	DB_DATABASE: z.string(),
+	DB_HOST: z.string(),
+	COOKIE_SECRET: z.string(),
+	EXPRESS_HOST: z.string(),
+	STORAGE_BUCKET_NAME: z.string(),
+	GOOGLE_SVC_ACCT_KEY: z.string(),
+	NEXT_SERVER_URL: z.string(),
+	DB_SOCKET_PATH: z.string(),
+});
+
+const validEnv = schema.parse(process.env);
+
+const databaseConfig = {
+	username: validEnv.DB_USER,
+	password: validEnv.DB_PASS,
+	database: validEnv.DB_DATABASE,
+	host: validEnv.DB_HOST,
+	dialect: "postgres",
+	define: {
+		underscored: true,
+		underscoredAll: true,
 	},
-	cookieSecret: process.env.COOKIE_SECRET || "secrete",
-	expressHost: process.env.EXPRESS_HOST || "127.0.0.1",
-	expressPort: 5000,
-	storageBucketName: process.env.STORAGE_BUCKET_NAME,
-	googleSvcAcctKey: process.env.GOOGLE_SVC_ACCT_KEY,
-	frontendUrl: process.env.FRONTEND_URL || "http://127.0.0.1:3000"
 };
 
-config["test"] = {
-	databaseConfig: {
-		username: process.env.DB_USER,
-		password: process.env.DB_PASS,
-		database: process.env.DB_DATABASE,
-		host: process.env.DB_HOST,
-		dialect: "postgres",
-		define: {
-			underscored: true,
-			underscoredAll: true
-		}
-	},
-	cookieSecret: process.env.COOKIE_SECRET,
-	expressHost: process.env.EXPRESS_HOST || "127.0.0.1",
+const otherConfigs = {
+	cookieSecret: validEnv.COOKIE_SECRET,
+	expressHost: validEnv.EXPRESS_HOST,
 	expressPort: 5000,
-	storageBucketName: process.env.STORAGE_BUCKET_NAME,
-	googleSvcAcctKey: process.env.GOOGLE_SVC_ACCT_KEY,
-	frontendUrl: process.env.FRONTEND_URL || "http://127.0.0.1:3000"
+	storageBucketName: validEnv.STORAGE_BUCKET_NAME,
+	googleSvcAcctKey: validEnv.GOOGLE_SVC_ACCT_KEY,
+	nextServerUrl: validEnv.NEXT_SERVER_URL,
+	frontendUrls: [
+		validEnv.FRONTEND_URL,
+		"http://127.0.0.1:3000",
+		"http://localhost:3000",
+	],
+	nodeEnv: validEnv.NODE_ENV,
 };
 
-config["production"] = {
-	databaseConfig: {
-		username: process.env.DB_USER,
-		password: process.env.DB_PASS,
-		database: process.env.DB_DATABASE,
-		host: process.env.DB_HOST,
-		dialect: "postgres",
-		define: {
-			underscored: true,
-			underscoredAll: true
-		}
+const config = {
+	development: {
+		databaseConfig,
+		...otherConfigs,
 	},
-	cookieSecret: process.env.COOKIE_SECRET,
-	expressHost: process.env.EXPRESS_HOST || "0.0.0.0",
-	expressPort: 5000,
-	storageBucketName: process.env.STORAGE_BUCKET_NAME,
-	googleSvcAcctKey: process.env.GOOGLE_SVC_ACCT_KEY,
-	frontendUrl: process.env.FRONTEND_URL || "http://127.0.0.1:3000"
+	"gcloud-development": {
+		databaseConfig: {
+			...databaseConfig,
+			dialectOptions: {
+				socketPath: validEnv.DB_SOCKET_PATH,
+			},
+		},
+		...otherConfigs,
+	},
+	test: {
+		databaseConfig,
+		...otherConfigs,
+	},
+	production: {
+		databaseConfig: {
+			...databaseConfig,
+			dialectOptions: {
+				socketPath: validEnv.DB_SOCKET_PATH,
+			},
+		},
+		...otherConfigs,
+		frontendUrls: [validEnv.FRONTEND_URL],
+	},
 };
 
-export default config[env];
+export default config[validEnv.NODE_ENV];
