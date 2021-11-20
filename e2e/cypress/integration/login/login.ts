@@ -2,8 +2,8 @@ import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 import * as faker from "faker";
 
 const URL = "/shelter/login";
-const email = "me@email.com";
-const password = "password";
+const email = Cypress.env("USER_EMAIL");
+const password = Cypress.env("USER_PASSWORD");
 
 Given(/the user open the login page/, () => {
   cy.visit(URL);

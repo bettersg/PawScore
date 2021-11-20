@@ -15,6 +15,7 @@
 const browserify = require("@cypress/browserify-preprocessor");
 const cucumber = require("cypress-cucumber-preprocessor").default;
 const resolve = require("resolve");
+const dotenvPlugin = require("cypress-dotenv");
 /**
  * @type {Cypress.PluginConfig}
  */
@@ -28,4 +29,7 @@ module.exports = (on, config) => {
     };
 
     on("file:preprocessor", cucumber(options));
+
+    config = dotenvPlugin(config);
+    return config;
 }
