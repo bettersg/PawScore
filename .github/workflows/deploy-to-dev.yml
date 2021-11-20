@@ -36,3 +36,4 @@ jobs:
         with:
           image: asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:latest
           service: ${{ secrets.SERVICE_NAME }}
+          region: asia-southeast1

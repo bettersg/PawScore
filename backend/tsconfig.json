@@ -20,5 +20,8 @@
 		"composite": true,
 		"noEmitOnError": true
 	},
-	"include": ["src/**/*", "../contract/**/*"]
+	"include": ["src/**/*", "../contract/**/*"],
+	"ts-node": {
+		"require": ["tsconfig-paths/register"]
+	}
 }
