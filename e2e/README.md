@@ -4,6 +4,11 @@
 
 * `npm ci` to install the packages
 
+## Configuration
+
+* Add `.env` with `.env.example` as template
+* Change the `baseUrl` property in `cypress.json`
+
 ## Writing a test
 
 * Create a Gherkin File (`sample.feature`) in `cypress\integration`
