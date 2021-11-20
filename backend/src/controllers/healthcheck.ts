@@ -1,4 +1,4 @@
-import { Species } from "@contract";
+import { Species } from "../../../contract";
 import { Controller, Get } from "routing-controllers";
 
 @Controller("/api/healthcheck")

@@ -16,15 +16,20 @@ config["development"] = {
 		dialect: "postgres",
 		define: {
 			underscored: true,
-			underscoredAll: true
-		}
+			underscoredAll: true,
+		},
 	},
-	cookieSecret: process.env.COOKIE_SECRET || "secrete",
+	cookieSecret: process.env.COOKIE_SECRET,
 	expressHost: process.env.EXPRESS_HOST || "127.0.0.1",
 	expressPort: 5000,
 	storageBucketName: process.env.STORAGE_BUCKET_NAME,
 	googleSvcAcctKey: process.env.GOOGLE_SVC_ACCT_KEY,
-	frontendUrl: process.env.FRONTEND_URL || "http://127.0.0.1:3000"
+	nextServerUrl: process.env.NEXT_SERVER_URL || "http://127.0.0.1:3000",
+	frontendUrls: [
+		...[process.env.FRONTEND_URL || []],
+		"http://127.0.0.1:3000",
+		"http://localhost:3000",
+	],
 };
 
 config["test"] = {
@@ -36,15 +41,20 @@ config["test"] = {
 		dialect: "postgres",
 		define: {
 			underscored: true,
-			underscoredAll: true
-		}
+			underscoredAll: true,
+		},
 	},
 	cookieSecret: process.env.COOKIE_SECRET,
 	expressHost: process.env.EXPRESS_HOST || "127.0.0.1",
 	expressPort: 5000,
 	storageBucketName: process.env.STORAGE_BUCKET_NAME,
 	googleSvcAcctKey: process.env.GOOGLE_SVC_ACCT_KEY,
-	frontendUrl: process.env.FRONTEND_URL || "http://127.0.0.1:3000"
+	nextServerUrl: process.env.NEXT_SERVER_URL || "http://127.0.0.1:3000",
+	frontendUrls: [
+		...[process.env.FRONTEND_URL || []],
+		"http://127.0.0.1:3000",
+		"http://localhost:3000",
+	],
 };
 
 config["production"] = {
@@ -56,15 +66,16 @@ config["production"] = {
 		dialect: "postgres",
 		define: {
 			underscored: true,
-			underscoredAll: true
-		}
+			underscoredAll: true,
+		},
 	},
 	cookieSecret: process.env.COOKIE_SECRET,
 	expressHost: process.env.EXPRESS_HOST || "0.0.0.0",
 	expressPort: 5000,
 	storageBucketName: process.env.STORAGE_BUCKET_NAME,
 	googleSvcAcctKey: process.env.GOOGLE_SVC_ACCT_KEY,
-	frontendUrl: process.env.FRONTEND_URL || "http://127.0.0.1:3000"
+	nextServerUrl: process.env.NEXT_SERVER_URL || "http://127.0.0.1:3000",
+	frontendUrls: [process.env.FRONTEND_URL],
 };
 
 export default config[env];
