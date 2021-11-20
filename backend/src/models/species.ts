@@ -10,7 +10,8 @@ export interface SpeciesAttributes {
   updatedAt: Date;
 }
 
-export class SpeciesModel extends Model<SpeciesAttributes>
+export class SpeciesModel
+  extends Model<SpeciesAttributes>
   implements SpeciesAttributes {
   public id!: string;
   public name!: Species;
@@ -35,10 +36,10 @@ SpeciesModel.init(
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-    }
+    },
   },
   {
     tableName: "species",
     sequelize, // passing the `sequelize` instance is required
-  }
+  },
 );

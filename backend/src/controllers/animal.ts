@@ -12,7 +12,7 @@ import {
   Post,
   Put,
   QueryParams,
-  Req
+  Req,
 } from "routing-controllers";
 import { WhereOptions } from "sequelize/types";
 import { z } from "zod";
@@ -44,18 +44,18 @@ export class AnimalController {
   }
 
   // example of how errors will be caught and handled by middleware with the appropriate status code and message
-  @Get('/error')
+  @Get("/error")
   async get(): Promise<void> {
-    throw new BadRequestError("Example error")
+    throw new BadRequestError("Example error");
   }
 
-  @Get('/:id')
+  @Get("/:id")
   @OnUndefined(404)
   async getById(
-    @Param("id") id: string
+    @Param("id") id: string,
   ): Promise<AnimalAttributes | undefined> {
     const animal = await AnimalModel.findByPk(id, {
-      include: [AnimalModel.associations.animalImages]
+      include: [AnimalModel.associations.animalImages],
     });
     return animal?.get({ plain: true });
   }
@@ -77,20 +77,20 @@ export class AnimalController {
   }
 
   private async createAnimal(
-    input: z.infer<typeof AnimalRequestBodySchema>
+    input: z.infer<typeof AnimalRequestBodySchema>,
   ): Promise<AnimalAttributes> {
     return await sequelize.transaction(async (transaction) => {
       const animal = await AnimalModel.create(input, {
-        transaction
+        transaction,
       });
 
       if (input.animalImages) {
         const animalImages = input.animalImages.map((image) => ({
           ...image,
-          animalId: animal.id
+          animalId: animal.id,
         }));
         await AnimalImageModel.bulkCreate(animalImages, {
-          transaction
+          transaction,
         });
       }
 
@@ -102,7 +102,7 @@ export class AnimalController {
   @OnUndefined(204)
   async update(
     @Param("id") id: string,
-    @Req() req: express.Request
+    @Req() req: express.Request,
   ): Promise<void> {
     const input = AnimalRequestBodySchema.parse(req.body);
     const animal = await AnimalModel.findByPk(id);
@@ -125,25 +125,25 @@ export class AnimalController {
 
   private async updateAnimal(
     animal: AnimalModel,
-    input: z.infer<typeof AnimalRequestBodySchema>
+    input: z.infer<typeof AnimalRequestBodySchema>,
   ): Promise<void> {
     return await sequelize.transaction(async (transaction) => {
       await animal.update(input, {
-        transaction
+        transaction,
       });
 
       await AnimalImageModel.destroy({
         transaction,
-        where: { animalId: animal.id }
+        where: { animalId: animal.id },
       });
 
       if (input.animalImages) {
         const animalImages = input.animalImages.map((image) => ({
           ...image,
-          animalId: animal.id
+          animalId: animal.id,
         }));
         await AnimalImageModel.bulkCreate(animalImages, {
-          transaction
+          transaction,
         });
       }
     });
@@ -153,7 +153,7 @@ export class AnimalController {
   @OnUndefined(204)
   async delete(
     @Param("id") id: string,
-    @Req() req: express.Request
+    @Req() req: express.Request,
   ): Promise<void> {
     const animal = await AnimalModel.findByPk(id);
 
@@ -177,7 +177,10 @@ export class AnimalController {
 
 const GetAnimalRequestQuerySchema = z.object({
   shelterId: z.string().uuid().optional(),
-  visible: z.enum(["true", "false"]).optional().transform((val) => val === "true")
+  visible: z
+    .enum(["true", "false"])
+    .optional()
+    .transform((val) => val === "true"),
 });
 
 const AnimalRequestBodySchema = z.object({
@@ -204,9 +207,9 @@ const AnimalRequestBodySchema = z.object({
   animalImages: z
     .object({
       photoUrl: z.string(),
-      thumbnailUrl: z.string()
+      thumbnailUrl: z.string(),
     })
     .array()
     .max(3)
-    .optional()
+    .optional(),
 });

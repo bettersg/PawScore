@@ -75,96 +75,96 @@ AnimalModel.init(
     id: {
       type: DataTypes.UUID,
       defaultValue: UUIDV4,
-      primaryKey: true
+      primaryKey: true,
     },
     shelterId: {
       type: DataTypes.UUIDV4,
-      allowNull: false
+      allowNull: false,
     },
     adoptionStatus: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     species: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     healthIssues: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     gender: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     ageMonths: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
     sizeCm: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
     breed: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     color: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     weightKg: {
       type: DataTypes.DECIMAL,
-      get: numericStringtoFloat("weightKg")
+      get: numericStringtoFloat("weightKg"),
     },
     furLength: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     vaccinated: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
     },
     dewormed: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
     },
     sterilised: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
     },
     toiletTrained: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
     },
     adoptionFee: {
       type: DataTypes.DECIMAL,
-      get: numericStringtoFloat("adoptionFee")
+      get: numericStringtoFloat("adoptionFee"),
     },
     intakeDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false
+      allowNull: false,
     },
     visible: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false
-    }
+      allowNull: false,
+    },
   },
   {
     tableName: "animal",
-    sequelize // passing the `sequelize` instance is required
-  }
+    sequelize, // passing the `sequelize` instance is required
+  },
 );
 
 AnimalModel.hasMany(AnimalImageModel, {
   sourceKey: "id",
   foreignKey: "animalId",
-  as: "animalImages"
+  as: "animalImages",
 });

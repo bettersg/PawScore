@@ -10,7 +10,8 @@ export interface AdoptionStatusAttributes {
   updatedAt: Date;
 }
 
-export class AdoptionStatusModel extends Model<AdoptionStatusAttributes>
+export class AdoptionStatusModel
+  extends Model<AdoptionStatusAttributes>
   implements AdoptionStatusAttributes {
   public id!: string;
   public status!: AdoptionStatus;
@@ -35,10 +36,10 @@ AdoptionStatusModel.init(
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-    }
+    },
   },
   {
     tableName: "adoption_status",
     sequelize, // passing the `sequelize` instance is required
-  }
+  },
 );
