@@ -24,6 +24,8 @@ const schema = z.object({
 
 const validEnv = schema.parse(process.env);
 
+const socket = "/cloudsql/" + validEnv.DB_SOCKET_PATH;
+
 const databaseConfig = {
 	username: validEnv.DB_USER,
 	password: validEnv.DB_PASS,
@@ -59,10 +61,7 @@ const config = {
 	"gcloud-development": {
 		databaseConfig: {
 			...databaseConfig,
-			dialectOptions: {
-				socketPath:
-					"/cloudsql/" + validEnv.DB_SOCKET_PATH + "/.s.PGSQL.5432",
-			},
+			host: socket,
 		},
 		...otherConfigs,
 	},
@@ -73,10 +72,7 @@ const config = {
 	production: {
 		databaseConfig: {
 			...databaseConfig,
-			dialectOptions: {
-				socketPath:
-					"/cloudsql/" + validEnv.DB_SOCKET_PATH + "/.s.PGSQL.5432",
-			},
+			host: socket,
 		},
 		...otherConfigs,
 		frontendUrls: [validEnv.FRONTEND_URL],
