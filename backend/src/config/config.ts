@@ -61,7 +61,7 @@ const config = {
 			...databaseConfig,
 			dialectOptions: {
 				socketPath:
-					"/cloudsql/" + validEnv.DB_SOCKET_PATH + "/.s.PGSQL.5432.",
+					"/cloudsql/" + validEnv.DB_SOCKET_PATH + "/.s.PGSQL.5432",
 			},
 		},
 		...otherConfigs,
@@ -75,7 +75,7 @@ const config = {
 			...databaseConfig,
 			dialectOptions: {
 				socketPath:
-					"/cloudsql/" + validEnv.DB_SOCKET_PATH + "/.s.PGSQL.5432.",
+					"/cloudsql/" + validEnv.DB_SOCKET_PATH + "/.s.PGSQL.5432",
 			},
 		},
 		...otherConfigs,
