@@ -32,7 +32,11 @@ On GCP
   - GCP > IAM & Admin > IAM
   - Search for github-actions service account
   - Click "Edit Principal"
-  - Add "Artifact Registry Writer" and "Cloud Run Admin"
+  - Add "Artifact Registry" > "Artifact Registry Writer" and "Cloud Run" > "Cloud Run Admin"
+  - Save
+  - Search for XXXXX-compute@developer.gserviceaccount.com
+  - Click "Edit Principal"
+  - Add "Cloud SQL" > "Cloud SQL Client"
   - Save
 - Create new Cloud Run revision with updated environment variables
   - GCP > Cloud Run > pawscore-backend-dev > Edit & Deploy New Version button on top
