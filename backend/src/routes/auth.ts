@@ -8,6 +8,8 @@ const authRouteSetup = (app: express.Application, passport: passport.PassportSta
     // eslint-disable-next-line
     passport.authenticate('local-signup', (error: Error, user: User, info) => {
       if (error !== null) {
+        console.log("Error in auth.ts > POST /api/register")
+        console.log(JSON.stringify(error))
         const result = {"status": "failed", "message": "Failed to register"};
         return res.status(400).send(JSON.stringify(result));
       } else {
@@ -27,6 +29,8 @@ const authRouteSetup = (app: express.Application, passport: passport.PassportSta
     // eslint-disable-next-line
     passport.authenticate('local-login', (err: Error, user: User, info) => {
       if (err) {
+        console.log("Error in auth.ts > POST /api/login")
+        console.log(JSON.stringify(err))
         return next(err);
       }
       if (!user) {

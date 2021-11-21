@@ -1,9 +1,8 @@
-import { Association, DataTypes, Model, Optional } from "sequelize";
+import { AdoptionStatus, Species } from "../../../contract";
+import { Association, DataTypes, Model, Optional, UUIDV4 } from "sequelize";
 import { sequelize } from "../database";
 import { numericStringtoFloat } from "../utils/modelType";
-import { AdoptionStatus } from "./adoptionStatus";
-import { AnimalImageAttributes, AnimalImageModel } from "./animalImage";
-import { Species } from "./species";
+import { AnimalImageModel } from "./animalImage";
 
 export interface AnimalAttributes {
   id: string;
@@ -22,19 +21,23 @@ export interface AnimalAttributes {
   furLength: string | null;
   vaccinated: boolean | null;
   dewormed: boolean | null;
-  sterilized: boolean | null;
+  sterilised: boolean | null;
+  toiletTrained: boolean | null;
   adoptionFee: number | null;
   intakeDate: string;
+  visible: boolean;
   createdAt: Date;
   updatedAt: Date;
-
-  animalImages?: AnimalImageAttributes[];
 }
 
 // Some attributes are optional in `Animal.build` and `Animal.create` calls
-export type AnimalCreationAttributes = Optional<AnimalAttributes, "id">
+export type AnimalCreationAttributes = Optional<
+  AnimalAttributes,
+  "id" | "createdAt" | "updatedAt"
+>;
 
-export class AnimalModel extends Model<AnimalAttributes, AnimalCreationAttributes>
+export class AnimalModel
+  extends Model<AnimalAttributes, AnimalCreationAttributes>
   implements AnimalAttributes {
   public id!: string;
   public shelterId!: string;
@@ -52,9 +55,11 @@ export class AnimalModel extends Model<AnimalAttributes, AnimalCreationAttribute
   public furLength!: string | null;
   public vaccinated!: boolean | null;
   public dewormed!: boolean | null;
-  public sterilized!: boolean | null;
+  public sterilised!: boolean | null;
+  public toiletTrained!: boolean | null;
   public adoptionFee!: number | null;
   public intakeDate!: string;
+  public visible!: boolean;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
@@ -68,7 +73,8 @@ export class AnimalModel extends Model<AnimalAttributes, AnimalCreationAttribute
 AnimalModel.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
       primaryKey: true,
     },
     shelterId: {
@@ -81,60 +87,66 @@ AnimalModel.init(
     },
     species: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     healthIssues: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     gender: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     ageMonths: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
     sizeCm: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
     breed: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     color: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     weightKg: {
       type: DataTypes.DECIMAL,
-      get: numericStringtoFloat("weightKg")
+      get: numericStringtoFloat("weightKg"),
     },
     furLength: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     vaccinated: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
     },
     dewormed: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
     },
-    sterilized: {
-      type: DataTypes.BOOLEAN
+    sterilised: {
+      type: DataTypes.BOOLEAN,
+    },
+    toiletTrained: {
+      type: DataTypes.BOOLEAN,
     },
     adoptionFee: {
       type: DataTypes.DECIMAL,
-      get: numericStringtoFloat("adoptionFee")
+      get: numericStringtoFloat("adoptionFee"),
     },
     intakeDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false
+      allowNull: false,
+    },
+    visible: {
+      type: DataTypes.BOOLEAN,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -143,16 +155,16 @@ AnimalModel.init(
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-    }
+    },
   },
   {
     tableName: "animal",
     sequelize, // passing the `sequelize` instance is required
-  }
+  },
 );
 
 AnimalModel.hasMany(AnimalImageModel, {
   sourceKey: "id",
   foreignKey: "animalId",
-  as: "animalImages"
+  as: "animalImages",
 });

@@ -3,6 +3,7 @@ import { QueryInterface } from "sequelize";
 const SHELTER_ID = "e9c4fb2c-e5bb-4d14-be23-6c264130be88";
 const ANIMAL_ID_CAT_1 = "377fee7f-37cb-4aaf-a805-b41eaa6bf590";
 const ANIMAL_ID_DOG_1 = "de810095-533e-4be9-80eb-a85baeac835d";
+const SHELTER_ADMIN_ID = "f3b4b2e7-fcf0-4317-9dc3-c5647d4ddca4";
 
 export default {
   up: async (queryInterface: QueryInterface): Promise<void> => {
@@ -16,11 +17,22 @@ export default {
       }
     ]);
 
+    await queryInterface.bulkInsert("user", [
+      {
+        id: SHELTER_ADMIN_ID,
+        username: "spca_admin",
+        email: "spca_admin@example.com",
+        password: "$2b$08$kSj3WRXt8nJxoblS.syg.eWTej/DKHqEtyKMYPwnnutVlMDKn7BeW", // password
+        roles: JSON.stringify(["SHELTER_ADMIN"]),
+        shelter_id: SHELTER_ID
+      }
+    ]);
+
     await queryInterface.bulkInsert("animal", [
       {
         id: ANIMAL_ID_CAT_1,
         shelter_id: SHELTER_ID,
-        adoption_status: "Ongoing",
+        adoption_status: "Healthy",
         adoption_fee: 50,
         species: "Cat",
         name: "Tom",
@@ -35,13 +47,15 @@ export default {
         fur_length: "long hair",
         vaccinated: false,
         dewormed: false,
-        sterilized: false,
-        intake_date: "2021-08-27"
+        sterilised: false,
+        toilet_trained: true,
+        intake_date: "2021-08-27",
+        visible: true
       },
       {
         id: ANIMAL_ID_DOG_1,
         shelter_id: SHELTER_ID,
-        adoption_status: "Ongoing",
+        adoption_status: "Healthy",
         adoption_fee: 50,
         species: "Dog",
         name: "Toto",
@@ -56,8 +70,10 @@ export default {
         fur_length: "long hair",
         vaccinated: false,
         dewormed: false,
-        sterilized: false,
-        intake_date: "2021-08-29"
+        sterilised: false,
+        toilet_trained: false,
+        intake_date: "2021-08-29",
+        visible: true
       }
     ]);
 
@@ -77,6 +93,7 @@ export default {
   down: async (queryInterface: QueryInterface): Promise<void> => {
     await queryInterface.bulkDelete("animal_image", { animal_id: [ANIMAL_ID_CAT_1, ANIMAL_ID_DOG_1] });
     await queryInterface.bulkDelete("animal", { id: [ANIMAL_ID_CAT_1, ANIMAL_ID_DOG_1] });
+    await queryInterface.bulkDelete("user", { shelter_id: SHELTER_ID });
     await queryInterface.bulkDelete("shelter", { id: SHELTER_ID });
   }
 };

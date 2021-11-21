@@ -1,0 +1,4 @@
+{
+  "baseUrl": "https://pawscore-backend-dev-va6gtphz3q-as.a.run.app/",
+  "testFiles": "**/*.feature"
+}

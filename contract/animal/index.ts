@@ -1,12 +1,12 @@
-export enum Status {
-	HEALTHY = "Healthy",
-	SICK = "Sick",
-	FOSTERED = "Fostered",
-	ADOPTED = "Adopted",
+export enum Species {
+	Cat = "Cat",
+	Dog = "Dog",
+	Others = "Others",
 }
 
-export enum Species {
-	CAT = "Cat",
-	DOG = "Dog",
-	RABBIT = "Rabbit",
+export enum AdoptionStatus {
+	Fostered = "Fostered",
+	Adopted = "Adopted",
+	Sick = "Sick",
+	Healthy = "Healthy",
 }

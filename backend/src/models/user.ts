@@ -1,16 +1,6 @@
 'use strict';
-import { DataTypes, Model, Optional, Sequelize, UUIDV4 } from "sequelize";
-// Initializing sequelize
-import allConfig from "../config/config";
-
-// eslint-disable-next-line 
-const config: any = allConfig.databaseConfig;
-const sequelize = new Sequelize(
-	config.database,
-	config.username,
-	config.password,
-	config
-);
+import { DataTypes, Model, Optional, UUIDV4 } from "sequelize";
+import { sequelize } from "../database";
 
 // These are all the attributes for the model
 interface UserAttributes {

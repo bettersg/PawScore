@@ -3,19 +3,22 @@ import { QueryInterface } from "sequelize";
 export default {
 	up: async (queryInterface: QueryInterface): Promise<void> => {
 		await queryInterface.sequelize.query(`
-    CREATE TABLE "booking"
+    CREATE TABLE species
     (
-        id         UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-        shelter_id UUID NOT NULL REFERENCES shelter (id),
-        user_id    UUID NOT NULL REFERENCES "user" (id),
-        start_date TIMESTAMP,
-        end_date   TIMESTAMP,
+        id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        name       VARCHAR UNIQUE NOT NULL,
         created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
         updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp
     );
     `);
+
+		await queryInterface.bulkInsert("species", [
+			{ name: "Cat" },
+			{ name: "Dog" },
+			{ name: "Others" },
+		]);
 	},
 	down: async (queryInterface: QueryInterface): Promise<void> => {
-		await queryInterface.dropTable("booking");
+		await queryInterface.dropTable("species");
 	},
 };

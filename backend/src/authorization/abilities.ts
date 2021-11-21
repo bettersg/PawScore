@@ -21,7 +21,8 @@ function defineRulesFor(user?: UserType): Ability<[Actions, Subjects]> {
 	cannot("delete", "UserProfile");
 
 	if (user.roles.includes("SHELTER_ADMIN")) {
-		// can("update:shelter", "Animal");
+		can("create:shelter", "Animal");
+		can("update:shelter", "Animal");
 	}
 	if (user.roles.includes("SHELTER_SUPER_ADMIN")) {
 		// can("create:shelter", "Animal");
@@ -47,5 +48,5 @@ function defineRulesFor(user?: UserType): Ability<[Actions, Subjects]> {
 }
 
 export default {
-	defineRulesFor
+	defineRulesFor,
 };

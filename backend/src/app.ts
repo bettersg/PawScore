@@ -5,6 +5,7 @@ import passport from "passport";
 import "reflect-metadata";
 import { useExpressServer } from "routing-controllers";
 import { Ability } from "@casl/ability";
+import cors from "cors";
 import config from "./config/config";
 import authStrategy from "./config/passport";
 import setupSession from "./config/session";
@@ -37,10 +38,12 @@ const app = express();
 const port = config.expressPort;
 const host = config.expressHost;
 
+app.use(cors({ credentials: true, origin: config.frontendUrls }));
+
 app.use(express.json({ limit: "20mb" }));
 
 // error handler
-if (process.env.NODE_ENV === "development") {
+if (config.nodeEnv === "development") {
 	// only use in development
 	app.use(errorhandler());
 }
@@ -84,11 +87,11 @@ useExpressServer(app, {
 });
 
 // Swagger docs route
-if (process.env.NODE_ENV === "development") {
+if (config.nodeEnv === "development") {
 	app.use("/docs", express.static(__dirname + "/../../docs/"));
 }
 
-app.use("/", checkPageAuth, proxy(config.frontendUrl));
+app.use("/", checkPageAuth, proxy(config.nextServerUrl));
 
 // logging of routes...
 app._router.stack.forEach((r: any) => {

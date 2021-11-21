@@ -22,7 +22,7 @@ export default {
 				username: "alice",
 				email: "alice@gmail.com",
 				password: "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8",
-				role: "ADOPTER",
+				roles: JSON.stringify(["ADOPTER"]),
 				shelter_id: SHELTER_ID
 			},
 			{
@@ -30,7 +30,7 @@ export default {
 				username: "bob",
 				email: "bob@gmail.com",
 				password: "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8",
-				role: "ADOPTER",
+				roles: JSON.stringify(["ADOPTER"]),
 				shelter_id: SHELTER_ID
 			}
 		]);

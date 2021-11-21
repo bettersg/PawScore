@@ -27,7 +27,6 @@ const create = async (req: Request, res: Response): Promise<Response> => {
 	const reqSchema = z.object({
 		body: z.object({
 			userId: z.string().uuid(),
-			email: z.string().email(),
 			phoneNo: z.string(),
 			nric: z.string(),
 			firstName: z.string(),
@@ -36,17 +35,17 @@ const create = async (req: Request, res: Response): Promise<Response> => {
 				.string()
 				.refine(
 					(val) => val.match(/^\d{4}-\d{2}-\d{2}$/),
-					"dob should be in 'YYYY-MM-DD' format."
+					"dob should be in 'YYYY-MM-DD' format.",
 				)
 				.refine(
 					(date) => new Date(date) < new Date(),
-					"dob should not in the future."
+					"dob should not in the future.",
 				),
 			gender: z.string().refine((val) => ["F", "M"].includes(val)),
 			occupation: z.string(),
 			address: z.string(),
-			postalCode: z.string()
-		})
+			postalCode: z.string(),
+		}),
 	});
 	const { body } = reqSchema.parse(req);
 
@@ -80,13 +79,13 @@ const find = async (req: Request, res: Response): Promise<Response> => {
 const get = async (req: Request, res: Response): Promise<Response> => {
 	const reqSchema = z.object({
 		params: z.object({
-			userProfileId: z.string().uuid()
-		})
+			userProfileId: z.string().uuid(),
+		}),
 	});
 	const { params } = reqSchema.parse(req);
 
 	const userProfile = await UserProfile.findOne({
-		where: { id: params.userProfileId }
+		where: { id: params.userProfileId },
 	});
 	if (userProfile === null) {
 		return res.status(StatusCodes.NOT_FOUND).send();
@@ -109,10 +108,9 @@ const get = async (req: Request, res: Response): Promise<Response> => {
 const update = async (req: Request, res: Response): Promise<Response> => {
 	const reqSchema = z.object({
 		params: z.object({
-			userProfileId: z.string().uuid()
+			userProfileId: z.string().uuid(),
 		}),
 		body: z.object({
-			email: z.string().email().optional(),
 			phoneNo: z.string().optional(),
 			nric: z.string().optional(),
 			firstName: z.string().optional(),
@@ -121,11 +119,11 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 				.string()
 				.refine(
 					(val) => val.match(/^\d{4}-\d{2}-\d{2}$/),
-					"dob should be in 'YYYY-MM-DD' format."
+					"dob should be in 'YYYY-MM-DD' format.",
 				)
 				.refine(
 					(date) => new Date(date) < new Date(),
-					"dob should not in the future."
+					"dob should not in the future.",
 				)
 				.optional(),
 			gender: z
@@ -134,8 +132,8 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 				.optional(),
 			occupation: z.string().optional(),
 			address: z.string().optional(),
-			postalCode: z.string().optional()
-		})
+			postalCode: z.string().optional(),
+		}),
 	});
 
 	const { params, body } = reqSchema.parse(req);
@@ -145,7 +143,7 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 		// Continue
 	} else if (req.ability.can("update:self", "UserProfile")) {
 		const userProfile = await UserProfile.findOne({
-			where: { id: params.userProfileId }
+			where: { id: params.userProfileId },
 		});
 		if (userProfile?.userId !== req.user.id) {
 			return res.status(StatusCodes.FORBIDDEN).send();
@@ -156,7 +154,7 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 
 	const [count, userProfileArr] = await UserProfile.update(body, {
 		where: { id: params.userProfileId },
-		returning: true
+		returning: true,
 	});
 	if (count === 0) {
 		return res.status(StatusCodes.NOT_FOUND).send();
@@ -167,8 +165,8 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 const destroy = async (req: Request, res: Response): Promise<Response> => {
 	const reqSchema = z.object({
 		params: z.object({
-			userProfileId: z.string().uuid()
-		})
+			userProfileId: z.string().uuid(),
+		}),
 	});
 	const { params } = reqSchema.parse(req);
 
@@ -177,7 +175,7 @@ const destroy = async (req: Request, res: Response): Promise<Response> => {
 		// Continue
 	} else if (req.ability.can("delete:self", "UserProfile")) {
 		const userProfile = await UserProfile.findOne({
-			where: { id: params.userProfileId }
+			where: { id: params.userProfileId },
 		});
 		if (userProfile?.userId !== req.user.id) {
 			return res.status(StatusCodes.FORBIDDEN).send();
@@ -187,7 +185,7 @@ const destroy = async (req: Request, res: Response): Promise<Response> => {
 	}
 
 	await UserProfile.destroy({
-		where: { id: params.userProfileId }
+		where: { id: params.userProfileId },
 	});
 	return res.send();
 };
@@ -197,5 +195,5 @@ export default {
 	create: controllerWrapper(create),
 	get: controllerWrapper(get),
 	update: controllerWrapper(update),
-	destroy: controllerWrapper(destroy)
+	destroy: controllerWrapper(destroy),
 };

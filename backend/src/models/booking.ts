@@ -1,37 +1,34 @@
-'use strict';
-import { Sequelize, Model, Optional, DataTypes, UUIDV4 } from "sequelize";
-
-// Initializing sequelize
-import allConfig from "../config/config";
-// eslint-disable-next-line 
-const config: any = allConfig.databaseConfig;
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
+"use strict";
+import { Model, Optional, DataTypes, UUIDV4 } from "sequelize";
+import { sequelize } from "../database";
 
 // These are all the attributes for the model
 interface BookingAttributes {
-  id: string;
-  shelterId: string;
-  userId: string;
-  startDate: Date;
-  endDate: Date;
+	id: string;
+	shelterId: string;
+	userId: string;
+	startDate: Date | null;
+	endDate: Date | null;
 }
 
 // Some attributes are optional in model.build() or model.create()
-type BookingCreationAttributes = Optional<BookingAttributes, "id">
+type BookingCreationAttributes = Optional<BookingAttributes, "id">;
 
-class Booking extends Model<BookingAttributes, BookingCreationAttributes>
-  implements BookingAttributes {
-  public id!: string;
-  public shelterId!: string;
-  public userId!: string;
-  public startDate!: Date;
-  public endDate!: Date;
+class Booking
+	extends Model<BookingAttributes, BookingCreationAttributes>
+	implements BookingAttributes
+{
+	public id!: string;
+	public shelterId!: string;
+	public userId!: string;
+	public startDate!: Date | null;
+	public endDate!: Date | null;
 
-  // timestamps!
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+	// timestamps!
+	public readonly createdAt!: Date;
+	public readonly updatedAt!: Date;
 
-  /*  The below are examples from https://sequelize.org/master/manual/typescript.html
+	/*  The below are examples from https://sequelize.org/master/manual/typescript.html
    *  They will be used for associations
    *
   // Since TS cannot determine model association at compile time
@@ -56,34 +53,33 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes>
 }
 
 Booking.init(
-  {
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: UUIDV4,
-      primaryKey: true,
-    },
-    shelterId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    userId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
-    startDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    endDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-  },
-  {
-    tableName: "booking",
-    sequelize, // passing the `sequelize` instance is required
-  }
+	{
+		id: {
+			type: DataTypes.UUID,
+			defaultValue: UUIDV4,
+			primaryKey: true,
+		},
+		shelterId: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+		},
+		userId: {
+			type: DataTypes.UUID,
+			allowNull: false,
+		},
+		startDate: {
+			type: DataTypes.DATE,
+			allowNull: true,
+		},
+		endDate: {
+			type: DataTypes.DATE,
+			allowNull: true,
+		},
+	},
+	{
+		tableName: "booking",
+		sequelize, // passing the `sequelize` instance is required
+	},
 );
 
 export { Booking, BookingCreationAttributes, BookingAttributes };
-
