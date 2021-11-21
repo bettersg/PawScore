@@ -155,9 +155,9 @@ const FormSectionOne = ({
 				<Radio.Group
 					value={pet.sterilised}
 					onChange={(e) => onRadioChange(e, "sterilised")}>
-					<Radio value="yes">Yes</Radio>
-					<Radio value="no">No</Radio>
-					<Radio value="others">Others</Radio>
+					<Radio value="Yes">Yes</Radio>
+					<Radio value="No">No</Radio>
+					<Radio value="Others">Others</Radio>
 				</Radio.Group>
 			}
 			marginBottom={0}

@@ -1,7 +1,7 @@
 import { ImportOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Input, Table } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
-import { FurLength, PetData, Sex, Species, Status } from "common/enums";
+import { FurLength, PetData, Sex, Species, Status, Sterilised } from "common/enums";
 import React from "react";
 import styled from "styled-components";
 import TableName from "./components/Name";
@@ -117,7 +117,7 @@ const PetTableDisplay = () => {
 			status: Status.ADOPTED,
 			furLength: Math.random() > 0.5 ? FurLength.SHORT : FurLength.LONG,
 			medicalIssues: [],
-			sterilised: Math.random() > 0.5 ? "yes" : "no",
+			sterilised: Math.random() > 0.5 ? Sterilised.YES : Sterilised.NO,
 			dateOfBirth: new Date(),
 			furColor: [],
 			toiletTrained: Math.random() > 0.5 ? true : false

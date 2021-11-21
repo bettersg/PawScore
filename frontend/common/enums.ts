@@ -26,7 +26,11 @@ export enum FurLength {
 	CUT = "Cut"
 }
 
-export type Sterilised = "yes" | "no" | "others";
+export enum Sterilised {
+	YES = "Yes",
+	NO = "No",
+	OTHERS = "Others"
+}
 
 export type PetData = {
 	key: string;

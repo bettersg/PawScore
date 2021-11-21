@@ -2,7 +2,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, RadioChangeEvent } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Title from "antd/lib/typography/Title";
-import { FurLength, PetData, Sex, Species, Status } from "common/enums";
+import { FurLength, PetData, Sex, Species, Status, Sterilised } from "common/enums";
 import {
 	FormSection,
 	ImageSection
@@ -25,7 +25,7 @@ export default function AddNewPet() {
 		breed: "",
 		furLength: FurLength.SHORT,
 		medicalIssues: [],
-		sterilised: "yes",
+		sterilised: Sterilised.YES,
 		dateOfBirth: new Date(),
 		furColor: [],
 		toiletTrained: true

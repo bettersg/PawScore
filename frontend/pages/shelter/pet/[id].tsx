@@ -1,6 +1,6 @@
 import { Breadcrumb } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import { FurLength, PetData, Sex, Species, Status } from "common/enums";
+import { FurLength, PetData, Sex, Species, Status, Sterilised } from "common/enums";
 import PetDetailsSection from "components/shelter/pet/PetDetailsSection";
 import ProspectiveAdopters from "components/shelter/pet/ProspectiveAdopters";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
@@ -26,7 +26,7 @@ export const defaultPet: PetData = {
 	sex: Sex.MALE,
 	furLength: FurLength.SHORT,
 	medicalIssues: ["asthma"],
-	sterilised: "yes",
+	sterilised: Sterilised.YES,
 	dateOfBirth: new Date(),
 	furColor: ["white", "brown"],
 	toiletTrained: true
