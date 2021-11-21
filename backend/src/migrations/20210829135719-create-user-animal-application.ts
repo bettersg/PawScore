@@ -1,8 +1,8 @@
 import { QueryInterface } from "sequelize";
 
 export default {
-  up: async (queryInterface: QueryInterface): Promise<void> => {
-    await queryInterface.sequelize.query(`
+	up: async (queryInterface: QueryInterface): Promise<void> => {
+		await queryInterface.sequelize.query(`
     CREATE TABLE user_animal_application
     (
         id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -13,12 +13,12 @@ export default {
         reason_for_adoption VARCHAR,
         rejection_reason    VARCHAR,
         adoption_fee        NUMERIC NOT NULL,
-        created_at          TIMESTAMP        DEFAULT current_timestamp,
-        updated_at          TIMESTAMP        DEFAULT current_timestamp
+        created_at          TIMESTAMP NOT NULL DEFAULT current_timestamp,
+        updated_at          TIMESTAMP NOT NULL DEFAULT current_timestamp
     );
     `);
-  },
-  down: async (queryInterface: QueryInterface): Promise<void> => {
-    await queryInterface.dropTable('user_animal_application');
-  }
+	},
+	down: async (queryInterface: QueryInterface): Promise<void> => {
+		await queryInterface.dropTable("user_animal_application");
+	},
 };
