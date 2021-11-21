@@ -2,11 +2,17 @@ import { Shelter, Species, AdoptionStatus } from "@contract";
 import { BaseApi } from "./baseApi";
 
 export class PetApi extends BaseApi {
-	public async fetchShelterPets({
-		shelterId,
-	}: Shelter.fetchPetsApiDomain.requestBody): Promise<Shelter.fetchPetsApiDomain.response> {
-		// const ENDPOINT = Shelter.fetchPetsApiDomain.endpoint;
-		// this.post(ENDPOINT, { shelterId });
+	public async fetchShelterPets(
+		shelterId: string,
+	): Promise<Shelter.fetchPetsApiDomain.response> {
+		// const query: Shelter.fetchPetsApiDomain.requestQuery = {
+		// 	shelterId,
+		// };
+		// const res = await this.fetch(
+		// 	Shelter.fetchPetsApiDomain.method,
+		// 	Shelter.fetchPetsApiDomain.endpoint,
+		// 	query,
+		// );
 		await delay();
 		return generateMockPetData();
 	}

@@ -15,20 +15,22 @@ const Home = () => {
 	const [petData, setPetData] = useState<Shelter.PetDataItem[]>([]);
 	const [loading, setLoading] = useState(true);
 
-	const shelterId = Number(id);
+	const isValidShelterId = (id: string) => {
+		return true;
+	};
 
 	useEffect(() => {
-		if (isNaN(shelterId)) return;
+		if (!isValidShelterId(id as string)) return;
 
 		const fetchPetData = async () => {
-			const res = await new PetApi().fetchShelterPets({ shelterId });
+			const res = await new PetApi().fetchShelterPets(id as string);
 			setPetData(res);
 			setLoading(false);
 		};
 		fetchPetData();
-	}, [shelterId]);
+	}, [id]);
 
-	if (id && isNaN(shelterId)) {
+	if (id && isValidShelterId(id as string)) {
 		return <ErrorPage statusCode={404} />;
 	}
 

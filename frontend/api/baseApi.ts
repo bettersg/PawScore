@@ -1,4 +1,5 @@
 import { AxiosInstance } from "axios";
+import { Methods } from "@contract";
 import createAxiosInstance from "./createAxiosInstance";
 
 export class BaseApi {
@@ -7,15 +8,28 @@ export class BaseApi {
 		this.client = createAxiosInstance();
 	}
 
-	protected get(url: string, params?: Record<string, any>) {
+	private get(url: string, params?: Record<string, any>) {
 		return this.client.get(url, {
 			params,
 		});
 	}
 
-	protected post(url: string, body?: Record<string, any>) {
+	private post(url: string, body?: Record<string, any>) {
 		return this.client.post(url, {
 			body,
 		});
+	}
+
+	protected fetch(
+		method: Methods,
+		url: string,
+		params?: Record<string, any>,
+	) {
+		switch (method) {
+			case Methods.GET:
+				return this.get(url, params);
+			case Methods.POST:
+				return this.post(url, params);
+		}
 	}
 }
