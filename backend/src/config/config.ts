@@ -60,7 +60,7 @@ const config = {
 		databaseConfig: {
 			...databaseConfig,
 			dialectOptions: {
-				socketPath: validEnv.DB_SOCKET_PATH,
+				socketPath: "/cloudsql/" + validEnv.DB_SOCKET_PATH,
 			},
 		},
 		...otherConfigs,
@@ -73,7 +73,7 @@ const config = {
 		databaseConfig: {
 			...databaseConfig,
 			dialectOptions: {
-				socketPath: validEnv.DB_SOCKET_PATH,
+				socketPath: "/cloudsql/" + validEnv.DB_SOCKET_PATH,
 			},
 		},
 		...otherConfigs,
