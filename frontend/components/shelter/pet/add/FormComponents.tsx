@@ -2,7 +2,7 @@ import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { DatePicker, Input, Radio, RadioChangeEvent, Select } from "antd";
 import { FurLength, PetData, Sex, Species } from "common/enums";
 import moment from "moment";
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, ReactNode, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 interface ImageSectionProps extends ImageGalleryProps { }
@@ -24,6 +24,13 @@ export const ImageSection = ({
 
 interface FormSectionProps {
 	pet: PetData;
+	onValueChange: (
+		e: ChangeEvent<HTMLInputElement>,
+		key: keyof Pick<
+			PetData,
+			"name"
+		>
+	) => void;
 	onRadioChange: (
 		e: RadioChangeEvent,
 		key: keyof Pick<
@@ -167,13 +174,14 @@ const FormSectionOne = ({
 
 const FormSectionTwo = ({
 	pet,
+	onValueChange,
 	onRadioChange,
 	onDateChange,
 	onSelectChange
 }: FormSectionProps) => (
 	<div>
 		<div style={{ height: 46 }} />
-		<DataField required label="Name" data={<Input value={pet.name} />} />
+		<DataField required label="Name" data={<Input value={pet.name} onChange={(e) => onValueChange(e, "name")}/>} />
 		<DataField
 			required
 			label="Status"

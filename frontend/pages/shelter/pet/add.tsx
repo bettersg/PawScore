@@ -9,7 +9,7 @@ import {
 } from "components/shelter/pet/add/FormComponents";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
 import moment from "moment";
-import React, { useCallback, useState } from "react";
+import React, { ChangeEvent, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 
 export default function AddNewPet() {
@@ -30,6 +30,13 @@ export default function AddNewPet() {
 		furColor: [],
 		toiletTrained: true
 	});
+
+	const onValueChange = (e: ChangeEvent<HTMLInputElement>, key: keyof Pick<
+		PetData,
+		"name"
+	>) => {
+		setPet((prev) => ({ ...prev, [key]: e.target.value }));
+	}
 
 	const onRadioChange = (
 		e: RadioChangeEvent,
@@ -99,12 +106,14 @@ export default function AddNewPet() {
 							onRadioChange={onRadioChange}
 							onDateChange={onDateChange}
 							onSelectChange={onSelectChange}
+							onValueChange={onValueChange}
 						/>
 						<FormSection.SectionTwo
 							pet={pet}
 							onRadioChange={onRadioChange}
 							onDateChange={onDateChange}
 							onSelectChange={onSelectChange}
+							onValueChange={onValueChange}
 						/>
 					</Flex>
 				</InnerContent>
