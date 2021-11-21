@@ -78,6 +78,76 @@ export default function AddNewPet() {
 		setPet((prev) => ({ ...prev, images }));
 	}, []);
 
+	const isFormValidated = useMemo(() => {
+		const dateKeys: (keyof Pick<PetData, "dateOfBirth" | "acquired">)[] = [
+			"dateOfBirth",
+			"acquired",
+		];
+
+		for (const key of dateKeys) {
+			if (!moment(pet[key]).isValid() || pet[key].toString) {
+				return false;
+			}
+		}
+
+		const yesnoKeys: (keyof Pick<PetData, "toiletTrained" | "visible">)[] = [
+			"toiletTrained",
+			"visible",
+		];
+
+		for (const key of yesnoKeys) {
+			if (typeof pet[key] !== "boolean" || typeof pet[key] === "undefined") {
+				return false;
+			}
+		}
+
+		const stringKeys: (keyof Pick<PetData, "name" | "images" | "breed" | "medicalIssues" | "furColor">)[] = [
+			"name",
+			"images",
+			"breed",
+			"medicalIssues",
+			"furColor",
+		];
+
+		for (const key of stringKeys) {
+			const val = (Array.isArray(pet[key]) ? pet[key] : [pet[key]]) as string[];
+			if (val.length < 1 || !val.every((p) => typeof p === "string")|| !val.every((p) => p.length > 0)) {
+				return false;
+			}
+		}
+
+		const enumKeys: { key: keyof Partial<PetData>; type: any }[] = [
+			{
+				key: "sex",
+				type: Sex,
+			},
+			{
+				key: "species",
+				type: Species,
+			},
+			{
+				key: "status",
+				type: Status,
+			},
+			{
+				key: "furLength",
+				type: FurLength,
+			},
+			{
+				key: "sterilised",
+				type: Sterilised,
+			},
+		];
+
+		for (const enums of enumKeys) {
+			if (!Object.values(enums.type).includes(pet[enums.key])) {
+				return false;
+			}
+		}
+
+		return true;
+	}, [pet]);
+
 	return (
 		<ShelterLayout>
 			<Container>
@@ -90,7 +160,11 @@ export default function AddNewPet() {
 						<Title level={5}>Pet Details</Title>
 						<div>
 							<Button style={{ marginRight: 8 }}>Cancel</Button>
-							<Button type="primary" icon={<EditOutlined />}>
+							<Button
+								type="primary"
+								icon={<EditOutlined />}
+								disabled={!isFormValidated}
+							>
 								Save
 							</Button>
 						</div>
