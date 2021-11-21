@@ -1,4 +1,4 @@
-import { Species, Status } from "@contract";
+import { Species, AdoptionStatus } from "@contract";
 
 // =============================================================================
 // Tag/Pill Data
@@ -20,35 +20,35 @@ export enum PillColor {
 }
 
 export const SpeciesTags = {
-	[Species.DOG]: {
+	[Species.Dog]: {
 		color: PillColor.GOLD,
-		text: Species.DOG.toLowerCase(),
+		text: Species.Dog.toLowerCase(),
 	},
-	[Species.CAT]: {
+	[Species.Cat]: {
 		color: PillColor.RED,
-		text: Species.CAT.toLowerCase(),
+		text: Species.Cat.toLowerCase(),
 	},
-	[Species.RABBIT]: {
+	[Species.Others]: {
 		color: PillColor.BLUE,
-		text: Species.RABBIT.toLowerCase(),
+		text: Species.Others.toLowerCase(),
 	},
 };
 
 export const StatusTags = {
-	[Status.HEALTHY]: {
+	[AdoptionStatus.Healthy]: {
 		color: PillColor.GOLD,
-		text: Status.HEALTHY.toLowerCase(),
+		text: AdoptionStatus.Healthy.toLowerCase(),
 	},
-	[Status.SICK]: {
+	[AdoptionStatus.Sick]: {
 		color: PillColor.RED,
-		text: Status.SICK.toLowerCase(),
+		text: AdoptionStatus.Sick.toLowerCase(),
 	},
-	[Status.FOSTERED]: {
+	[AdoptionStatus.Fostered]: {
 		color: PillColor.BLUE,
-		text: Status.FOSTERED.toLowerCase(),
+		text: AdoptionStatus.Fostered.toLowerCase(),
 	},
-	[Status.ADOPTED]: {
+	[AdoptionStatus.Adopted]: {
 		color: PillColor.PURPLE,
-		text: Status.ADOPTED.toLowerCase(),
+		text: AdoptionStatus.Adopted.toLowerCase(),
 	},
 };

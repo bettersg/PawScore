@@ -1,4 +1,4 @@
-import { Shelter, Species, Status } from "@contract";
+import { Shelter, Species, AdoptionStatus } from "@contract";
 import { BaseApi } from "./baseApi";
 
 export class PetApi extends BaseApi {
@@ -23,11 +23,14 @@ const generateMockPetData = () => {
 			visible: Math.random() > 0.5 ? true : false,
 			species:
 				Math.random() > 0.3
-					? Species.CAT
+					? Species.Cat
 					: Math.random() > 0.5
-					? Species.DOG
-					: Species.RABBIT,
-			status: Math.random() > 0.5 ? Status.ADOPTED : Status.HEALTHY,
+					? Species.Dog
+					: Species.Others,
+			status:
+				Math.random() > 0.5
+					? AdoptionStatus.Adopted
+					: AdoptionStatus.Healthy,
 		});
 	}
 	return mockData;

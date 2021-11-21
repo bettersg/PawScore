@@ -1,5 +1,5 @@
 import { ImportOutlined, PlusOutlined } from "@ant-design/icons";
-import { Shelter, Species, Status } from "@contract";
+import { Shelter, Species, AdoptionStatus } from "@contract";
 import { Button, Input, Table } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
 import React from "react";
@@ -80,7 +80,7 @@ const PetTableDisplay = ({ petData }: { petData: Shelter.PetDataItem[] }) => {
 			title: "Status",
 			dataIndex: "status",
 			onFilter: (value, record) => record.status === value,
-			filters: Object.entries(Status).map(([, status]) => ({
+			filters: Object.entries(AdoptionStatus).map(([, status]) => ({
 				text: status,
 				value: status,
 			})),

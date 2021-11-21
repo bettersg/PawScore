@@ -1,4 +1,4 @@
-import { Status } from "../animal";
+import { AdoptionStatus } from "../animal";
 import { Species } from "../animal";
 
 // =============================================================================
@@ -11,7 +11,7 @@ export type PetData = {
 	images?: string[];
 	visible: boolean;
 	species: Species;
-	status: Status;
+	status: AdoptionStatus;
 	acquired: Date;
 	breed: string;
 };
