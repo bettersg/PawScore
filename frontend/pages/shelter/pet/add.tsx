@@ -59,7 +59,7 @@ export default function AddNewPet() {
 		value: string | string[],
 		key: keyof Pick<
 			PetData,
-			"species" | "furLength" | "breed" | "medicalIssues"
+			"species" | "furLength" | "breed" | "medicalIssues" | "furColor"
 		>
 	) => {
 		if (!value) return;

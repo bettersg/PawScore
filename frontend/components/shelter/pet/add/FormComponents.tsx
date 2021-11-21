@@ -47,7 +47,7 @@ interface FormSectionProps {
 		value: string | string[],
 		key: keyof Pick<
 			PetData,
-			"species" | "furLength" | "breed" | "medicalIssues"
+			"species" | "furLength" | "breed" | "medicalIssues" | "furColor"
 		>
 	) => void;
 };
@@ -235,12 +235,17 @@ const FormSectionTwo = ({
 			label="Fur Color"
 			data={
 				<Select
+					allowClear
+					defaultValue={pet.furColor ?? []}
+					onChange={(value: string[]) =>
+						onSelectChange(value, "furColor")
+					}
 					style={{ width: "100%" }}
 					mode="multiple"
 					value={pet.furColor}>
 					<Select.Option value="brown">Brown</Select.Option>
 					<Select.Option value="white">White</Select.Option>
-					<Select.Option value="cgrayat">Gray</Select.Option>
+					<Select.Option value="gray">Gray</Select.Option>
 				</Select>
 			}
 		/>
