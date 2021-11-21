@@ -6,11 +6,11 @@ export default {
     CREATE TABLE adopted_animal_update
     (
         id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-        user_animal_id UUID REFERENCES user_animal (id),
+        user_animal_id UUID NOT NULL REFERENCES user_animal (id),
         title          VARCHAR NOT NULL,
         due_date       DATE    NOT NULL,
-        user_update    VARCHAR,
-        published_date DATE,
+        user_update    VARCHAR NOT NULL,
+        published_date DATE NOT NULL,
         created_at     TIMESTAMP NOT NULL DEFAULT current_timestamp,
         updated_at     TIMESTAMP NOT NULL DEFAULT current_timestamp
     );

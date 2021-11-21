@@ -6,9 +6,9 @@ export default {
     CREATE TABLE upload
     (
         id                      UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-        user_id                 UUID,
-        original_filename       VARCHAR,
-        filename                VARCHAR,
+        user_id                 UUID NOT NULL, -- User that uploaded file
+        original_filename       VARCHAR NOT NULL,
+        filename                VARCHAR NOT NULL,
         created_at              TIMESTAMP NOT NULL DEFAULT current_timestamp,
         updated_at              TIMESTAMP NOT NULL DEFAULT current_timestamp
     );

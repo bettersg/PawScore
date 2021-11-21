@@ -6,8 +6,8 @@ export default {
     CREATE TABLE "booking"
     (
         id         UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-        shelter_id UUID,
-        user_id    UUID,
+        shelter_id UUID NOT NULL REFERENCES shelter (id),
+        user_id    UUID NOT NULL REFERENCES "user" (id),
         start_date TIMESTAMP,
         end_date   TIMESTAMP,
         created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,

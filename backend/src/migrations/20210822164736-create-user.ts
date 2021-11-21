@@ -9,7 +9,7 @@ export default {
         id         UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
         username   VARCHAR NOT NULL,
         email      VARCHAR UNIQUE NOT NULL,
-        password   VARCHAR UNIQUE NOT NULL,
+        password   VARCHAR NOT NULL,
         roles      JSONB NOT NULL,
         shelter_id UUID,
         created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,

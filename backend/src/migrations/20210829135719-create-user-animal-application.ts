@@ -6,10 +6,10 @@ export default {
     CREATE TABLE user_animal_application
     (
         id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-        user_profile_id     UUID REFERENCES user_profile (id),
-        animal_id           UUID REFERENCES animal (id),
-        application_type    VARCHAR REFERENCES application_type (type),      -- adoption or fostering
-        application_status  varchar REFERENCES application_status (status), -- pending, etc
+        user_profile_id     UUID NOT NULL REFERENCES user_profile (id),
+        animal_id           UUID NOT NULL REFERENCES animal (id),
+        application_type    VARCHAR NOT NULL REFERENCES application_type (type),      -- adoption or fostering
+        application_status  varchar NOT NULL REFERENCES application_status (status), -- pending, etc
         reason_for_adoption VARCHAR,
         rejection_reason    VARCHAR,
         adoption_fee        NUMERIC NOT NULL,

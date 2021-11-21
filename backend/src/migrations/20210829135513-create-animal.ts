@@ -6,9 +6,9 @@ export default {
     CREATE TABLE animal
     (
         id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-        shelter_id      UUID REFERENCES shelter (id),
-        adoption_status VARCHAR REFERENCES adoption_status (status),
-        species         VARCHAR REFERENCES species (name),
+        shelter_id      UUID NOT NULL REFERENCES shelter (id),
+        adoption_status VARCHAR NOT NULL REFERENCES adoption_status (status),
+        species         VARCHAR NOT NULL REFERENCES species (name),
         name            VARCHAR NOT NULL,
         description     VARCHAR NOT NULL DEFAULT '',
         health_issues   VARCHAR NOT NULL DEFAULT '',
