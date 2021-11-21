@@ -1,5 +1,5 @@
+import { Attributes } from "../animal";
 import { Methods } from "../methods";
-import { PetDataItem } from "./types";
 
 export namespace fetchPetsApiDomain {
 	export const endpoint = "api/animal";
@@ -7,5 +7,5 @@ export namespace fetchPetsApiDomain {
 	export interface requestQuery {
 		shelterId: string;
 	}
-	export type response = PetDataItem[];
+	export type response = Attributes[];
 }
