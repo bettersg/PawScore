@@ -27,7 +27,7 @@ jobs:
           gcloud auth configure-docker asia-southeast1-docker.pkg.dev
       - name: Tag existing image as release with git hash in Google Artifact Registry
         run: |-
-          gcloud artifacts docker tags add asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:"$(git rev-parse --short "$GITHUB_SHA")" release
+          gcloud artifacts docker tags add asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$(git rev-parse --short "$GITHUB_SHA") release
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@main
         with:
