@@ -23,14 +23,19 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}
           export_default_credentials: true
       - name: Build docker image
-        run: |-
-          docker build -f docker/Dockerfile -t asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:latest .
+        run: |
+          GIT_SHORT_HASH=$(git rev-parse --short "$GITHUB_SHA")
+          docker build -f docker/Dockerfile -t build:latest .
+          docker tag build:latest asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:latest
+          docker tag build:latest asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$GIT_SHORT_HASH
       - name: Configure docker to use the gcloud command-line tool as a credential helper
         run: |
           gcloud auth configure-docker asia-southeast1-docker.pkg.dev
       - name: Push image to Google Artifact Registry
-        run: |-
+        run: |
+          GIT_SHORT_HASH=$(git rev-parse --short "$GITHUB_SHA")
           docker push asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:latest
+          docker push asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$GIT_SHORT_HASH
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@main
         with:
