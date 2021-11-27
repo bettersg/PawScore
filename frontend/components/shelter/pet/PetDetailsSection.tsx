@@ -1,16 +1,24 @@
 import { EditOutlined } from "@ant-design/icons";
+import { Animal } from "@contract";
 import { Button, Tag } from "antd";
 import Title from "antd/lib/typography/Title";
-import { PetData } from "common/enums";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 type PetDetailsSectionProps = {
-	petData: PetData;
+	petData: Animal.Attributes;
 };
 const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
-	const { key, images, visible, breed, name, species, acquired, status } =
-		petData;
+	const {
+		id,
+		animalImages,
+		visible,
+		breed,
+		name,
+		species,
+		intakeDate,
+		adoptionStatus,
+	} = petData;
 	return (
 		<InnerContent>
 			<PetDetailHeader>
@@ -18,25 +26,32 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 				<Button
 					type="primary"
 					icon={<EditOutlined />}
-					href={`${key}/edit`}>
+					href={`${id}/edit`}
+				>
 					Edit
 				</Button>
 			</PetDetailHeader>
 			<div>
 				<DataField
 					label="Photos"
-					data={<ImageGallery images={images} />}
+					data={
+						<ImageGallery
+							images={animalImages?.map(
+								(image) => image.photoUrl,
+							)}
+						/>
+					}
 					marginBottom={36}
 				/>
 			</div>
 			<Flex>
 				<div>
-					<DataField label="ID" data={key} />
+					<DataField label="ID" data={id} />
 					<DataField
 						label="Visibility"
 						data={visible ? "Yes" : "No"}
 					/>
-					<DataField label="Status" data={status} />
+					<DataField label="Status" data={adoptionStatus} />
 					<DataField label="Date of Birth" data="data" />
 					{/* TODO: update to age if needed */}
 					<DataField label="Breed" data={breed} marginBottom={0} />
@@ -44,10 +59,7 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 				<div>
 					<DataField label="Name" data={name} />
 					<DataField label="Species" data={species} />
-					<DataField
-						label="Date Acquired"
-						data={acquired.toLocaleDateString()}
-					/>
+					<DataField label="Date Acquired" data={intakeDate} />
 					<DataField
 						label="Medical Problems"
 						data={
@@ -84,8 +96,9 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
 							borderStyle: "solid",
 							borderWidth: 1,
 							borderColor: "#D9D9D9",
-							borderRadius: 2
-						}}>
+							borderRadius: 2,
+						}}
+					>
 						<img
 							src={image}
 							alt="Pet Image"
@@ -106,8 +119,9 @@ const DataField = ({ label, data, marginBottom }: DataFieldProps) => {
 	return (
 		<DataFieldContainer
 			style={{
-				marginBottom: marginBottom ?? 24
-			}}>
+				marginBottom: marginBottom ?? 24,
+			}}
+		>
 			<div className="label">{label} :</div>
 			<div>{data}</div>
 		</DataFieldContainer>
