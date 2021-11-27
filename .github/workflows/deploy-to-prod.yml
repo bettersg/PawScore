@@ -25,9 +25,9 @@ jobs:
       - name: Configure docker to use the gcloud command-line tool as a credential helper
         run: |
           gcloud auth configure-docker asia-southeast1-docker.pkg.dev
-      - name: Push image to Google Artifact Registry
+      - name: Tag existing image as release with git hash in Google Artifact Registry
         run: |-
-          gcloud artifacts docker tags add asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$HASH release
+          gcloud artifacts docker tags add asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:"$(git rev-parse --short "$GITHUB_SHA")" release
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@main
         with:
