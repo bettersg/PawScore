@@ -1,12 +1,40 @@
-name: Deploy Release to Production
+name: '[PRODUCTION] Deploy Release'
 on:
   release:
     types: [published]
 
 jobs:
+  Test-Backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install Packages
+        working-directory: ./backend
+        run: npm install
+      - name: Run Tests
+        working-directory: ./backend
+        run: npm test
+  Test-Frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install Packages
+        working-directory: ./frontend
+        run: npm install
+      - name: Run Tests
+        working-directory: ./frontend
+        run: npm test
+
   Deploy-Production:
     name: Deploy a release using git hash of release
     environment: production
+    needs: [Test-Backend, Test-Frontend]
     runs-on: ubuntu-latest
 
     env:
