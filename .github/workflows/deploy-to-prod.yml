@@ -28,7 +28,7 @@ jobs:
       - name: Tag existing image as release with git hash in Google Artifact Registry
         run: |
           GIT_SHORT_HASH=$(git rev-parse --short "$GITHUB_SHA")
-          gcloud artifacts docker tags add asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$GIT_SHORT_HASH release
+          gcloud artifacts docker tags add asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$GIT_SHORT_HASH asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:release
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@main
         with:
