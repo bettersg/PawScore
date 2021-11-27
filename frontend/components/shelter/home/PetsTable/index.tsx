@@ -1,5 +1,5 @@
 import { ImportOutlined, PlusOutlined } from "@ant-design/icons";
-import { Shelter, Species, AdoptionStatus } from "@contract";
+import { Animal } from "@contract";
 import { Button, Input, Table } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
 import React from "react";
@@ -11,7 +11,7 @@ import styles from "./PetsTable.module.css";
 const { tableHeader, actionButton } = styles;
 const { Search } = Input;
 
-const PetTableDisplay = ({ petData }: { petData: Shelter.PetDataItem[] }) => {
+const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
 	/* commenting out for now as not implemented yet */
 	// const [searchText, setSearchText] = useState("");
 	// const [searchedColumn, setSearchedColumn] = useState("");
@@ -23,16 +23,16 @@ const PetTableDisplay = ({ petData }: { petData: Shelter.PetDataItem[] }) => {
 		console.log("clicked view more ", id);
 	};
 
-	const columns: ColumnsType<Shelter.PetDataItem> = [
+	const columns: ColumnsType<Animal.Attributes> = [
 		{
 			title: "ID",
 			dataIndex: "key",
 			defaultSortOrder: "ascend",
 			sorter: (a, b) => {
-				if (a.key > b.key) {
+				if (a.id > b.id) {
 					return 1;
 				}
-				if (b.key > a.key) {
+				if (b.id > a.id) {
 					return -1;
 				}
 				return 0;
@@ -42,8 +42,15 @@ const PetTableDisplay = ({ petData }: { petData: Shelter.PetDataItem[] }) => {
 			title: "Name",
 			dataIndex: "name",
 			sorter: (a, b) => a.name.localeCompare(b.name),
-			render: (name: Shelter.PetData["name"], record) => (
-				<TableName name={name} image={record.images} />
+			render: (name: Animal.Attributes["name"], record) => (
+				<TableName
+					name={name}
+					image={
+						record.animalImages
+							? record.animalImages[0].thumbnailUrl
+							: undefined
+					}
+				/>
 			),
 		},
 		{
@@ -60,7 +67,7 @@ const PetTableDisplay = ({ petData }: { petData: Shelter.PetDataItem[] }) => {
 					value: true,
 				},
 			],
-			render: (visible: Shelter.PetData["visible"]) => (
+			render: (visible: Animal.Attributes["visible"]) => (
 				<TablePill type={TablePillType.VISIBILITY} value={visible} />
 			),
 		},
@@ -68,30 +75,32 @@ const PetTableDisplay = ({ petData }: { petData: Shelter.PetDataItem[] }) => {
 			title: "Species",
 			dataIndex: "species",
 			onFilter: (value, record) => record.species === value,
-			filters: Object.entries(Species).map(([, status]) => ({
+			filters: Object.entries(Animal.Species).map(([, status]) => ({
 				text: status,
 				value: status,
 			})),
-			render: (species: Shelter.PetData["species"]) => (
+			render: (species: Animal.Attributes["species"]) => (
 				<TablePill type={TablePillType.SPECIES} value={species} />
 			),
 		},
 		{
 			title: "Status",
 			dataIndex: "status",
-			onFilter: (value, record) => record.status === value,
-			filters: Object.entries(AdoptionStatus).map(([, status]) => ({
-				text: status,
-				value: status,
-			})),
-			render: (status: Shelter.PetData["status"]) => (
+			onFilter: (value, record) => record.adoptionStatus === value,
+			filters: Object.entries(Animal.AdoptionStatus).map(
+				([, status]) => ({
+					text: status,
+					value: status,
+				}),
+			),
+			render: (status: Animal.Attributes["adoptionStatus"]) => (
 				<TablePill type={TablePillType.STATUS} value={status} />
 			),
 		},
 		{
 			title: "Action",
 			dataIndex: "key",
-			render: (key: Shelter.PetData["key"]) => (
+			render: (key: Animal.Attributes["id"]) => (
 				<a className={actionButton} onClick={() => onViewMore(key)}>
 					View pet details
 				</a>

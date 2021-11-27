@@ -1,4 +1,4 @@
-import { Shelter } from "@contract";
+import { Animal } from "@contract";
 import { PetApi } from "api/petApi";
 import NoData from "components/shelter/home/NoData";
 import PetsTable from "components/shelter/home/PetsTable";
@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 const Home = () => {
 	const router = useRouter();
 	const { id } = router.query;
-	const [petData, setPetData] = useState<Shelter.PetDataItem[]>([]);
+	const [petData, setPetData] = useState<Animal.Attributes[]>([]);
 	const [loading, setLoading] = useState(true);
 
 	const isValidShelterId = (id: string) => {
