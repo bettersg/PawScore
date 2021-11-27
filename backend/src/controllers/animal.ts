@@ -23,7 +23,9 @@ import { AnimalImageModel } from "../models/animalImage";
 @Controller("/api/animal")
 export class AnimalController {
 	@Get("/")
-	async getAll(@QueryParams() query: unknown): Promise<Animal.Attributes[]> {
+	async getAll(
+		@QueryParams() query: Shelter.fetchPetsApiDomain.requestQuery,
+	): Promise<Shelter.fetchPetsApiDomain.response> {
 		const input = GetAnimalRequestQuerySchema.parse(query);
 
 		const whereOptions: WhereOptions<Animal.Attributes> = {};
@@ -41,10 +43,7 @@ export class AnimalController {
 			include: [AnimalModel.associations.animalImages],
 		});
 
-		const res: Shelter.fetchPetsApiDomain.response = animals.map((v) =>
-			v.get({ plain: true }),
-		);
-		return res;
+		return animals.map((v) => v.get({ plain: true }));
 	}
 
 	// example of how errors will be caught and handled by middleware with the appropriate status code and message
