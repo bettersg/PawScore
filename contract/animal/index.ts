@@ -10,6 +10,10 @@ export enum AdoptionStatus {
 	Sick = "Sick",
 	Healthy = "Healthy",
 }
+interface Image {
+	photoUrl: string;
+	thumbnailUrl: string;
+}
 
 export interface Attributes {
 	id: string;
@@ -35,4 +39,5 @@ export interface Attributes {
 	visible: boolean;
 	createdAt: Date;
 	updatedAt: Date;
+	animalImages?: Image[];
 }
