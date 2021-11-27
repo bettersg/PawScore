@@ -1,5 +1,5 @@
 import { Tag } from "antd";
-import { Species, AdoptionStatus } from "@contract";
+import { Animal } from "@contract";
 import { PillColor, SpeciesTags, StatusTags } from "common/enums";
 
 export enum TablePillType {
@@ -14,11 +14,11 @@ type VisibilityProps = {
 };
 type SpeciesProps = {
 	type: TablePillType.SPECIES;
-	value: Species;
+	value: Animal.Species;
 };
 type StatusProps = {
 	type: TablePillType.STATUS;
-	value: AdoptionStatus;
+	value: Animal.AdoptionStatus;
 };
 type TablePillProps = VisibilityProps | SpeciesProps | StatusProps;
 
