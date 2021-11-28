@@ -15,15 +15,39 @@ export enum Species {
 	RABBIT = "Rabbit"
 }
 
+export enum Sex {
+	MALE = "Male",
+	FEMALE = "Female"
+}
+
+export enum FurLength {
+	LONG = "Long",
+	SHORT = "Short",
+	CUT = "Cut"
+}
+
+export enum Sterilised {
+	YES = "Yes",
+	NO = "No",
+	OTHERS = "Others"
+}
+
 export type PetData = {
 	key: string;
 	name: string;
-	images?: string[];
+	images: string[];
 	visible: boolean;
+	sex: Sex;
 	species: Species;
 	status: Status;
 	acquired: Date;
 	breed: string;
+	furLength: FurLength;
+	medicalIssues: string[];
+	sterilised: Sterilised;
+	dateOfBirth: Date;
+	furColor: string[];
+	toiletTrained: boolean;
 };
 
 // =============================================================================

@@ -1,12 +1,13 @@
 import { ImportOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Input, Table } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
-import { PetData, Species, Status } from "common/enums";
+import { FurLength, PetData, Sex, Species, Status, Sterilised } from "common/enums";
 import React from "react";
 import styled from "styled-components";
-import TablePill, { TablePillType } from "./components/Pill";
 import TableName from "./components/Name";
+import TablePill, { TablePillType } from "./components/Pill";
 import styles from "./PetsTable.module.css";
+import Router from "next/router";
 
 const { tableHeader, actionButton } = styles;
 const { Search } = Input;
@@ -109,10 +110,17 @@ const PetTableDisplay = () => {
 		mockData.push({
 			key: "" + i,
 			name: `Fluttershy ${i}`,
-			// image: "",
+			images: [],
 			visible: Math.random() > 0.5 ? true : false,
+			sex: Math.random() > 0.5 ? Sex.MALE : Sex.FEMALE,
 			species: Species.RABBIT,
-			status: Status.ADOPTED
+			status: Status.ADOPTED,
+			furLength: Math.random() > 0.5 ? FurLength.SHORT : FurLength.LONG,
+			medicalIssues: [],
+			sterilised: Math.random() > 0.5 ? Sterilised.YES : Sterilised.NO,
+			dateOfBirth: new Date(),
+			furColor: [],
+			toiletTrained: Math.random() > 0.5 ? true : false
 		});
 	}
 
@@ -134,7 +142,10 @@ const PetTableDisplay = () => {
 						<ImportOutlined />
 						Integrate with current software
 					</Button>
-					<Button type="primary" style={{ margin: "4px" }}>
+					<Button
+						type="primary"
+						style={{ margin: "4px" }}
+						onClick={() => Router.push("/shelter/pet/add")}>
 						<PlusOutlined />
 						Add New
 					</Button>
