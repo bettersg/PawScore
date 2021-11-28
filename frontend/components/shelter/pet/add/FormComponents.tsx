@@ -300,9 +300,9 @@ const DataField = ({
 };
 
 interface ImageGalleryProps {
-	images?: string[];
-	onChange?: (images: string[]) => void;
-	isEditMode?: boolean;
+	images: string[];
+	onChange: (images: string[]) => void;
+	isEditMode: boolean;
 };
 
 const ImageGallery = ({
@@ -313,23 +313,33 @@ const ImageGallery = ({
 	const imageUploadRef = useRef<HTMLInputElement>(null);
 	const [pickedImage, setPickedImage] = useState<File | null>(null);
 	const [cloned, setCloned] = useState([...images]);
-
+	
 	useEffect(() => {
 		if (!pickedImage) return;
-		const reader = new FileReader();
-		reader.onloadend = () => {
+		const waitForLoadedImage = (_pickedImage: File): Promise<string> => {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.onloadend = () => {
+					resolve(reader.result as string)
+				};
+				reader.readAsDataURL(_pickedImage);
+			})
+		}
+		const runAsync = async () => {
+			const base64ImageString = await waitForLoadedImage(pickedImage)
 			setCloned((prev) => {
-				return [...prev, reader.result as string];
+				return [...prev, base64ImageString];
 			});
-		};
-
-		reader.readAsDataURL(pickedImage);
+			setPickedImage(null)
+		}
+		runAsync()
 	}, [pickedImage]);
 
 	useEffect(() => {
-		if (!onChange || !isEditMode) return;
+		if (!isEditMode) return;
 		onChange(cloned);
-	}, [cloned, isEditMode, onChange]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [cloned, isEditMode]);
 
 	const onDeleteImage = (index: number) => {
 		if (!!cloned[index]) {
@@ -381,10 +391,11 @@ const ImageGallery = ({
 					accept="image/*"
 					onChange={(event) => {
 						const file = event?.target?.files?.[0];
-						if (!file) return;
 						if (file && file.type.substr(0, 5) === "image") {
 							setPickedImage(file);
 						}
+						// Reset value so that onChange will trigger again alter
+						event.target.value = "";
 					}}
 				/>
 			</UploaderContainer>
