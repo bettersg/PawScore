@@ -47,7 +47,7 @@ To automatically restart the server on changes, run the server in development mo
 npm run dev
 ```
 
-Breakpoint debugging is also supported in VS Code using the `Debug backend` configuration.
+Breakpoint debugging is also supported in VS Code using the `Debug backend` configuration after running `npm run dev`.
 
 ## Database Schema
 
@@ -77,7 +77,7 @@ Using environment "development".
 
 ## Database Seeding
 
-Sample data (for development use only) is defined in the `seeders` directory. Note that existing data will be cleared and replaced with the sample data, so back up any records if required.
+Sample data (for local development use only) is defined in the `seeders` directory. Note that existing data will be cleared and replaced with the sample data, so back up any records if required.
 
 ```bash
 npm run db:seed
