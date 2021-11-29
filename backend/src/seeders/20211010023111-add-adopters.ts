@@ -39,7 +39,6 @@ export default {
 			{
 				id: PROFILE_ALICE_ID,
 				user_id: USER_ALICE_ID,
-				email: "alice@gmail.com",
 				phone_no: "11111111",
 				nric: "S1111111Z",
 				first_name: "Alice",
@@ -53,7 +52,6 @@ export default {
 			{
 				id: PROFILE_BOB_ID,
 				user_id: USER_BOB_ID,
-				email: "bob@gmail.com",
 				phone_no: "22222222",
 				nric: "S2222222Z",
 				first_name: "Bob",
