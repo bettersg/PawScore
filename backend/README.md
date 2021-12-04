@@ -39,10 +39,22 @@ $ npm start
 server started at http://127.0.0.1:5000
 ```
 
+## Live Reload and Debugging
+
+To automatically restart the server on changes, run the server in development mode.
+
+```bash
+npm run dev
+```
+
+Breakpoint debugging is also supported in VS Code using the `Debug backend` configuration after running `npm run dev`.
+
 ## Database Schema
+
 TBC
 
 ## Database Migration
+
 ```bash
 $ npm run db:migrate
 samuel@laptop /PawScore/backend $ npx sequelize-cli db:migrate
@@ -63,12 +75,22 @@ Using environment "development".
 == 20210823172147-create-booking: migrated (0.017s)
 ```
 
+## Database Seeding
+
+Sample data (for local development use only) is defined in the `seeders` directory. Note that existing data will be cleared and replaced with the sample data, so back up any records if required.
+
+```bash
+npm run db:seed
+```
+
 ## Creating a model
+
 Sequelize is used as the ORM for the project. You may review the existing models for code samples on how models are defined.
 
-Ideally, if possible, please provide migration code in the `migration` directory. As sequelize-cli works with JS only, migration scripts have to be written in JS (until we sort out a solution).
+Ideally, if possible, please provide migration code in the `migration` directory.
 
 ## Directory Structure
+
 ```
 .
 ├── dist
@@ -87,10 +109,11 @@ Ideally, if possible, please provide migration code in the `migration` directory
 ├── tsconfig.json
 └── .env
 ```
+
 Routes should be setup as much in the `route` directory as reasonably possible in the form of Express router.
 Models should be within the `models` directory.
 CRUD & other controller functions should be store within `controllers` directory
 
-
 ## Contributing
+
 You may review on Trello on the tasks available and pick the tasks that's not taken. Please mark that you're on a task to prevent duplicated efforts.

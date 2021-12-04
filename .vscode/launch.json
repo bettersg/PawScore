@@ -1,0 +1,15 @@
+{
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Debug backend",
+      "port": 9229,
+      "restart": true,
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack://pawscore-backend/./*": "${workspaceRoot}/backend/*"
+      }
+    }
+  ]
+}

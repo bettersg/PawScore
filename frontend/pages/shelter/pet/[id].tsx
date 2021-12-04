@@ -9,6 +9,30 @@ import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+export const defaultPet: PetData = {
+	key: "",
+	name: "Cat 1",
+	images: [
+		"https://via.placeholder.com/86",
+		"https://via.placeholder.com/86",
+		"https://via.placeholder.com/86",
+		"https://via.placeholder.com/86",
+		"https://via.placeholder.com/86"
+	],
+	visible: false,
+	species: Species.CAT,
+	status: Status.HEALTHY,
+	acquired: new Date(),
+	breed: "Shorthair cat",
+	sex: Sex.MALE,
+	furLength: FurLength.SHORT,
+	medicalIssues: ["asthma"],
+	sterilised: Sterilised.YES,
+	dateOfBirth: new Date(),
+	furColor: ["white", "brown"],
+	toiletTrained: true
+};
+
 export default function PetDetails() {
 	const router = useRouter();
 	const { id } = router.query;

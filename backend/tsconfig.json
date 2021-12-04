@@ -20,9 +20,5 @@
 		"composite": true,
 		"noEmitOnError": true
 	},
-	"include": ["src/**/*", "../contract/**/*"],
-	"ts-node": {
-		// Uncomment when using vscode debugger. This causes error with db:migrate
-		// "require": ["tsconfig-paths/register"]
-	}
+	"include": ["src/**/*", "../contract/**/*"]
 }

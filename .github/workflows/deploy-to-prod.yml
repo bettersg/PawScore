@@ -1,8 +1,7 @@
-name: '[DEVELOPMENT] Build and Deploy'
+name: '[PRODUCTION] Deploy Release'
 on:
-  push:
-    branches:
-      - 'master'
+  release:
+    types: [published]
 
 jobs:
   Test-Backend:
@@ -32,14 +31,15 @@ jobs:
         working-directory: ./frontend
         run: npm test
 
-  Build-Deploy-Development:
-    name: Build image, send to Artifact Registry, deploy to Cloud Run
-    environment: development
+  Deploy-Production:
+    name: Deploy a release using git hash of release
+    environment: production
     needs: [Test-Backend, Test-Frontend]
     runs-on: ubuntu-latest
 
     env:
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      HASH: $(git rev-parse --short "$GITHUB_SHA")
 
     steps:
       - name: Checkout
@@ -50,23 +50,18 @@ jobs:
           service_account_key: ${{ secrets.GC_GITHUB_ACTIONS_SERVICE_ACCOUNT_KEY }}
           project_id: ${{ secrets.PROJECT_ID }}
           export_default_credentials: true
-      - name: Build docker image
-        run: |
-          GIT_SHORT_HASH=$(git rev-parse --short "$GITHUB_SHA")
-          docker build -f docker/Dockerfile -t build:latest .
-          docker tag build:latest asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:latest
-          docker tag build:latest asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$GIT_SHORT_HASH
       - name: Configure docker to use the gcloud command-line tool as a credential helper
         run: |
           gcloud auth configure-docker asia-southeast1-docker.pkg.dev
-      - name: Push image to Google Artifact Registry
+      - name: Tag existing image as release with git hash in Google Artifact Registry
         run: |
+          RELEASE_VERSION=${GITHUB_REF#refs/*/}
           GIT_SHORT_HASH=$(git rev-parse --short "$GITHUB_SHA")
-          docker push asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:latest
-          docker push asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$GIT_SHORT_HASH
+          gcloud artifacts docker tags add asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$GIT_SHORT_HASH asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:release
+          gcloud artifacts docker tags add asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$GIT_SHORT_HASH asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:$RELEASE_VERSION
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@main
         with:
-          image: asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:latest
+          image: asia-southeast1-docker.pkg.dev/pawscore/pawscore/pawscore-image:release
           service: ${{ secrets.SERVICE_NAME }}
           region: asia-southeast1
