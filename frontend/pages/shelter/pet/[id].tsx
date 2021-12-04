@@ -35,7 +35,7 @@ export const defaultPet: PetData = {
 
 export default function PetDetails() {
 	const router = useRouter();
-	const { id } = router.query;
+	const id = router.query.id as string;
 	const [petData, setPetData] = useState<Animal.Attributes>();
 	const [petAdopters, setPetAdopters] = useState<Adopter[]>();
 
