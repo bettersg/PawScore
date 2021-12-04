@@ -1,51 +1,59 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, RadioChangeEvent } from "antd";
+import { Animal } from "@contract";
+import { Breadcrumb, Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Title from "antd/lib/typography/Title";
-import { FurLength, PetData, Sex, Species, Status, Sterilised } from "common/enums";
 import {
 	FormSection,
-	ImageSection
+	ImageSection,
 } from "components/shelter/pet/add/FormComponents";
+import {
+	TOnDateChange,
+	TOnRadioChange,
+	TOnSelectChange,
+	TOnValueChange,
+} from "components/shelter/pet/add/handlerTypes";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
+import { MenuKey } from "layouts/shelter/ShelterLayout/LeftMenu";
 import moment from "moment";
-import React, { ChangeEvent, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 
-export default function AddNewPet() {
-	const [pet, setPet] = useState<PetData>({
-		key: "",
-		name: "",
-		images: [],
-		visible: true,
-		sex: Sex.MALE,
-		species: Species.CAT,
-		status: Status.HEALTHY,
-		acquired: new Date(),
-		breed: "",
-		furLength: FurLength.SHORT,
-		medicalIssues: [],
-		sterilised: Sterilised.YES,
-		dateOfBirth: new Date(),
-		furColor: [],
-		toiletTrained: true
-	});
+const newAnimalObject = (shelterId = ""): Animal.Attributes => ({
+	id: "",
+	shelterId,
+	adoptionStatus: Animal.AdoptionStatus.Healthy,
+	species: Animal.Species.Others,
+	name: "",
+	description: "",
+	healthIssues: "",
+	gender: "F",
+	dateOfBirth: null,
+	sizeCm: null,
+	breed: null,
+	color: "",
+	weightKg: null,
+	furLength: null,
+	vaccinated: false,
+	dewormed: false,
+	sterilised: false,
+	toiletTrained: false,
+	adoptionFee: null,
+	intakeDate: new Date(),
+	visible: false,
+});
 
-	const onValueChange = (e: ChangeEvent<HTMLInputElement>, key: keyof Pick<
-		PetData,
-		"name"
-	>) => {
+/* TODO: type shelterId and decide where it's coming from - should not be empty*/
+export default function AddNewPet({ shelterId = "" }) {
+	const [pet, setPet] = useState<Animal.Attributes>(
+		newAnimalObject(shelterId),
+	);
+
+	const onValueChange: TOnValueChange = (e, key) => {
 		setPet((prev) => ({ ...prev, [key]: e.target.value }));
-	}
+	};
 
-	const onRadioChange = (
-		e: RadioChangeEvent,
-		key: keyof Pick<
-			PetData,
-			"visible" | "toiletTrained" | "sex" | "sterilised" | "status"
-		>,
-		isYesNo?: boolean
-	) => {
+	const onRadioChange: TOnRadioChange = (e, key, isYesNo?: boolean) => {
 		if (!e.target.value) return;
 		const val = isYesNo
 			? e.target.value === "yes"
@@ -55,34 +63,25 @@ export default function AddNewPet() {
 		setPet((prev) => ({ ...prev, [key]: val }));
 	};
 
-	const onSelectChange = (
-		value: string | string[],
-		key: keyof Pick<
-			PetData,
-			"species" | "furLength" | "breed" | "medicalIssues" | "furColor"
-		>
-	) => {
+	const onSelectChange: TOnSelectChange = (value, key) => {
 		if (!value) return;
 		setPet((prev) => ({ ...prev, [key]: value }));
 	};
 
-	const onDateChange = (
-		date: moment.Moment,
-		key: keyof Pick<PetData, "acquired" | "dateOfBirth">
-	) => {
+	const onDateChange: TOnDateChange = (date, key) => {
 		if (!date) return;
 		setPet((prev) => ({ ...prev, [key]: date.toDate() }));
 	};
 
-	const updateGallery =  (images: string[]) => {
-		setPet((prev) => ({ ...prev, images }));
+	const updateGallery = (animalImages: Animal.Image[]) => {
+		setPet((prev) => ({ ...prev, animalImages }));
 	};
 
 	const isFormValidated = useMemo(() => {
-		const dateKeys: (keyof Pick<PetData, "dateOfBirth" | "acquired">)[] = [
-			"dateOfBirth",
-			"acquired",
-		];
+		const dateKeys: (keyof Pick<
+			Animal.Attributes,
+			"dateOfBirth" | "intakeDate"
+		>)[] = ["dateOfBirth", "intakeDate"];
 
 		for (const key of dateKeys) {
 			if (!moment(pet[key]).isValid() || pet[key].toString) {
@@ -90,54 +89,61 @@ export default function AddNewPet() {
 			}
 		}
 
-		const yesnoKeys: (keyof Pick<PetData, "toiletTrained" | "visible">)[] = [
-			"toiletTrained",
-			"visible",
-		];
+		const yesnoKeys: (keyof Pick<
+			Animal.Attributes,
+			"toiletTrained" | "visible"
+		>)[] = ["toiletTrained", "visible"];
 
 		for (const key of yesnoKeys) {
-			if (typeof pet[key] !== "boolean" || typeof pet[key] === "undefined") {
+			if (
+				typeof pet[key] !== "boolean" ||
+				typeof pet[key] === "undefined"
+			) {
 				return false;
 			}
 		}
 
-		const stringKeys: (keyof Pick<PetData, "name" | "images" | "breed" | "medicalIssues" | "furColor">)[] = [
-			"name",
-			"images",
-			"breed",
-			"medicalIssues",
-			"furColor",
-		];
+		const stringKeys: (keyof Pick<
+			Animal.Attributes,
+			"name" | "animalImages" | "breed" | "healthIssues" | "color"
+		>)[] = ["name", "animalImages", "breed", "healthIssues", "color"];
 
 		for (const key of stringKeys) {
-			const val = (Array.isArray(pet[key]) ? pet[key] : [pet[key]]) as string[];
-			if (val.length < 1 || !val.every((p) => typeof p === "string")|| !val.every((p) => p.length > 0)) {
+			const val = (
+				Array.isArray(pet[key]) ? pet[key] : [pet[key]]
+			) as string[];
+			if (
+				val.length < 1 ||
+				!val.every((p) => typeof p === "string") ||
+				!val.every((p) => p.length > 0)
+			) {
 				return false;
 			}
 		}
 
-		const enumKeys: { key: keyof Partial<PetData>; type: any }[] = [
-			{
-				key: "sex",
-				type: Sex,
-			},
-			{
-				key: "species",
-				type: Species,
-			},
-			{
-				key: "status",
-				type: Status,
-			},
-			{
-				key: "furLength",
-				type: FurLength,
-			},
-			{
-				key: "sterilised",
-				type: Sterilised,
-			},
-		];
+		const enumKeys: { key: keyof Partial<Animal.Attributes>; type: any }[] =
+			[
+				{
+					key: "gender",
+					type: Sex,
+				},
+				{
+					key: "species",
+					type: Species,
+				},
+				{
+					key: "adoptionStatus",
+					type: Animal.AdoptionStatus,
+				},
+				{
+					key: "furLength",
+					type: FurLength,
+				},
+				{
+					key: "sterilised",
+					type: Sterilised,
+				},
+			];
 
 		for (const enums of enumKeys) {
 			if (!Object.values(enums.type).includes(pet[enums.key])) {
@@ -149,7 +155,7 @@ export default function AddNewPet() {
 	}, [pet]);
 
 	return (
-		<ShelterLayout>
+		<ShelterLayout selectedMenu={MenuKey.PETS}>
 			<Container>
 				<Breadcrumb separator=">">
 					<Breadcrumb.Item>Pets</Breadcrumb.Item>
@@ -170,7 +176,7 @@ export default function AddNewPet() {
 						</div>
 					</PetDetailHeader>
 					<ImageSection
-						images={pet.images}
+						images={pet.animalImages}
 						onChange={updateGallery}
 						isEditMode
 					/>
