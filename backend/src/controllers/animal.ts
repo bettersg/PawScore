@@ -182,8 +182,8 @@ const GetAnimalRequestQuerySchema = z.object({
 	shelterId: z.string().uuid().optional(),
 	visible: z
 		.enum(["true", "false"])
-		.optional()
-		.transform((val) => val === "true"),
+		.transform((val) => val === "true")
+		.optional(),
 });
 
 const AnimalRequestBodySchema = z.object({
