@@ -9,30 +9,6 @@ import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-export const defaultPet: PetData = {
-	key: "",
-	name: "Cat 1",
-	images: [
-		"https://via.placeholder.com/86",
-		"https://via.placeholder.com/86",
-		"https://via.placeholder.com/86",
-		"https://via.placeholder.com/86",
-		"https://via.placeholder.com/86"
-	],
-	visible: false,
-	species: Species.CAT,
-	status: Status.HEALTHY,
-	acquired: new Date(),
-	breed: "Shorthair cat",
-	sex: Sex.MALE,
-	furLength: FurLength.SHORT,
-	medicalIssues: ["asthma"],
-	sterilised: Sterilised.YES,
-	dateOfBirth: new Date(),
-	furColor: ["white", "brown"],
-	toiletTrained: true
-};
-
 export default function PetDetails() {
 	const router = useRouter();
 	const id = router.query.id as string;
@@ -42,8 +18,8 @@ export default function PetDetails() {
 	useEffect(() => {
 		/* TODO: Refactor to either use API from contract or receive data from parent */
 		console.log(`Fetching pet info ${id}`);
-		const pd: Partial<Animal.Attributes> = {
-			id: id as string,
+		const mockPetData: Partial<Animal.Attributes> = {
+			id: id,
 			name: "Cat 1",
 			animalImages: [
 				{
@@ -128,7 +104,7 @@ export default function PetDetails() {
 				image: "https://via.placeholder.com/22",
 			},
 		];
-		setPetData(pd as Animal.Attributes);
+		setPetData(mockPetData as Animal.Attributes);
 		setPetAdopters(adopterData);
 	}, [id]);
 

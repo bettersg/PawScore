@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import styled from "styled-components";
-import { Container } from "./PetsTable/EmptyComtainer";
+import { Container } from "./PetsTable/EmptyContainer";
 
 const NoData = () => {
 	return (
