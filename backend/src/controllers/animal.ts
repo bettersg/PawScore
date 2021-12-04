@@ -19,6 +19,7 @@ import { z } from "zod";
 import { sequelize } from "../database";
 import { AnimalModel } from "../models/animal";
 import { AnimalImageModel } from "../models/animalImage";
+import { zodDateOnlyStringSchema } from "../utils/validation";
 
 @Controller("/api/animal")
 export class AnimalController {
@@ -194,7 +195,7 @@ const AnimalRequestBodySchema = z.object({
 	description: z.string(),
 	healthIssues: z.string().default(""),
 	gender: z.enum(["F", "M"]),
-	dateOfBirth: z.date().nullable(),
+	dateOfBirth: zodDateOnlyStringSchema.nullable(),
 	sizeCm: z.number().nullable(),
 	breed: z.string().nullable(),
 	color: z.string(),
@@ -205,7 +206,7 @@ const AnimalRequestBodySchema = z.object({
 	sterilised: z.boolean().nullable(),
 	toiletTrained: z.boolean().nullable(),
 	adoptionFee: z.number().nullable(),
-	intakeDate: z.date(),
+	intakeDate: zodDateOnlyStringSchema,
 	visible: z.boolean(),
 	animalImages: z
 		.object({
