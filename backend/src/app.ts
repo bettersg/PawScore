@@ -1,3 +1,6 @@
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from "dayjs/plugin/utc";
+import dayjs from "dayjs";
 import errorhandler from "errorhandler";
 import express from "express";
 import proxy from "express-http-proxy";
@@ -21,6 +24,9 @@ import healthcheckRouter from "./routes/healthcheck";
 import { ApiErrorMiddleware } from "./utils/error";
 import { Actions, setupPermissions, Subjects } from "./authorization";
 import checkPageAuth from "./helpers/checkPageAuth";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 // Handle Express req user
 declare module "express-serve-static-core" {

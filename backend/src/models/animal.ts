@@ -1,7 +1,7 @@
 import { Animal } from "@contract";
 import { Association, DataTypes, Model, Optional, UUIDV4 } from "sequelize";
 import { sequelize } from "../database";
-import { numericStringtoFloat } from "../utils/modelType";
+import { dateOnlyStringToDate, numericStringToFloat } from "../utils/modelType";
 import { AnimalImageModel } from "./animalImage";
 
 interface AnimalAttributesDbModel extends Animal.Attributes {
@@ -87,6 +87,7 @@ AnimalModel.init(
 		},
 		dateOfBirth: {
 			type: DataTypes.DATEONLY,
+			get: dateOnlyStringToDate("intakeDate"),
 		},
 		sizeCm: {
 			type: DataTypes.INTEGER,
@@ -100,7 +101,7 @@ AnimalModel.init(
 		},
 		weightKg: {
 			type: DataTypes.DECIMAL,
-			get: numericStringtoFloat("weightKg"),
+			get: numericStringToFloat("weightKg"),
 		},
 		furLength: {
 			type: DataTypes.STRING,
@@ -119,11 +120,12 @@ AnimalModel.init(
 		},
 		adoptionFee: {
 			type: DataTypes.DECIMAL,
-			get: numericStringtoFloat("adoptionFee"),
+			get: numericStringToFloat("adoptionFee"),
 		},
 		intakeDate: {
 			type: DataTypes.DATEONLY,
 			allowNull: false,
+			get: dateOnlyStringToDate("intakeDate"),
 		},
 		visible: {
 			type: DataTypes.BOOLEAN,
