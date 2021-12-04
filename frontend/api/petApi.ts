@@ -61,7 +61,5 @@ export const mockPetData = (id = "id"): Animal.Attributes => {
 		adoptionFee: 1000,
 		intakeDate: new Date(),
 		visible: Math.random() > 0.5 ? true : false,
-		createdAt: new Date(Date.now()),
-		updatedAt: new Date(Date.now()),
 	};
 };

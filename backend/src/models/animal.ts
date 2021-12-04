@@ -4,15 +4,21 @@ import { sequelize } from "../database";
 import { dateOnlyStringToDate, numericStringToFloat } from "../utils/modelType";
 import { AnimalImageModel } from "./animalImage";
 
+interface AnimalDataAttributes extends Animal.Attributes {
+	createdAt: Date;
+	updatedAt: Date;
+}
+
 // Some attributes are optional in `Animal.build` and `Animal.create` calls
 export type AnimalCreationAttributes = Optional<
-	Animal.Attributes,
+	AnimalDataAttributes,
 	"id" | "createdAt" | "updatedAt"
 >;
 
 export class AnimalModel
-	extends Model<Animal.Attributes, AnimalCreationAttributes>
-	implements Animal.Attributes {
+	extends Model<AnimalDataAttributes, AnimalCreationAttributes>
+	implements AnimalDataAttributes
+{
 	public id!: string;
 	public shelterId!: string;
 	public adoptionStatus!: Animal.AdoptionStatus;

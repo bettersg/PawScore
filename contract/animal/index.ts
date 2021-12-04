@@ -10,7 +10,7 @@ export enum AdoptionStatus {
 	Sick = "Sick",
 	Healthy = "Healthy",
 }
-interface Image {
+export interface Image {
 	photoUrl: string;
 	thumbnailUrl: string;
 }
@@ -37,7 +37,5 @@ export interface Attributes {
 	adoptionFee: number | null;
 	intakeDate: Date;
 	visible: boolean;
-	createdAt: Date;
-	updatedAt: Date;
 	animalImages?: Image[];
 }
