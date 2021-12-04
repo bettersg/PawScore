@@ -22,7 +22,7 @@ export class AnimalModel
 	public description!: string;
 	public healthIssues!: string;
 	public gender!: "F" | "M";
-	public ageMonths!: number | null;
+	public dateOfBirth!: Date | null;
 	public sizeCm!: number | null;
 	public breed!: string | null;
 	public color!: string;
@@ -33,7 +33,7 @@ export class AnimalModel
 	public sterilised!: boolean | null;
 	public toiletTrained!: boolean | null;
 	public adoptionFee!: number | null;
-	public intakeDate!: string;
+	public intakeDate!: Date;
 	public visible!: boolean;
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
@@ -80,8 +80,8 @@ AnimalModel.init(
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		ageMonths: {
-			type: DataTypes.INTEGER,
+		dateOfBirth: {
+			type: DataTypes.DATEONLY,
 		},
 		sizeCm: {
 			type: DataTypes.INTEGER,
