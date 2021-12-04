@@ -24,7 +24,7 @@ export interface Attributes {
 	description: string;
 	healthIssues: string;
 	gender: "F" | "M";
-	ageMonths: number | null;
+	dateOfBirth: Date | null;
 	sizeCm: number | null;
 	breed: string | null;
 	color: string;
@@ -35,7 +35,7 @@ export interface Attributes {
 	sterilised: boolean | null;
 	toiletTrained: boolean | null;
 	adoptionFee: number | null;
-	intakeDate: string;
+	intakeDate: Date;
 	visible: boolean;
 	animalImages?: Image[];
 }

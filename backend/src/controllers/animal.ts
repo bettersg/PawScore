@@ -194,7 +194,7 @@ const AnimalRequestBodySchema = z.object({
 	description: z.string(),
 	healthIssues: z.string().default(""),
 	gender: z.enum(["F", "M"]),
-	ageMonths: z.number().nullable(),
+	dateOfBirth: z.date().nullable(),
 	sizeCm: z.number().nullable(),
 	breed: z.string().nullable(),
 	color: z.string(),
@@ -205,7 +205,7 @@ const AnimalRequestBodySchema = z.object({
 	sterilised: z.boolean().nullable(),
 	toiletTrained: z.boolean().nullable(),
 	adoptionFee: z.number().nullable(),
-	intakeDate: z.string(),
+	intakeDate: z.date(),
 	visible: z.boolean(),
 	animalImages: z
 		.object({
