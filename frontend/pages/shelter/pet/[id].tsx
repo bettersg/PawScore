@@ -11,15 +11,15 @@ import styled from "styled-components";
 
 export default function PetDetails() {
 	const router = useRouter();
-	const { id } = router.query;
+	const petId = router.query.id as string;
 	const [petData, setPetData] = useState<Animal.Attributes>();
 	const [petAdopters, setPetAdopters] = useState<Adopter[]>();
 
 	useEffect(() => {
 		/* TODO: Refactor to either use API from contract or receive data from parent */
-		console.log(`Fetching pet info ${id}`);
+		console.log(`Fetching pet info for shelter - ${petId}`);
 		const pd: Partial<Animal.Attributes> = {
-			id: id as string,
+			id: petId,
 			name: "Cat 1",
 			animalImages: [
 				{
@@ -106,7 +106,7 @@ export default function PetDetails() {
 		];
 		setPetData(pd as Animal.Attributes);
 		setPetAdopters(adopterData);
-	}, [id]);
+	}, [petId]);
 
 	return (
 		<ShelterLayout selectedMenu={MenuKey.PETS}>

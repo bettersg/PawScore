@@ -11,26 +11,28 @@ import { useEffect, useState } from "react";
 
 const Home = () => {
 	const router = useRouter();
-	const { id } = router.query;
+	const shelterId = router.query.id as string;
 	const [petData, setPetData] = useState<Animal.Attributes[]>([]);
 	const [loading, setLoading] = useState(true);
 
 	const isValidShelterId = (id: string) => {
+		//TODO: refactor to check if shelterId is valid
 		return true;
 	};
 
 	useEffect(() => {
-		if (!isValidShelterId(id as string)) return;
+		if (!isValidShelterId(shelterId)) return;
 
 		const fetchPetData = async () => {
-			const res = await new PetApi().fetchShelterPets(id as string);
+			const res = await new PetApi().fetchShelterPets(shelterId);
 			setPetData(res);
 			setLoading(false);
 		};
 		fetchPetData();
-	}, [id]);
+	}, [shelterId]);
 
-	if (id && isValidShelterId(id as string)) {
+	if (shelterId && isValidShelterId(shelterId)) {
+		/* needs `if (shelterId)` to prevent error page showing on initial load as id starts off undefined */
 		return <ErrorPage statusCode={404} />;
 	}
 
