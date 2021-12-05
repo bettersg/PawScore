@@ -52,8 +52,6 @@ const generateMockPetData = (): Shelter.fetchPetsApiDomain.response => {
 			adoptionFee: 1000,
 			intakeDate: "2021-11-11",
 			visible: Math.random() > 0.5 ? true : false,
-			createdAt: new Date(Date.now()),
-			updatedAt: new Date(Date.now()),
 		});
 	}
 	return mockData;

@@ -37,7 +37,5 @@ export interface Attributes {
 	adoptionFee: number | null;
 	intakeDate: string;
 	visible: boolean;
-	createdAt: Date;
-	updatedAt: Date;
 	animalImages?: Image[];
 }
