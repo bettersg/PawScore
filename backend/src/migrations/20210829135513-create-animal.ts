@@ -1,8 +1,8 @@
 import { QueryInterface } from "sequelize";
 
 export default {
-	up: async (queryInterface: QueryInterface): Promise<void> => {
-		await queryInterface.sequelize.query(`
+    up: async (queryInterface: QueryInterface): Promise<void> => {
+        await queryInterface.sequelize.query(`
     CREATE TABLE animal
     (
         id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -14,7 +14,7 @@ export default {
         health_issues   VARCHAR NOT NULL DEFAULT '',
         gender          CHAR(1) NOT NULL
             CONSTRAINT gender_vals CHECK (gender IN ('F', 'M')),
-        age_months      INTEGER,
+        date_of_birth   DATE,
         size_cm         INTEGER,
         breed           VARCHAR,
         color           VARCHAR NOT NULL,
@@ -32,8 +32,8 @@ export default {
         updated_at      TIMESTAMP NOT NULL DEFAULT current_timestamp
     );
     `);
-	},
-	down: async (queryInterface: QueryInterface): Promise<void> => {
-		await queryInterface.dropTable("animal");
-	},
+    },
+    down: async (queryInterface: QueryInterface): Promise<void> => {
+        await queryInterface.dropTable("animal");
+    },
 };
