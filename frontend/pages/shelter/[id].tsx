@@ -2,7 +2,7 @@ import { Animal } from "@contract";
 import { PetApi } from "api/petApi";
 import NoData from "components/shelter/home/NoData";
 import PetsTable from "components/shelter/home/PetsTable";
-import { Container } from "components/shelter/home/PetsTable/EmptyComtainer";
+import { Container } from "components/shelter/home/PetsTable/EmptyContainer";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
 import { MenuKey } from "layouts/shelter/ShelterLayout/LeftMenu";
 import ErrorPage from "next/error";
