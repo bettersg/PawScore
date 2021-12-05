@@ -1,8 +1,13 @@
 import { Button } from "antd";
+import Router from "next/router";
 import styled from "styled-components";
 import { Container } from "./PetsTable/EmptyContainer";
 
 const NoData = () => {
+	const handleAdd = () => {
+		Router.push("/shelter/pet/add");
+	};
+
 	return (
 		<Container>
 			<CenteredDiv>
@@ -18,7 +23,11 @@ const NoData = () => {
 				<Button type="primary" style={{ margin: 4 }}>
 					Integrate with current software
 				</Button>
-				<Button type="default" style={{ margin: 4 }}>
+				<Button
+					type="default"
+					style={{ margin: 4 }}
+					onClick={handleAdd}
+				>
 					Add a pet
 				</Button>
 			</CenteredDiv>
