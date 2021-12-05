@@ -4,15 +4,17 @@ import { ReactNode } from "react";
 import HeaderContent from "./HeaderContent";
 import LeftMenu from "./LeftMenu";
 import styles from "./ShelterLayout.module.css";
+import { MenuKey } from "./LeftMenu";
 
 const { Header, Content } = Layout;
 const { header, sideMenu } = styles;
 
 type Props = {
 	children: ReactNode;
+	selectedMenu: MenuKey;
 };
 
-const ShelterLayout = ({ children }: Props) => {
+const ShelterLayout = ({ children, selectedMenu }: Props) => {
 	// const isLoggedIn = true;
 
 	const handleEditProfileClick = () => {
@@ -23,7 +25,7 @@ const ShelterLayout = ({ children }: Props) => {
 		try {
 			const axios = createAxiosInstance();
 			const {
-				data: { payload }
+				data: { payload },
 			} = await axios.post("/api/logout");
 			window.location.assign("/shelter/login");
 		} catch (err) {
@@ -41,7 +43,7 @@ const ShelterLayout = ({ children }: Props) => {
 			</Header>
 			<Layout>
 				<Layout.Sider width={256} className={sideMenu}>
-					<LeftMenu />
+					<LeftMenu selectedKey={selectedMenu} />
 				</Layout.Sider>
 				<Layout>
 					<Content>

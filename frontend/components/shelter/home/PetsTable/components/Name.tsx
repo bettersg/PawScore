@@ -1,6 +1,6 @@
 type TableNameProps = {
 	name: string;
-	image?: string[]; // TODO: confirm type
+	image?: string; // TODO: confirm type
 };
 
 const TableName = ({ name, image }: TableNameProps) => {
@@ -8,7 +8,7 @@ const TableName = ({ name, image }: TableNameProps) => {
 		<div>
 			{image && (
 				<img
-					src={image[0]} // TODO: check for image
+					src={image} // TODO: check for image
 					alt="pet-image"
 					style={{ height: "60px", width: "auto" }}
 				/>

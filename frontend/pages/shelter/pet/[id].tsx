@@ -1,9 +1,18 @@
+import { Animal } from "@contract";
 import { Breadcrumb } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import { FurLength, PetData, Sex, Species, Status, Sterilised } from "common/enums";
+import {
+	FurLength,
+	PetData,
+	Sex,
+	Species,
+	Status,
+	Sterilised,
+} from "common/enums"; // TODO: remove and use Animal.Attributes from contract
 import PetDetailsSection from "components/shelter/pet/PetDetailsSection";
 import ProspectiveAdopters from "components/shelter/pet/ProspectiveAdopters";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
+import { MenuKey } from "layouts/shelter/ShelterLayout/LeftMenu";
 import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -16,7 +25,7 @@ export const defaultPet: PetData = {
 		"https://via.placeholder.com/86",
 		"https://via.placeholder.com/86",
 		"https://via.placeholder.com/86",
-		"https://via.placeholder.com/86"
+		"https://via.placeholder.com/86",
 	],
 	visible: false,
 	species: Species.CAT,
@@ -29,20 +38,60 @@ export const defaultPet: PetData = {
 	sterilised: Sterilised.YES,
 	dateOfBirth: new Date(),
 	furColor: ["white", "brown"],
-	toiletTrained: true
+	toiletTrained: true,
 };
 
 export default function PetDetails() {
 	const router = useRouter();
-	const { id } = router.query;
-	const [petData, setPetData] = useState<PetData>();
+	const petId = router.query.id as string;
+	const [petData, setPetData] = useState<PetData>(); // TODO: Update to use attributes
+	// const [petData, setPetData] = useState<Animal.Attributes>();
 	const [petAdopters, setPetAdopters] = useState<Adopter[]>();
 
 	useEffect(() => {
-		console.log(`Fetching pet info ${id}`);
-		const pd: PetData = {
+		// TODO: Update to use attributes
+		// /* TODO: Refactor to either use API from contract or receive data from parent */
+		// console.log(`Fetching pet info for shelter - ${petId}`);
+		// const pd: Partial<Animal.Attributes> = {
+		// 	id: petId,
+		// 	name: "Cat 1",
+		// 	animalImages: [
+		// 		{
+		// 			photoUrl: "https://via.placeholder.com/86",
+		// 			thumbnailUrl: "https://via.placeholder.com/86",
+		// 		},
+		// 		{
+		// 			photoUrl: "https://via.placeholder.com/86",
+		// 			thumbnailUrl: "https://via.placeholder.com/86",
+		// 		},
+		// 		{
+		// 			photoUrl: "https://via.placeholder.com/86",
+		// 			thumbnailUrl: "https://via.placeholder.com/86",
+		// 		},
+		// 		{
+		// 			photoUrl: "https://via.placeholder.com/86",
+		// 			thumbnailUrl: "https://via.placeholder.com/86",
+		// 		},
+		// 		{
+		// 			photoUrl: "https://via.placeholder.com/86",
+		// 			thumbnailUrl: "https://via.placeholder.com/86",
+		// 		},
+		// 		{
+		// 			photoUrl: "https://via.placeholder.com/86",
+		// 			thumbnailUrl: "https://via.placeholder.com/86",
+		// 		},
+		// 	],
+		// 	visible: false,
+		// 	species: Animal.Species.Cat,
+		// 	adoptionStatus: Animal.AdoptionStatus.Healthy,
+		// 	intakeDate: new Date().toLocaleDateString(),
+		// 	breed: "Shorthair cat",
+		// };
+
+		console.log(`Fetching pet info ${petId}`);
+		const petData: PetData = {
 			...defaultPet,
-			key: id as string,
+			key: petId as string,
 		};
 
 		const adopterData: Adopter[] = [
@@ -52,7 +101,7 @@ export default function PetDetails() {
 				applicationDate: new Date(2021, 8, 18),
 				score: 20,
 				status: "pending",
-				image: "https://via.placeholder.com/22"
+				image: "https://via.placeholder.com/22",
 			},
 			{
 				key: "2",
@@ -60,7 +109,7 @@ export default function PetDetails() {
 				applicationDate: new Date(2021, 8, 19),
 				score: 17,
 				status: "rejected",
-				image: "https://via.placeholder.com/22"
+				image: "https://via.placeholder.com/22",
 			},
 			{
 				key: "3",
@@ -68,7 +117,7 @@ export default function PetDetails() {
 				applicationDate: new Date(2021, 8, 20),
 				score: 20,
 				status: "pending",
-				image: "https://via.placeholder.com/22"
+				image: "https://via.placeholder.com/22",
 			},
 			{
 				key: "4",
@@ -76,7 +125,7 @@ export default function PetDetails() {
 				applicationDate: new Date(2021, 8, 21),
 				score: 45,
 				status: "pending",
-				image: "https://via.placeholder.com/22"
+				image: "https://via.placeholder.com/22",
 			},
 			{
 				key: "5",
@@ -84,7 +133,7 @@ export default function PetDetails() {
 				applicationDate: new Date(2021, 8, 22),
 				score: 28,
 				status: "pending",
-				image: "https://via.placeholder.com/22"
+				image: "https://via.placeholder.com/22",
 			},
 			{
 				key: "6",
@@ -92,15 +141,15 @@ export default function PetDetails() {
 				applicationDate: new Date(2021, 8, 25),
 				score: 62,
 				status: "pending",
-				image: "https://via.placeholder.com/22"
-			}
+				image: "https://via.placeholder.com/22",
+			},
 		];
-		setPetData(pd);
+		setPetData(petData);
 		setPetAdopters(adopterData);
-	}, [id]);
+	}, [petId]);
 
 	return (
-		<ShelterLayout>
+		<ShelterLayout selectedMenu={MenuKey.PETS}>
 			<Container>
 				<Breadcrumb separator=">">
 					<Breadcrumb.Item>Pets</Breadcrumb.Item>

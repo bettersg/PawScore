@@ -1,16 +1,11 @@
 import { Tag } from "antd";
-import {
-	PillColor,
-	Species,
-	SpeciesTags,
-	Status,
-	StatusTags
-} from "common/enums";
+import { Animal } from "@contract";
+import { PillColor, SpeciesTags, StatusTags } from "common/enums";
 
 export enum TablePillType {
 	VISIBILITY,
 	SPECIES,
-	STATUS
+	STATUS,
 }
 
 type VisibilityProps = {
@@ -19,11 +14,11 @@ type VisibilityProps = {
 };
 type SpeciesProps = {
 	type: TablePillType.SPECIES;
-	value: Species;
+	value: Animal.Species;
 };
 type StatusProps = {
 	type: TablePillType.STATUS;
-	value: Status;
+	value: Animal.AdoptionStatus;
 };
 type TablePillProps = VisibilityProps | SpeciesProps | StatusProps;
 
@@ -37,7 +32,7 @@ const TablePill = (props: TablePillProps) => {
 		case TablePillType.VISIBILITY:
 			data = {
 				color: props.value ? PillColor.GREEN : PillColor.RED,
-				text: props.value ? "yes" : "no"
+				text: props.value ? "yes" : "no",
 			};
 			break;
 		case TablePillType.SPECIES:
@@ -49,7 +44,7 @@ const TablePill = (props: TablePillProps) => {
 		default:
 			data = {
 				color: PillColor.RED,
-				text: "error"
+				text: "error",
 			};
 	}
 

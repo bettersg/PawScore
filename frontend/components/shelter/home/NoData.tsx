@@ -1,17 +1,6 @@
 import { Button } from "antd";
 import styled from "styled-components";
-
-const CenteredDiv = styled.div`
-	display: flex;
-	justify-content: center;
-`;
-
-const Container = styled.div`
-	height: calc(100vh - var(--menu-header-menu-height));
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-`;
+import { Container } from "./PetsTable/EmptyContainer";
 
 const NoData = () => {
 	return (
@@ -38,3 +27,11 @@ const NoData = () => {
 };
 
 export default NoData;
+
+// =============================================================================
+// Styled Components
+// =============================================================================
+const CenteredDiv = styled.div`
+	display: flex;
+	justify-content: center;
+`;

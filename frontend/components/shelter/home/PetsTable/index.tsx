@@ -1,7 +1,7 @@
 import { ImportOutlined, PlusOutlined } from "@ant-design/icons";
+import { Animal } from "@contract";
 import { Button, Input, Table } from "antd";
 import { ColumnsType } from "antd/lib/table/interface";
-import { FurLength, PetData, Sex, Species, Status, Sterilised } from "common/enums";
 import React from "react";
 import styled from "styled-components";
 import TableName from "./components/Name";
@@ -12,16 +12,11 @@ import Router from "next/router";
 const { tableHeader, actionButton } = styles;
 const { Search } = Input;
 
-const Container = styled.div`
-	margin: 24px 34px;
-	padding: 24px;
-	background: var(--color-white);
-`;
-
-const PetTableDisplay = () => {
+const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
 	/* commenting out for now as not implemented yet */
 	// const [searchText, setSearchText] = useState("");
 	// const [searchedColumn, setSearchedColumn] = useState("");
+
 	const onSearch = () => {
 		console.log("search");
 	};
@@ -29,28 +24,35 @@ const PetTableDisplay = () => {
 		console.log("clicked view more ", id);
 	};
 
-	const columns: ColumnsType<Omit<PetData, "acquired" | "breed">> = [
+	const columns: ColumnsType<Animal.Attributes> = [
 		{
 			title: "ID",
-			dataIndex: "key",
+			dataIndex: "id",
 			defaultSortOrder: "ascend",
 			sorter: (a, b) => {
-				if (a.key > b.key) {
+				if (a.id > b.id) {
 					return 1;
 				}
-				if (b.key > a.key) {
+				if (b.id > a.id) {
 					return -1;
 				}
 				return 0;
-			}
+			},
 		},
 		{
 			title: "Name",
 			dataIndex: "name",
 			sorter: (a, b) => a.name.localeCompare(b.name),
-			render: (name: PetData["name"], record) => (
-				<TableName name={name} image={record.images} />
-			)
+			render: (name: Animal.Attributes["name"], record) => (
+				<TableName
+					name={name}
+					image={
+						record.animalImages
+							? record.animalImages[0].thumbnailUrl
+							: undefined
+					}
+				/>
+			),
 		},
 		{
 			title: "Visibility",
@@ -59,71 +61,53 @@ const PetTableDisplay = () => {
 			filters: [
 				{
 					text: "No",
-					value: false
+					value: false,
 				},
 				{
 					text: "Yes",
-					value: true
-				}
+					value: true,
+				},
 			],
-			render: (visible: PetData["visible"]) => (
+			render: (visible: Animal.Attributes["visible"]) => (
 				<TablePill type={TablePillType.VISIBILITY} value={visible} />
-			)
+			),
 		},
 		{
 			title: "Species",
 			dataIndex: "species",
 			onFilter: (value, record) => record.species === value,
-			filters: Object.entries(Species).map(([, status]) => ({
+			filters: Object.entries(Animal.Species).map(([, status]) => ({
 				text: status,
-				value: status
+				value: status,
 			})),
-			render: (species: PetData["species"]) => (
+			render: (species: Animal.Attributes["species"]) => (
 				<TablePill type={TablePillType.SPECIES} value={species} />
-			)
+			),
 		},
 		{
 			title: "Status",
-			dataIndex: "status",
-			onFilter: (value, record) => record.status === value,
-			filters: Object.entries(Status).map(([, status]) => ({
-				text: status,
-				value: status
-			})),
-			render: (status: PetData["status"]) => (
+			dataIndex: "adoptionStatus",
+			onFilter: (value, record) => record.adoptionStatus === value,
+			filters: Object.entries(Animal.AdoptionStatus).map(
+				([, status]) => ({
+					text: status,
+					value: status,
+				}),
+			),
+			render: (status: Animal.Attributes["adoptionStatus"]) => (
 				<TablePill type={TablePillType.STATUS} value={status} />
-			)
+			),
 		},
 		{
 			title: "Action",
-			dataIndex: "key",
-			render: (key: PetData["key"]) => (
+			dataIndex: "id",
+			render: (key: Animal.Attributes["id"]) => (
 				<a className={actionButton} onClick={() => onViewMore(key)}>
 					View pet details
 				</a>
-			)
-		}
+			),
+		},
 	];
-
-	const mockData: Omit<PetData, "acquired" | "breed">[] = [];
-	for (let i = 0; i < 80; i++) {
-		mockData.push({
-			key: "" + i,
-			name: `Fluttershy ${i}`,
-			images: [],
-			visible: Math.random() > 0.5 ? true : false,
-			sex: Math.random() > 0.5 ? Sex.MALE : Sex.FEMALE,
-			species: Species.RABBIT,
-			status: Status.ADOPTED,
-			furLength: Math.random() > 0.5 ? FurLength.SHORT : FurLength.LONG,
-			medicalIssues: [],
-			sterilised: Math.random() > 0.5 ? Sterilised.YES : Sterilised.NO,
-			dateOfBirth: new Date(),
-			furColor: [],
-			toiletTrained: Math.random() > 0.5 ? true : false
-		});
-	}
-
 	return (
 		<Container>
 			<div className={tableHeader}>
@@ -145,15 +129,17 @@ const PetTableDisplay = () => {
 					<Button
 						type="primary"
 						style={{ margin: "4px" }}
-						onClick={() => Router.push("/shelter/pet/add")}>
+						onClick={() => Router.push("/shelter/pet/add")}
+					>
 						<PlusOutlined />
 						Add New
 					</Button>
 				</div>
 			</div>
 			<Table
+				rowKey={(pet) => pet.id}
 				columns={columns}
-				dataSource={mockData}
+				dataSource={petData}
 				pagination={{ pageSize: 10 }}
 				scroll={{ y: 640 }} // TODO: update to use dynamic window height calculation
 			/>
@@ -162,3 +148,13 @@ const PetTableDisplay = () => {
 };
 
 export default PetTableDisplay;
+
+// =============================================================================
+// Styled Components
+// =============================================================================
+
+const Container = styled.div`
+	margin: 24px 34px;
+	padding: 24px;
+	background: var(--color-white);
+`;

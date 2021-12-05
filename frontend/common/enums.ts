@@ -1,35 +1,36 @@
+import { Animal } from "@contract";
 // =============================================================================
 // Pet Enums/Types
 // =============================================================================
-
+// TODO: remove all enums and types as it has been moved to Animal Contract
 export enum Status {
 	HEALTHY = "Healthy",
 	SICK = "Sick",
 	FOSTERED = "Fostered",
-	ADOPTED = "Adopted"
+	ADOPTED = "Adopted",
 }
 
 export enum Species {
 	CAT = "Cat",
 	DOG = "Dog",
-	RABBIT = "Rabbit"
+	RABBIT = "Rabbit",
 }
 
 export enum Sex {
 	MALE = "Male",
-	FEMALE = "Female"
+	FEMALE = "Female",
 }
 
 export enum FurLength {
 	LONG = "Long",
 	SHORT = "Short",
-	CUT = "Cut"
+	CUT = "Cut",
 }
 
 export enum Sterilised {
 	YES = "Yes",
 	NO = "No",
-	OTHERS = "Others"
+	OTHERS = "Others",
 }
 
 export type PetData = {
@@ -66,39 +67,39 @@ export enum PillColor {
 	CYAN = "cyan",
 	BLUE = "blue",
 	GEEKBLUE = "geekblue",
-	PURPLE = "purple"
+	PURPLE = "purple",
 }
 
 export const SpeciesTags = {
-	[Species.DOG]: {
+	[Animal.Species.Dog]: {
 		color: PillColor.GOLD,
-		text: Species.DOG.toLowerCase()
+		text: Animal.Species.Dog.toLowerCase(),
 	},
-	[Species.CAT]: {
+	[Animal.Species.Cat]: {
 		color: PillColor.RED,
-		text: Species.CAT.toLowerCase()
+		text: Animal.Species.Cat.toLowerCase(),
 	},
-	[Species.RABBIT]: {
+	[Animal.Species.Others]: {
 		color: PillColor.BLUE,
-		text: Species.RABBIT.toLowerCase()
-	}
+		text: Animal.Species.Others.toLowerCase(),
+	},
 };
 
 export const StatusTags = {
-	[Status.HEALTHY]: {
+	[Animal.AdoptionStatus.Healthy]: {
 		color: PillColor.GOLD,
-		text: Status.HEALTHY.toLowerCase()
+		text: Animal.AdoptionStatus.Healthy.toLowerCase(),
 	},
-	[Status.SICK]: {
+	[Animal.AdoptionStatus.Sick]: {
 		color: PillColor.RED,
-		text: Status.SICK.toLowerCase()
+		text: Animal.AdoptionStatus.Sick.toLowerCase(),
 	},
-	[Status.FOSTERED]: {
+	[Animal.AdoptionStatus.Fostered]: {
 		color: PillColor.BLUE,
-		text: Status.FOSTERED.toLowerCase()
+		text: Animal.AdoptionStatus.Fostered.toLowerCase(),
 	},
-	[Status.ADOPTED]: {
+	[Animal.AdoptionStatus.Adopted]: {
 		color: PillColor.PURPLE,
-		text: Status.ADOPTED.toLowerCase()
-	}
+		text: Animal.AdoptionStatus.Adopted.toLowerCase(),
+	},
 };
