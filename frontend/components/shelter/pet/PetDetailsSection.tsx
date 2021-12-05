@@ -2,23 +2,27 @@ import { EditOutlined } from "@ant-design/icons";
 import { Animal } from "@contract";
 import { Button, Tag } from "antd";
 import Title from "antd/lib/typography/Title";
+import { PetData } from "common/enums";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 type PetDetailsSectionProps = {
-	petData: Animal.Attributes;
+	petData: PetData; // TODO: Update to use attributes
+	// petData: Animal.Attributes;
 };
 const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
-	const {
-		id,
-		animalImages,
-		visible,
-		breed,
-		name,
-		species,
-		intakeDate,
-		adoptionStatus,
-	} = petData;
+	// const {
+	// 	id,
+	// 	animalImages,
+	// 	visible,
+	// 	breed,
+	// 	name,
+	// 	species,
+	// 	intakeDate,
+	// 	adoptionStatus,
+	// } = petData;
+	const { key, images, visible, breed, name, species, acquired, status } =
+		petData; // TODO: Update to use attributes
 	return (
 		<InnerContent>
 			<PetDetailHeader>
@@ -26,7 +30,7 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 				<Button
 					type="primary"
 					icon={<EditOutlined />}
-					href={`${id}/edit`}
+					href={`${key}/edit`} // TODO: Update to use id
 				>
 					Edit
 				</Button>
@@ -35,10 +39,15 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 				<DataField
 					label="Photos"
 					data={
+						// <ImageGallery
+						// 	images={animalImages?.map(
+						// 		(image) => image.photoUrl,
+						// 	)}
+						// />
 						<ImageGallery
-							images={animalImages?.map(
-								(image) => image.photoUrl,
-							)}
+							images={
+								images
+							} /* TODO: Update to use animalImages */
 						/>
 					}
 					marginBottom={36}
@@ -46,12 +55,14 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 			</div>
 			<Flex>
 				<div>
-					<DataField label="ID" data={id} />
+					<DataField label="ID" data={key} />
+					{/* // TODO: Update to use id */}
 					<DataField
 						label="Visibility"
 						data={visible ? "Yes" : "No"}
 					/>
-					<DataField label="Status" data={adoptionStatus} />
+					<DataField label="Status" data={status} />{" "}
+					{/* // TODO: Update to use adoptionStatus */}
 					<DataField label="Date of Birth" data="data" />
 					{/* TODO: update to age if needed */}
 					<DataField label="Breed" data={breed} marginBottom={0} />
@@ -59,7 +70,8 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 				<div>
 					<DataField label="Name" data={name} />
 					<DataField label="Species" data={species} />
-					<DataField label="Date Acquired" data={intakeDate} />
+					<DataField label="Date Acquired" data={acquired} />{" "}
+					{/* // TODO: Update to use intakeDate */}
 					<DataField
 						label="Medical Problems"
 						data={

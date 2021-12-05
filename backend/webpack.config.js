@@ -49,7 +49,7 @@ module.exports = {
 
     plugins: [
         new NodemonPlugin({
-            nodeArgs: ["--enable-source-maps"]
+            nodeArgs: ["--enable-source-maps", "--inspect"]
         })
     ]
 };
