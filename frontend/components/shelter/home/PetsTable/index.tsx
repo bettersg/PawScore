@@ -27,7 +27,7 @@ const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
 	const columns: ColumnsType<Animal.Attributes> = [
 		{
 			title: "ID",
-			dataIndex: "key",
+			dataIndex: "id",
 			defaultSortOrder: "ascend",
 			sorter: (a, b) => {
 				if (a.id > b.id) {
@@ -86,7 +86,7 @@ const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
 		},
 		{
 			title: "Status",
-			dataIndex: "status",
+			dataIndex: "adoptionStatus",
 			onFilter: (value, record) => record.adoptionStatus === value,
 			filters: Object.entries(Animal.AdoptionStatus).map(
 				([, status]) => ({
@@ -100,7 +100,7 @@ const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
 		},
 		{
 			title: "Action",
-			dataIndex: "key",
+			dataIndex: "id",
 			render: (key: Animal.Attributes["id"]) => (
 				<a className={actionButton} onClick={() => onViewMore(key)}>
 					View pet details
@@ -108,7 +108,6 @@ const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
 			),
 		},
 	];
-
 	return (
 		<Container>
 			<div className={tableHeader}>
@@ -130,13 +129,15 @@ const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
 					<Button
 						type="primary"
 						style={{ margin: "4px" }}
-						onClick={() => Router.push("/shelter/pet/add")}>
+						onClick={() => Router.push("/shelter/pet/add")}
+					>
 						<PlusOutlined />
 						Add New
 					</Button>
 				</div>
 			</div>
 			<Table
+				rowKey={(pet) => pet.id}
 				columns={columns}
 				dataSource={petData}
 				pagination={{ pageSize: 10 }}
