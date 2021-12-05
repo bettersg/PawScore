@@ -2,12 +2,20 @@ import { EditOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, RadioChangeEvent } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Title from "antd/lib/typography/Title";
-import { FurLength, PetData, Sex, Species, Status, Sterilised } from "common/enums";
+import {
+	FurLength,
+	PetData,
+	Sex,
+	Species,
+	Status,
+	Sterilised,
+} from "common/enums";
 import {
 	FormSection,
-	ImageSection
+	ImageSection,
 } from "components/shelter/pet/add/FormComponents";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
+import { MenuKey } from "layouts/shelter/ShelterLayout/LeftMenu";
 import moment from "moment";
 import React, { ChangeEvent, useMemo, useState } from "react";
 import styled from "styled-components";
@@ -28,15 +36,15 @@ export default function AddNewPet() {
 		sterilised: Sterilised.YES,
 		dateOfBirth: new Date(),
 		furColor: [],
-		toiletTrained: true
+		toiletTrained: true,
 	});
 
-	const onValueChange = (e: ChangeEvent<HTMLInputElement>, key: keyof Pick<
-		PetData,
-		"name"
-	>) => {
+	const onValueChange = (
+		e: ChangeEvent<HTMLInputElement>,
+		key: keyof Pick<PetData, "name">,
+	) => {
 		setPet((prev) => ({ ...prev, [key]: e.target.value }));
-	}
+	};
 
 	const onRadioChange = (
 		e: RadioChangeEvent,
@@ -44,7 +52,7 @@ export default function AddNewPet() {
 			PetData,
 			"visible" | "toiletTrained" | "sex" | "sterilised" | "status"
 		>,
-		isYesNo?: boolean
+		isYesNo?: boolean,
 	) => {
 		if (!e.target.value) return;
 		const val = isYesNo
@@ -60,7 +68,7 @@ export default function AddNewPet() {
 		key: keyof Pick<
 			PetData,
 			"species" | "furLength" | "breed" | "medicalIssues" | "furColor"
-		>
+		>,
 	) => {
 		if (!value) return;
 		setPet((prev) => ({ ...prev, [key]: value }));
@@ -68,13 +76,13 @@ export default function AddNewPet() {
 
 	const onDateChange = (
 		date: moment.Moment,
-		key: keyof Pick<PetData, "acquired" | "dateOfBirth">
+		key: keyof Pick<PetData, "acquired" | "dateOfBirth">,
 	) => {
 		if (!date) return;
 		setPet((prev) => ({ ...prev, [key]: date.toDate() }));
 	};
 
-	const updateGallery =  (images: string[]) => {
+	const updateGallery = (images: string[]) => {
 		setPet((prev) => ({ ...prev, images }));
 	};
 
@@ -90,28 +98,32 @@ export default function AddNewPet() {
 			}
 		}
 
-		const yesnoKeys: (keyof Pick<PetData, "toiletTrained" | "visible">)[] = [
-			"toiletTrained",
-			"visible",
-		];
+		const yesnoKeys: (keyof Pick<PetData, "toiletTrained" | "visible">)[] =
+			["toiletTrained", "visible"];
 
 		for (const key of yesnoKeys) {
-			if (typeof pet[key] !== "boolean" || typeof pet[key] === "undefined") {
+			if (
+				typeof pet[key] !== "boolean" ||
+				typeof pet[key] === "undefined"
+			) {
 				return false;
 			}
 		}
 
-		const stringKeys: (keyof Pick<PetData, "name" | "images" | "breed" | "medicalIssues" | "furColor">)[] = [
-			"name",
-			"images",
-			"breed",
-			"medicalIssues",
-			"furColor",
-		];
+		const stringKeys: (keyof Pick<
+			PetData,
+			"name" | "images" | "breed" | "medicalIssues" | "furColor"
+		>)[] = ["name", "images", "breed", "medicalIssues", "furColor"];
 
 		for (const key of stringKeys) {
-			const val = (Array.isArray(pet[key]) ? pet[key] : [pet[key]]) as string[];
-			if (val.length < 1 || !val.every((p) => typeof p === "string")|| !val.every((p) => p.length > 0)) {
+			const val = (
+				Array.isArray(pet[key]) ? pet[key] : [pet[key]]
+			) as string[];
+			if (
+				val.length < 1 ||
+				!val.every((p) => typeof p === "string") ||
+				!val.every((p) => p.length > 0)
+			) {
 				return false;
 			}
 		}
@@ -149,7 +161,7 @@ export default function AddNewPet() {
 	}, [pet]);
 
 	return (
-		<ShelterLayout>
+		<ShelterLayout selectedMenu={MenuKey.PETS}>
 			<Container>
 				<Breadcrumb separator=">">
 					<Breadcrumb.Item>Pets</Breadcrumb.Item>
