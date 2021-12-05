@@ -31,7 +31,7 @@ const Home = () => {
 		fetchPetData();
 	}, [shelterId]);
 
-	if (shelterId && isValidShelterId(shelterId)) {
+	if (shelterId && !isValidShelterId(shelterId)) {
 		/* needs `if (shelterId)` to prevent error page showing on initial load as id starts off undefined */
 		return <ErrorPage statusCode={404} />;
 	}
