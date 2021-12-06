@@ -43,32 +43,34 @@ class UploadController {
       try {
         await pipeline(bufferStream, file.createWriteStream());
       } catch (err) {
-        console.log("Error during file upload: " + err.message);
+        console.log(
+          "Error during file upload: " +
+          (err instanceof Error ? err.message : "unknown"),
+        );
         throw new Error("Failed to upload file");
       }
 
       const uploadRecord = {
         userId: req.user.id,
-        originalFilename: req.body.originalFilename,
+        originalFilename: input.originalFileName,
         filename: newFileName,
       };
       const newUpload = await Upload.create(uploadRecord);
 
-      return res
-        .status(StatusCodes.OK)
-        .json({
-          message: "You have successfully uploaded the file",
-          payload: newUpload,
-        });
+      return res.status(StatusCodes.OK).json({
+        message: "You have successfully uploaded the file",
+        payload: newUpload,
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res
           .status(StatusCodes.BAD_REQUEST)
           .json({ message: error.message });
       }
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ message: error.message });
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message:
+          error instanceof Error ? error.message : "Unknown error",
+      });
     }
   }
 
