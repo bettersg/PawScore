@@ -2,8 +2,8 @@ import { Storage } from "@google-cloud/storage";
 import crypto from "crypto";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import stream, { Readable } from "stream";
-import { pipeline } from "stream/promises";
+import mime from "mime-types";
+import { Readable } from "stream";
 import { z } from "zod";
 import fullConfig from "../config/config";
 import { Upload } from "../models/upload";
@@ -30,18 +30,19 @@ class UploadController {
     try {
       const input = UploadRequestQuerySchema.parse(req.body);
 
-      const bufferStream = new stream.PassThrough();
-      bufferStream.end(Buffer.from(input.base64File, "base64"));
+      const mimeType = mime.lookup(input.originalFileName);
+      const buffer = Buffer.from(input.base64File, "base64");
 
       //Define bucket.
-      const myBucket = storage.bucket(storageBucketName);
+      const uploadBucket = storage.bucket(storageBucketName);
       //Define file & file name.
       const newFileName = makeRandomName();
-      const file = myBucket.file(newFileName);
+      const file = uploadBucket.file(newFileName);
 
-      //Pipe the 'bufferStream' into a 'file.createWriteStream' method.
       try {
-        await pipeline(bufferStream, file.createWriteStream());
+        await file.save(buffer, {
+          contentType: mimeType ? mimeType : undefined,
+        });
       } catch (err) {
         console.log(
           "Error during file upload: " +
@@ -55,11 +56,15 @@ class UploadController {
         originalFilename: input.originalFileName,
         filename: newFileName,
       };
-      const newUpload = await Upload.create(uploadRecord);
+      await Upload.create(uploadRecord);
 
       return res.status(StatusCodes.OK).json({
         message: "You have successfully uploaded the file",
-        payload: newUpload,
+        payload: {
+          originalFileName: input.originalFileName,
+          fileName: newFileName,
+          url: `https://storage.googleapis.com/${storageBucketName}/${newFileName}`,
+        },
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
