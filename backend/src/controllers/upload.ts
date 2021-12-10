@@ -1,8 +1,10 @@
 import { Storage } from "@google-cloud/storage";
 import crypto from "crypto";
 import express from "express";
+import { fileTypeFromBuffer } from "file-type";
 import { StatusCodes } from "http-status-codes";
 import mime from "mime-types";
+import { BadRequestError } from "routing-controllers";
 import { Readable } from "stream";
 import { z } from "zod";
 import fullConfig from "../config/config";
@@ -30,8 +32,25 @@ class UploadController {
     try {
       const input = UploadRequestQuerySchema.parse(req.body);
 
-      const mimeType = mime.lookup(input.originalFileName);
       const buffer = Buffer.from(input.base64File, "base64");
+      const fileType = await fileTypeFromBuffer(buffer);
+      const mimeTypeFromExt = mime.lookup(input.originalFileName);
+
+      if (!fileType) {
+        throw new BadRequestError(
+          "Invalid file: no mime type detected",
+        );
+      }
+
+      if (!mimeTypeFromExt) {
+        throw new BadRequestError("Invalid file: missing extension");
+      }
+
+      if (mimeTypeFromExt !== fileType.mime) {
+        throw new BadRequestError(
+          "Invalid file: mismatched type and extension",
+        );
+      }
 
       //Define bucket.
       const uploadBucket = storage.bucket(storageBucketName);
@@ -40,9 +59,7 @@ class UploadController {
       const file = uploadBucket.file(newFileName);
 
       try {
-        await file.save(buffer, {
-          contentType: mimeType ? mimeType : undefined,
-        });
+        await file.save(buffer, { contentType: mimeTypeFromExt });
       } catch (err) {
         console.log(
           "Error during file upload: " +
@@ -67,7 +84,10 @@ class UploadController {
         },
       });
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      if (
+        error instanceof z.ZodError ||
+        error instanceof BadRequestError
+      ) {
         return res
           .status(StatusCodes.BAD_REQUEST)
           .json({ message: error.message });
