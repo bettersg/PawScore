@@ -1,5 +1,4 @@
-'use strict';
-import { Model, Optional, DataTypes, UUIDV4 } from "sequelize";
+import Sequelize from "sequelize";
 import { sequelize } from "../database";
 
 // These are all the attributes for the model
@@ -11,9 +10,9 @@ interface UploadAttributes {
 }
 
 // Some attributes are optional in model.build() or model.create()
-type UploadCreationAttributes = Optional<UploadAttributes, "id">
+type UploadCreationAttributes = Sequelize.Optional<UploadAttributes, "id">
 
-class Upload extends Model<UploadAttributes, UploadCreationAttributes>
+class Upload extends Sequelize.Model<UploadAttributes, UploadCreationAttributes>
   implements UploadAttributes {
   public id!: string;
   public userId!: string;
@@ -51,20 +50,20 @@ class Upload extends Model<UploadAttributes, UploadCreationAttributes>
 Upload.init(
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: UUIDV4,
+      type: Sequelize.DataTypes.UUID,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
       primaryKey: true,
     },
     userId: {
-      type: DataTypes.UUID,
+      type: Sequelize.DataTypes.UUID,
       allowNull: false,
     },
     originalFilename: {
-      type: DataTypes.STRING,
+      type: Sequelize.DataTypes.STRING,
       allowNull: false,
     },
     filename: {
-      type: DataTypes.STRING,
+      type: Sequelize.DataTypes.STRING,
       allowNull: false,
     },
   },

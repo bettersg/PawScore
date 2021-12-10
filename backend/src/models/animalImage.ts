@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import Sequelize from "sequelize";
 import { sequelize } from "../database";
 
 export interface AnimalImageAttributes {
@@ -9,13 +9,13 @@ export interface AnimalImageAttributes {
   updatedAt: Date;
 }
 
-export type AnimalImageCreationAttributes = Optional<
+export type AnimalImageCreationAttributes = Sequelize.Optional<
   AnimalImageAttributes,
   "createdAt" | "updatedAt"
 >;
 
 export class AnimalImageModel
-  extends Model<AnimalImageAttributes, AnimalImageCreationAttributes>
+  extends Sequelize.Model<AnimalImageAttributes, AnimalImageCreationAttributes>
   implements AnimalImageAttributes {
   public animalId!: string;
   public photoUrl!: string;
@@ -28,23 +28,23 @@ export class AnimalImageModel
 AnimalImageModel.init(
   {
     animalId: {
-      type: DataTypes.STRING,
+      type: Sequelize.DataTypes.STRING,
       primaryKey: true
     },
     photoUrl: {
-      type: DataTypes.STRING,
+      type: Sequelize.DataTypes.STRING,
       allowNull: false
     },
     thumbnailUrl: {
-      type: DataTypes.STRING,
+      type: Sequelize.DataTypes.STRING,
       allowNull: false
     },
     createdAt: {
-      type: DataTypes.DATE,
+      type: Sequelize.DataTypes.DATE,
       allowNull: false
     },
     updatedAt: {
-      type: DataTypes.DATE,
+      type: Sequelize.DataTypes.DATE,
       allowNull: false
     }
   },

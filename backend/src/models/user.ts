@@ -1,5 +1,4 @@
-'use strict';
-import { DataTypes, Model, Optional, UUIDV4 } from "sequelize";
+import Sequelize from "sequelize";
 import { sequelize } from "../database";
 
 // These are all the attributes for the model
@@ -15,12 +14,11 @@ interface UserAttributes {
 // Some attributes are optional in `User.build` and `User.create` calls
 // type UserCreationAttributes = Optional<UserAttributes, "id">
 // eslint-disable-next-line
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+interface UserCreationAttributes extends Sequelize.Optional<UserAttributes, "id"> { }
 
 class User
-	extends Model<UserAttributes, UserCreationAttributes>
-	implements UserAttributes
-{
+	extends Sequelize.Model<UserAttributes, UserCreationAttributes>
+	implements UserAttributes {
 	public id!: string;
 	public username!: string;
 	public email!: string;
@@ -51,7 +49,7 @@ class User
   public readonly projects?: Project[]; // Note this is optional since it's only populated when explicitly requested in code
 
   public static associations: {
-    projects: Association<User, Project>;
+	projects: Association<User, Project>;
   };
   *
   *
@@ -61,28 +59,28 @@ class User
 User.init(
 	{
 		id: {
-			type: DataTypes.UUID,
-			defaultValue: UUIDV4,
+			type: Sequelize.DataTypes.UUID,
+			defaultValue: Sequelize.DataTypes.UUIDV4,
 			primaryKey: true
 		},
 		username: {
-			type: new DataTypes.STRING(),
+			type: new Sequelize.DataTypes.STRING(),
 			allowNull: false
 		},
 		email: {
-			type: new DataTypes.STRING(),
+			type: new Sequelize.DataTypes.STRING(),
 			allowNull: false
 		},
 		password: {
-			type: new DataTypes.STRING(),
+			type: new Sequelize.DataTypes.STRING(),
 			allowNull: false
 		},
 		roles: {
-			type: DataTypes.JSONB,
+			type: Sequelize.DataTypes.JSONB,
 			allowNull: false
 		},
 		shelterId: {
-			type: DataTypes.UUID,
+			type: Sequelize.DataTypes.UUID,
 			allowNull: true
 		}
 	},

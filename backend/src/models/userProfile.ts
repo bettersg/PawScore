@@ -1,4 +1,4 @@
-import { Model, Optional, DataTypes, UUIDV4, Association } from "sequelize";
+import Sequelize from "sequelize";
 import { User } from "./user";
 import { sequelize } from "../database";
 
@@ -19,12 +19,11 @@ interface UserProfileAttributes {
 
 // eslint-disable-next-line
 interface UserProfileCreationAttributes
-	extends Optional<UserProfileAttributes, "id"> {}
+	extends Sequelize.Optional<UserProfileAttributes, "id"> { }
 
 class UserProfile
-	extends Model<UserProfileAttributes, UserProfileCreationAttributes>
-	implements UserProfileAttributes
-{
+	extends Sequelize.Model<UserProfileAttributes, UserProfileCreationAttributes>
+	implements UserProfileAttributes {
 	public id!: string;
 	public userId!: string;
 	public email!: string;
@@ -44,55 +43,55 @@ class UserProfile
 
 	public readonly user!: User;
 	public static associations: {
-		user: Association<User, UserProfile>;
+		user: Sequelize.Association<User, UserProfile>;
 	};
 }
 
 UserProfile.init(
 	{
 		id: {
-			type: DataTypes.UUID,
-			defaultValue: UUIDV4,
+			type: Sequelize.DataTypes.UUID,
+			defaultValue: Sequelize.DataTypes.UUIDV4,
 			primaryKey: true,
 		},
 		userId: {
-			type: DataTypes.UUID,
+			type: Sequelize.DataTypes.UUID,
 			allowNull: false,
 		},
 		phoneNo: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: true,
 		},
 		nric: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: true,
 		},
 		firstName: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		lastName: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		dob: {
-			type: DataTypes.DATE,
+			type: Sequelize.DataTypes.DATE,
 			allowNull: false,
 		},
 		gender: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		occupation: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: true,
 		},
 		address: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		postalCode: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 	},

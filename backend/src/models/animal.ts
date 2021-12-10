@@ -1,5 +1,5 @@
 import { Animal } from "@contract";
-import { Association, DataTypes, Model, Optional, UUIDV4 } from "sequelize";
+import Sequelize from "sequelize";
 import { sequelize } from "../database";
 import { dateOnlyStringToDate, numericStringToFloat } from "../utils/modelType";
 import { AnimalImageModel } from "./animalImage";
@@ -10,15 +10,14 @@ interface AnimalAttributesDbModel extends Animal.Attributes {
 }
 
 // Some attributes are optional in `Animal.build` and `Animal.create` calls
-export type AnimalCreationAttributes = Optional<
+export type AnimalCreationAttributes = Sequelize.Optional<
 	AnimalAttributesDbModel,
 	"id" | "createdAt" | "updatedAt"
 >;
 
 export class AnimalModel
-	extends Model<AnimalAttributesDbModel, AnimalCreationAttributes>
-	implements AnimalAttributesDbModel
-{
+	extends Sequelize.Model<AnimalAttributesDbModel, AnimalCreationAttributes>
+	implements AnimalAttributesDbModel {
 	public id!: string;
 	public shelterId!: string;
 	public adoptionStatus!: Animal.AdoptionStatus;
@@ -46,96 +45,96 @@ export class AnimalModel
 	public readonly animalImages?: AnimalImageModel[];
 
 	public static associations: {
-		animalImages: Association<AnimalModel, AnimalImageModel>;
+		animalImages: Sequelize.Association<AnimalModel, AnimalImageModel>;
 	};
 }
 
 AnimalModel.init(
 	{
 		id: {
-			type: DataTypes.UUID,
-			defaultValue: UUIDV4,
+			type: Sequelize.DataTypes.UUID,
+			defaultValue: Sequelize.DataTypes.UUIDV4,
 			primaryKey: true,
 		},
 		shelterId: {
-			type: DataTypes.UUIDV4,
+			type: Sequelize.DataTypes.UUIDV4,
 			allowNull: false,
 		},
 		adoptionStatus: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		species: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		name: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		description: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		healthIssues: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		gender: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		dateOfBirth: {
-			type: DataTypes.DATEONLY,
+			type: Sequelize.DataTypes.DATEONLY,
 			get: dateOnlyStringToDate("intakeDate"),
 		},
 		sizeCm: {
-			type: DataTypes.INTEGER,
+			type: Sequelize.DataTypes.INTEGER,
 		},
 		breed: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 		},
 		color: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 			allowNull: false,
 		},
 		weightKg: {
-			type: DataTypes.DECIMAL,
+			type: Sequelize.DataTypes.DECIMAL,
 			get: numericStringToFloat("weightKg"),
 		},
 		furLength: {
-			type: DataTypes.STRING,
+			type: Sequelize.DataTypes.STRING,
 		},
 		vaccinated: {
-			type: DataTypes.BOOLEAN,
+			type: Sequelize.DataTypes.BOOLEAN,
 		},
 		dewormed: {
-			type: DataTypes.BOOLEAN,
+			type: Sequelize.DataTypes.BOOLEAN,
 		},
 		sterilised: {
-			type: DataTypes.BOOLEAN,
+			type: Sequelize.DataTypes.BOOLEAN,
 		},
 		toiletTrained: {
-			type: DataTypes.BOOLEAN,
+			type: Sequelize.DataTypes.BOOLEAN,
 		},
 		adoptionFee: {
-			type: DataTypes.DECIMAL,
+			type: Sequelize.DataTypes.DECIMAL,
 			get: numericStringToFloat("adoptionFee"),
 		},
 		intakeDate: {
-			type: DataTypes.DATEONLY,
+			type: Sequelize.DataTypes.DATEONLY,
 			allowNull: false,
 			get: dateOnlyStringToDate("intakeDate"),
 		},
 		visible: {
-			type: DataTypes.BOOLEAN,
+			type: Sequelize.DataTypes.BOOLEAN,
 		},
 		createdAt: {
-			type: DataTypes.DATE,
+			type: Sequelize.DataTypes.DATE,
 			allowNull: false,
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type: Sequelize.DataTypes.DATE,
 			allowNull: false,
 		},
 	},
