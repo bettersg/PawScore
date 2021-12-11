@@ -1,3 +1,4 @@
+import { Upload } from "@contract";
 import { Storage } from "@google-cloud/storage";
 import crypto from "crypto";
 import express from "express";
@@ -16,7 +17,7 @@ import { Readable } from "stream";
 import { z } from "zod";
 import fullConfig from "../config/config";
 import { IsLoggedInMiddleware } from "../helpers/auth";
-import { Upload } from "../models/upload";
+import { Upload as UploadModel } from "../models/upload";
 
 const MAX_UPLOAD_MB = 10;
 
@@ -39,7 +40,9 @@ const UploadRequestQuerySchema = z.object({
 export class UploadController {
   @Post()
   @UseBefore(IsLoggedInMiddleware)
-  async upload(@Req() req: express.Request) {
+  async upload(
+    @Req() req: express.Request,
+  ): Promise<Upload.uploadApiDomain.response> {
     const input = UploadRequestQuerySchema.parse(req.body);
 
     const buffer = Buffer.from(input.base64File, "base64");
@@ -79,7 +82,7 @@ export class UploadController {
       originalFilename: input.originalFileName,
       filename: newFileName,
     };
-    await Upload.create(uploadRecord);
+    await UploadModel.create(uploadRecord);
 
     return {
       message: "You have successfully uploaded the file",
@@ -93,9 +96,11 @@ export class UploadController {
 
   @Get("/:uploadId")
   @UseBefore(IsLoggedInMiddleware)
-  async download(@Req() req: express.Request) {
+  async download(
+    @Req() req: express.Request,
+  ): Promise<Upload.downloadApiDomain.response> {
     // the below checks for file ID & user ID authorization
-    const upload = await Upload.findOne({
+    const upload = await UploadModel.findOne({
       where: {
         id: req.params.uploadId,
         userId: req.user.id,
@@ -138,7 +143,7 @@ function makeRandomName(): string {
   return result;
 }
 
-async function streamToString(stream: Readable) {
+async function streamToString(stream: Readable): Promise<string> {
   const chunks: Uint8Array[] = [];
   return new Promise((resolve, reject) => {
     stream.on("data", (chunk: Uint8Array) =>
