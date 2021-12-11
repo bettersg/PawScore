@@ -22,9 +22,9 @@ const storageBucketName = fullConfig.storageBucketName;
 
 const UploadRequestQuerySchema = z.object({
   originalFileName: z.string(),
-  base64File: z
-    .string()
-    .max(MAX_UPLOAD_MB * 1024 * 1024, "File size too large"),
+  base64File: z.string().refine((val) => {
+    return getOriginalByteSizeFromBase64(val) < MAX_UPLOAD_MB * 1024 * 1024;
+  }, "File size too large"),
 });
 
 class UploadController {
@@ -146,7 +146,11 @@ async function streamToString (stream: Readable) {
     stream.on('error', (err) => reject(err));
     stream.on('end', () => resolve(Buffer.concat(chunks).toString('base64')));
   })
+}
 
+function getOriginalByteSizeFromBase64(base64Str: string) {
+  const numPaddingChars = (base64Str.match(/=/g) ?? []).length;
+  return (base64Str.length * 3) / 4 - numPaddingChars;
 }
 
 export default new UploadController();
