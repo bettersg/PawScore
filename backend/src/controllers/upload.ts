@@ -103,49 +103,62 @@ class UploadController {
     let filename: string;
     // the below checks for file ID & user ID authorization
     const upload = await Upload.findOne({
-        where: {
-          id: req.params.uploadId,
-          userId: req.user.id,
-        }
-    })
+      where: {
+        id: req.params.uploadId,
+        userId: req.user.id,
+      },
+    });
     if (upload) {
       filename = upload.filename;
     } else {
-      const result = {"status": "failure", "message": "File ID does not exist"};
+      const result = {
+        status: "failure",
+        message: "File ID does not exist",
+      };
       return res.end(JSON.stringify(result));
     }
 
-    const fileStream = storage.bucket(storageBucketName)
+    const fileStream = storage
+      .bucket(storageBucketName)
       .file(filename)
       .createReadStream();
 
-    const base64Content = await streamToString(fileStream)
-    const result = {"status": "success", "message": "", "payload": base64Content};
+    const base64Content = await streamToString(fileStream);
+    const result = {
+      status: "success",
+      message: "",
+      payload: base64Content,
+    };
     return res.end(JSON.stringify(result));
   }
 }
 
 function makeRandomName(): string {
-  let result             = '';
-  const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = 29;
-  for ( let i = 0; i < charactersLength; i++ ) {
+  for (let i = 0; i < charactersLength; i++) {
     if (i % 5 === 4) {
       result += "-";
     } else {
       result += characters.charAt(crypto.randomInt(0, characters.length));
     }
- }
- return result;
+  }
+  return result;
 }
 
-async function streamToString (stream: Readable) {
+async function streamToString(stream: Readable) {
   const chunks: Uint8Array[] = [];
   return new Promise((resolve, reject) => {
-    stream.on('data', (chunk: Uint8Array) => chunks.push(Buffer.from(chunk)));
-    stream.on('error', (err) => reject(err));
-    stream.on('end', () => resolve(Buffer.concat(chunks).toString('base64')));
-  })
+    stream.on("data", (chunk: Uint8Array) =>
+      chunks.push(Buffer.from(chunk)),
+    );
+    stream.on("error", (err) => reject(err));
+    stream.on("end", () =>
+      resolve(Buffer.concat(chunks).toString("base64")),
+    );
+  });
 }
 
 function getOriginalByteSizeFromBase64(base64Str: string) {
