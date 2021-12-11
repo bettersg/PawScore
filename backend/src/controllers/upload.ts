@@ -1,7 +1,7 @@
 import { Storage } from "@google-cloud/storage";
 import crypto from "crypto";
 import express from "express";
-import { fileTypeFromBuffer } from "file-type";
+import FileType from "file-type";
 import { StatusCodes } from "http-status-codes";
 import mime from "mime-types";
 import { BadRequestError } from "routing-controllers";
@@ -33,7 +33,7 @@ class UploadController {
       const input = UploadRequestQuerySchema.parse(req.body);
 
       const buffer = Buffer.from(input.base64File, "base64");
-      const fileType = await fileTypeFromBuffer(buffer);
+      const fileType = await FileType.fromBuffer(buffer);
       const mimeTypeFromExt = mime.lookup(input.originalFileName);
 
       if (!fileType) {
