@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database";
 import { toEnumValues } from "../utils/enumUtil";
 
@@ -15,8 +15,9 @@ export interface ApplicationTypeAttributes {
 }
 
 export class ApplicationTypeModel
-	extends Sequelize.Model<ApplicationTypeAttributes>
-	implements ApplicationTypeAttributes {
+	extends Model<ApplicationTypeAttributes>
+	implements ApplicationTypeAttributes
+{
 	public id!: string;
 	public type!: ApplicationType;
 	public readonly createdAt!: Date;
@@ -26,19 +27,19 @@ export class ApplicationTypeModel
 ApplicationTypeModel.init(
 	{
 		id: {
-			type: Sequelize.DataTypes.UUIDV4,
+			type: DataTypes.UUIDV4,
 			primaryKey: true
 		},
 		type: {
-			type: Sequelize.DataTypes.ENUM(...toEnumValues(ApplicationType)),
+			type: DataTypes.ENUM(...toEnumValues(ApplicationType)),
 			allowNull: false
 		},
 		createdAt: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false
 		}
 	},

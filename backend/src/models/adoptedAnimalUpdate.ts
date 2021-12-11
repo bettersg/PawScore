@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database";
 
 export interface AdoptedAnimalUpdateAttributes {
@@ -13,8 +13,9 @@ export interface AdoptedAnimalUpdateAttributes {
 }
 
 export class AdoptedAnimalUpdateModel
-	extends Sequelize.Model<AdoptedAnimalUpdateAttributes>
-	implements AdoptedAnimalUpdateAttributes {
+	extends Model<AdoptedAnimalUpdateAttributes>
+	implements AdoptedAnimalUpdateAttributes
+{
 	public id!: string;
 	public userAnimalId!: string;
 	public title!: string;
@@ -28,33 +29,33 @@ export class AdoptedAnimalUpdateModel
 AdoptedAnimalUpdateModel.init(
 	{
 		id: {
-			type: Sequelize.DataTypes.UUIDV4,
+			type: DataTypes.UUIDV4,
 			primaryKey: true
 		},
 		userAnimalId: {
-			type: Sequelize.DataTypes.STRING,
+			type: DataTypes.STRING,
 			allowNull: false
 		},
 		title: {
-			type: Sequelize.DataTypes.STRING,
+			type: DataTypes.STRING,
 			allowNull: false
 		},
 		dueDate: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false
 		},
 		userUpdate: {
-			type: Sequelize.DataTypes.STRING
+			type: DataTypes.STRING
 		},
 		publishedDate: {
-			type: Sequelize.DataTypes.DATE
+			type: DataTypes.DATE
 		},
 		createdAt: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false
 		}
 	},

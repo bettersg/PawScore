@@ -1,5 +1,5 @@
 import { Animal } from "@contract";
-import Sequelize from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database";
 import { toEnumValues } from "../utils/enumUtil";
 
@@ -11,8 +11,9 @@ export interface AdoptionStatusAttributes {
 }
 
 export class AdoptionStatusModel
-	extends Sequelize.Model<AdoptionStatusAttributes>
-	implements AdoptionStatusAttributes {
+	extends Model<AdoptionStatusAttributes>
+	implements AdoptionStatusAttributes
+{
 	public id!: string;
 	public status!: Animal.AdoptionStatus;
 	public readonly createdAt!: Date;
@@ -22,19 +23,19 @@ export class AdoptionStatusModel
 AdoptionStatusModel.init(
 	{
 		id: {
-			type: Sequelize.DataTypes.UUIDV4,
+			type: DataTypes.UUIDV4,
 			primaryKey: true,
 		},
 		status: {
-			type: Sequelize.DataTypes.ENUM(...toEnumValues(Animal.AdoptionStatus)),
+			type: DataTypes.ENUM(...toEnumValues(Animal.AdoptionStatus)),
 			allowNull: false,
 		},
 		createdAt: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false,
 		},
 		updatedAt: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false,
 		},
 	},

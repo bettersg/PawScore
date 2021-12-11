@@ -1,4 +1,5 @@
-import Sequelize from "sequelize";
+"use strict";
+import { Model, Optional, DataTypes, UUIDV4 } from "sequelize";
 import { sequelize } from "../database";
 
 // These are all the attributes for the model
@@ -11,11 +12,12 @@ interface BookingAttributes {
 }
 
 // Some attributes are optional in model.build() or model.create()
-type BookingCreationAttributes = Sequelize.Optional<BookingAttributes, "id">;
+type BookingCreationAttributes = Optional<BookingAttributes, "id">;
 
 class Booking
-	extends Sequelize.Model<BookingAttributes, BookingCreationAttributes>
-	implements BookingAttributes {
+	extends Model<BookingAttributes, BookingCreationAttributes>
+	implements BookingAttributes
+{
 	public id!: string;
 	public shelterId!: string;
 	public userId!: string;
@@ -43,7 +45,7 @@ class Booking
   public readonly projects?: Project[]; // Note this is optional since it's only populated when explicitly requested in code
 
   public static associations: {
-	projects: Association<User, Project>;
+    projects: Association<User, Project>;
   };
   *
   *
@@ -53,24 +55,24 @@ class Booking
 Booking.init(
 	{
 		id: {
-			type: Sequelize.DataTypes.UUID,
-			defaultValue: Sequelize.DataTypes.UUIDV4,
+			type: DataTypes.UUID,
+			defaultValue: UUIDV4,
 			primaryKey: true,
 		},
 		shelterId: {
-			type: Sequelize.DataTypes.INTEGER,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		userId: {
-			type: Sequelize.DataTypes.UUID,
+			type: DataTypes.UUID,
 			allowNull: false,
 		},
 		startDate: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: true,
 		},
 		endDate: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: true,
 		},
 	},

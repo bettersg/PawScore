@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import { Model, DataTypes, Optional, UUIDV4 } from "sequelize";
 import { sequelize } from "../database";
 
 
@@ -11,9 +11,9 @@ export interface ShelterAttributes {
   registrationNo: string | null;
 }
 
-export type ShelterCreationAttributes = Sequelize.Optional<ShelterAttributes, "id">
+export type ShelterCreationAttributes = Optional<ShelterAttributes, "id">
 
-export class ShelterModel extends Sequelize.Model<ShelterAttributes, ShelterCreationAttributes>
+export class ShelterModel extends Model<ShelterAttributes, ShelterCreationAttributes>
   implements ShelterAttributes {
   public id!: string;
   public name!: string;
@@ -28,28 +28,28 @@ export class ShelterModel extends Sequelize.Model<ShelterAttributes, ShelterCrea
 ShelterModel.init(
   {
     id: {
-      type: Sequelize.DataTypes.UUIDV4,
-      defaultValue: Sequelize.DataTypes.UUIDV4,
+      type: DataTypes.UUIDV4,
+      defaultValue: UUIDV4,
       primaryKey: true,
     },
     name: {
-      type: Sequelize.DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     address: {
-      type: Sequelize.DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     country: {
-      type: Sequelize.DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    contact: {
-      type: Sequelize.DataTypes.STRING,
+    contact : {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    registrationNo: {
-      type: Sequelize.DataTypes.STRING,
+    registrationNo : {
+      type: DataTypes.STRING,
       allowNull: true,
     }
   },

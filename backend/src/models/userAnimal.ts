@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database";
 
 export interface UserAnimalAttributes {
@@ -10,8 +10,9 @@ export interface UserAnimalAttributes {
 }
 
 export class UserAnimalModel
-	extends Sequelize.Model<UserAnimalAttributes>
-	implements UserAnimalAttributes {
+	extends Model<UserAnimalAttributes>
+	implements UserAnimalAttributes
+{
 	public id!: string;
 	public userProfileId!: string;
 	public animalId!: string;
@@ -22,23 +23,23 @@ export class UserAnimalModel
 UserAnimalModel.init(
 	{
 		id: {
-			type: Sequelize.DataTypes.UUIDV4,
+			type: DataTypes.UUIDV4,
 			primaryKey: true
 		},
 		userProfileId: {
-			type: Sequelize.DataTypes.STRING,
+			type: DataTypes.STRING,
 			allowNull: false
 		},
 		animalId: {
-			type: Sequelize.DataTypes.STRING,
+			type: DataTypes.STRING,
 			allowNull: false
 		},
 		createdAt: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false
 		}
 	},

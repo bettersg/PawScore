@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database";
 import { toEnumValues } from "../utils/enumUtil";
 
@@ -19,8 +19,9 @@ export interface ApplicationStatusAttributes {
 }
 
 export class ApplicationStatusModel
-	extends Sequelize.Model<ApplicationStatusAttributes>
-	implements ApplicationStatusAttributes {
+	extends Model<ApplicationStatusAttributes>
+	implements ApplicationStatusAttributes
+{
 	public id!: string;
 	public status!: ApplicationStatus;
 	public readonly createdAt!: Date;
@@ -30,19 +31,19 @@ export class ApplicationStatusModel
 ApplicationStatusModel.init(
 	{
 		id: {
-			type: Sequelize.DataTypes.UUIDV4,
+			type: DataTypes.UUIDV4,
 			primaryKey: true
 		},
 		status: {
-			type: Sequelize.DataTypes.ENUM(...toEnumValues(ApplicationStatus)),
+			type: DataTypes.ENUM(...toEnumValues(ApplicationStatus)),
 			allowNull: false
 		},
 		createdAt: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: Sequelize.DataTypes.DATE,
+			type: DataTypes.DATE,
 			allowNull: false
 		}
 	},
