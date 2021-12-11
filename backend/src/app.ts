@@ -1,29 +1,29 @@
+import { Ability } from "@casl/ability";
+import cors from "cors";
+import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
-import dayjs from "dayjs";
 import errorhandler from "errorhandler";
 import express from "express";
 import proxy from "express-http-proxy";
 import passport from "passport";
 import "reflect-metadata";
 import { useExpressServer } from "routing-controllers";
-import { Ability } from "@casl/ability";
-import cors from "cors";
+import { Actions, setupPermissions, Subjects } from "./authorization";
 import config from "./config/config";
 import authStrategy from "./config/passport";
 import setupSession from "./config/session";
 import { AnimalController } from "./controllers/animal";
-import { ShelterController } from "./controllers/shelter";
 import { HealthCheckController } from "./controllers/healthcheck";
+import { ShelterController } from "./controllers/shelter";
+import { UploadController } from "./controllers/upload";
+import checkPageAuth from "./helpers/checkPageAuth";
 import { User as UserType } from "./models/user";
 import authRouteSetup from "./routes/auth";
 import bookingRouter from "./routes/booking";
-import uploadRouter from "./routes/upload";
-import userProfileRouter from "./routes/userProfile";
 import healthcheckRouter from "./routes/healthcheck";
+import userProfileRouter from "./routes/userProfile";
 import { ApiErrorMiddleware } from "./utils/error";
-import { Actions, setupPermissions, Subjects } from "./authorization";
-import checkPageAuth from "./helpers/checkPageAuth";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -82,11 +82,10 @@ authRouteSetup(app, passport);
 
 app.use("/api", healthcheckRouter);
 app.use("/api", bookingRouter);
-app.use("/api", uploadRouter);
 app.use("/api", userProfileRouter);
 
 useExpressServer(app, {
-	controllers: [AnimalController, ShelterController, HealthCheckController],
+	controllers: [AnimalController, ShelterController, HealthCheckController, UploadController],
 	development: false,
 	defaultErrorHandler: false,
 	middlewares: [ApiErrorMiddleware],
@@ -108,13 +107,6 @@ app._router.stack.forEach((r: any) => {
 	}
 });
 bookingRouter.stack.forEach((r: any) => {
-	if (r.route && r.route.path) {
-		console.debug(
-			`${Object.keys(r.route.methods).join(", ")} -> ${r.route.path}`,
-		);
-	}
-});
-uploadRouter.stack.forEach((r: any) => {
 	if (r.route && r.route.path) {
 		console.debug(
 			`${Object.keys(r.route.methods).join(", ")} -> ${r.route.path}`,
