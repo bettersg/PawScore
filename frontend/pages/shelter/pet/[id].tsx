@@ -1,14 +1,6 @@
 import { Animal } from "@contract";
 import { Breadcrumb } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import {
-	FurLength,
-	PetData,
-	Sex,
-	Species,
-	Status,
-	Sterilised,
-} from "common/enums"; // TODO: remove and use Animal.Attributes from contract
 import PetDetailsSection from "components/shelter/pet/PetDetailsSection";
 import ProspectiveAdopters from "components/shelter/pet/ProspectiveAdopters";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
@@ -17,81 +9,73 @@ import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-export const defaultPet: PetData = {
-	key: "",
-	name: "Cat 1",
-	images: [
-		"https://via.placeholder.com/86",
-		"https://via.placeholder.com/86",
-		"https://via.placeholder.com/86",
-		"https://via.placeholder.com/86",
-		"https://via.placeholder.com/86",
-	],
-	visible: false,
-	species: Species.CAT,
-	status: Status.HEALTHY,
-	acquired: new Date(),
-	breed: "Shorthair cat",
-	sex: Sex.MALE,
-	furLength: FurLength.SHORT,
-	medicalIssues: ["asthma"],
-	sterilised: Sterilised.YES,
-	dateOfBirth: new Date(),
-	furColor: ["white", "brown"],
-	toiletTrained: true,
-};
+// export const defaultPet: Animal.Attributes = {
+// 	key: "",
+// 	name: "Cat 1",
+// 	images: [
+// 		"https://via.placeholder.com/86",
+// 		"https://via.placeholder.com/86",
+// 		"https://via.placeholder.com/86",
+// 		"https://via.placeholder.com/86",
+// 		"https://via.placeholder.com/86",
+// 	],
+// 	visible: false,
+// 	species: Species.CAT,
+// 	status: Status.HEALTHY,
+// 	acquired: new Date(),
+// 	breed: "Shorthair cat",
+// 	sex: Sex.MALE,
+// 	furLength: FurLength.SHORT,
+// 	medicalIssues: ["asthma"],
+// 	sterilised: Sterilised.YES,
+// 	dateOfBirth: new Date(),
+// 	furColor: ["white", "brown"],
+// 	toiletTrained: true,
+// };
 
 export default function PetDetails() {
 	const router = useRouter();
 	const petId = router.query.id as string;
-	const [petData, setPetData] = useState<PetData>(); // TODO: Update to use attributes
-	// const [petData, setPetData] = useState<Animal.Attributes>();
+	const [petData, setPetData] = useState<Animal.Attributes>();
 	const [petAdopters, setPetAdopters] = useState<Adopter[]>();
 
 	useEffect(() => {
-		// TODO: Update to use attributes
-		// /* TODO: Refactor to either use API from contract or receive data from parent */
-		// console.log(`Fetching pet info for shelter - ${petId}`);
-		// const pd: Partial<Animal.Attributes> = {
-		// 	id: petId,
-		// 	name: "Cat 1",
-		// 	animalImages: [
-		// 		{
-		// 			photoUrl: "https://via.placeholder.com/86",
-		// 			thumbnailUrl: "https://via.placeholder.com/86",
-		// 		},
-		// 		{
-		// 			photoUrl: "https://via.placeholder.com/86",
-		// 			thumbnailUrl: "https://via.placeholder.com/86",
-		// 		},
-		// 		{
-		// 			photoUrl: "https://via.placeholder.com/86",
-		// 			thumbnailUrl: "https://via.placeholder.com/86",
-		// 		},
-		// 		{
-		// 			photoUrl: "https://via.placeholder.com/86",
-		// 			thumbnailUrl: "https://via.placeholder.com/86",
-		// 		},
-		// 		{
-		// 			photoUrl: "https://via.placeholder.com/86",
-		// 			thumbnailUrl: "https://via.placeholder.com/86",
-		// 		},
-		// 		{
-		// 			photoUrl: "https://via.placeholder.com/86",
-		// 			thumbnailUrl: "https://via.placeholder.com/86",
-		// 		},
-		// 	],
-		// 	visible: false,
-		// 	species: Animal.Species.Cat,
-		// 	adoptionStatus: Animal.AdoptionStatus.Healthy,
-		// 	intakeDate: new Date().toLocaleDateString(),
-		// 	breed: "Shorthair cat",
-		// };
-
-		console.log(`Fetching pet info ${petId}`);
-		const petData: PetData = {
-			...defaultPet,
-			key: petId as string,
+		/* TODO: Refactor to either use API from contract or receive data from parent */
+		console.log(`Fetching pet info for shelter - ${petId}`);
+		const pd: Partial<Animal.Attributes> = {
+			id: petId,
+			name: "Cat 1",
+			animalImages: [
+				{
+					photoUrl: "https://via.placeholder.com/86",
+					thumbnailUrl: "https://via.placeholder.com/86",
+				},
+				{
+					photoUrl: "https://via.placeholder.com/86",
+					thumbnailUrl: "https://via.placeholder.com/86",
+				},
+				{
+					photoUrl: "https://via.placeholder.com/86",
+					thumbnailUrl: "https://via.placeholder.com/86",
+				},
+				{
+					photoUrl: "https://via.placeholder.com/86",
+					thumbnailUrl: "https://via.placeholder.com/86",
+				},
+				{
+					photoUrl: "https://via.placeholder.com/86",
+					thumbnailUrl: "https://via.placeholder.com/86",
+				},
+				{
+					photoUrl: "https://via.placeholder.com/86",
+					thumbnailUrl: "https://via.placeholder.com/86",
+				},
+			],
+			visible: false,
+			species: Animal.Species.Cat,
+			adoptionStatus: Animal.AdoptionStatus.Healthy,
+			intakeDate: new Date(),
+			breed: "Shorthair cat",
 		};
 
 		const adopterData: Adopter[] = [
@@ -144,7 +128,7 @@ export default function PetDetails() {
 				image: "https://via.placeholder.com/22",
 			},
 		];
-		setPetData(petData);
+		setPetData(pd as Animal.Attributes);
 		setPetAdopters(adopterData);
 	}, [petId]);
 

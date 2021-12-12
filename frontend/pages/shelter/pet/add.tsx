@@ -1,15 +1,8 @@
 import { EditOutlined } from "@ant-design/icons";
+import { Animal } from "@contract";
 import { Breadcrumb, Button, RadioChangeEvent } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Title from "antd/lib/typography/Title";
-import {
-	FurLength,
-	PetData,
-	Sex,
-	Species,
-	Status,
-	Sterilised,
-} from "common/enums";
 import {
 	FormSection,
 	ImageSection,
@@ -20,28 +13,37 @@ import moment from "moment";
 import React, { ChangeEvent, useMemo, useState } from "react";
 import styled from "styled-components";
 
+const initialPet: Animal.Attributes = {
+	id: "",
+	shelterId: "",
+	adoptionStatus: Animal.AdoptionStatus.Healthy,
+	species: Animal.Species.Cat,
+	name: "",
+	description: "",
+	healthIssues: "",
+	gender: "F",
+	dateOfBirth: new Date(),
+	sizeCm: null,
+	breed: "",
+	color: "",
+	weightKg: null,
+	furLength: "",
+	vaccinated: null,
+	dewormed: null,
+	sterilised: null,
+	toiletTrained: true,
+	adoptionFee: null,
+	intakeDate: new Date(),
+	visible: true,
+	animalImages: [],
+};
+
 export default function AddNewPet() {
-	const [pet, setPet] = useState<PetData>({
-		key: "",
-		name: "",
-		images: [],
-		visible: true,
-		sex: Sex.MALE,
-		species: Species.CAT,
-		status: Status.HEALTHY,
-		acquired: new Date(),
-		breed: "",
-		furLength: FurLength.SHORT,
-		medicalIssues: [],
-		sterilised: Sterilised.YES,
-		dateOfBirth: new Date(),
-		furColor: [],
-		toiletTrained: true,
-	});
+	const [pet, setPet] = useState<Animal.Attributes>();
 
 	const onValueChange = (
 		e: ChangeEvent<HTMLInputElement>,
-		key: keyof Pick<PetData, "name">,
+		key: keyof Pick<Animal.Attributes, "name">,
 	) => {
 		setPet((prev) => ({ ...prev, [key]: e.target.value }));
 	};
@@ -49,8 +51,12 @@ export default function AddNewPet() {
 	const onRadioChange = (
 		e: RadioChangeEvent,
 		key: keyof Pick<
-			PetData,
-			"visible" | "toiletTrained" | "sex" | "sterilised" | "status"
+			Animal.Attributes,
+			| "visible"
+			| "toiletTrained"
+			| "gender"
+			| "sterilised"
+			| "adoptionStatus"
 		>,
 		isYesNo?: boolean,
 	) => {
@@ -66,8 +72,8 @@ export default function AddNewPet() {
 	const onSelectChange = (
 		value: string | string[],
 		key: keyof Pick<
-			PetData,
-			"species" | "furLength" | "breed" | "medicalIssues" | "furColor"
+			Animal.Attributes,
+			"species" | "furLength" | "breed" | "healthIssues" | "color"
 		>,
 	) => {
 		if (!value) return;
@@ -76,7 +82,7 @@ export default function AddNewPet() {
 
 	const onDateChange = (
 		date: moment.Moment,
-		key: keyof Pick<PetData, "acquired" | "dateOfBirth">,
+		key: keyof Pick<Animal.Attributes, "intakeDate" | "dateOfBirth">,
 	) => {
 		if (!date) return;
 		setPet((prev) => ({ ...prev, [key]: date.toDate() }));
@@ -87,10 +93,10 @@ export default function AddNewPet() {
 	};
 
 	const isFormValidated = useMemo(() => {
-		const dateKeys: (keyof Pick<PetData, "dateOfBirth" | "acquired">)[] = [
-			"dateOfBirth",
-			"acquired",
-		];
+		const dateKeys: (keyof Pick<
+			Animal.Attributes,
+			"dateOfBirth" | "acquired"
+		>)[] = ["dateOfBirth", "acquired"];
 
 		for (const key of dateKeys) {
 			if (!moment(pet[key]).isValid() || pet[key].toString) {
@@ -98,8 +104,10 @@ export default function AddNewPet() {
 			}
 		}
 
-		const yesnoKeys: (keyof Pick<PetData, "toiletTrained" | "visible">)[] =
-			["toiletTrained", "visible"];
+		const yesnoKeys: (keyof Pick<
+			Animal.Attributes,
+			"toiletTrained" | "visible"
+		>)[] = ["toiletTrained", "visible"];
 
 		for (const key of yesnoKeys) {
 			if (
@@ -111,7 +119,7 @@ export default function AddNewPet() {
 		}
 
 		const stringKeys: (keyof Pick<
-			PetData,
+			Animal.Attributes,
 			"name" | "images" | "breed" | "medicalIssues" | "furColor"
 		>)[] = ["name", "images", "breed", "medicalIssues", "furColor"];
 
@@ -128,28 +136,29 @@ export default function AddNewPet() {
 			}
 		}
 
-		const enumKeys: { key: keyof Partial<PetData>; type: any }[] = [
-			{
-				key: "sex",
-				type: Sex,
-			},
-			{
-				key: "species",
-				type: Species,
-			},
-			{
-				key: "status",
-				type: Status,
-			},
-			{
-				key: "furLength",
-				type: FurLength,
-			},
-			{
-				key: "sterilised",
-				type: Sterilised,
-			},
-		];
+		const enumKeys: { key: keyof Partial<Animal.Attributes>; type: any }[] =
+			[
+				{
+					key: "sex",
+					type: Sex,
+				},
+				{
+					key: "species",
+					type: Species,
+				},
+				{
+					key: "status",
+					type: Status,
+				},
+				{
+					key: "furLength",
+					type: FurLength,
+				},
+				{
+					key: "sterilised",
+					type: Sterilised,
+				},
+			];
 
 		for (const enums of enumKeys) {
 			if (!Object.values(enums.type).includes(pet[enums.key])) {
@@ -182,7 +191,7 @@ export default function AddNewPet() {
 						</div>
 					</PetDetailHeader>
 					<ImageSection
-						images={pet.images}
+						images={pet?.animalImages || []}
 						onChange={updateGallery}
 						isEditMode
 					/>
