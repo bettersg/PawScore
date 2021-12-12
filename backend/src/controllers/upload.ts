@@ -13,13 +13,25 @@ import {
   Req,
   UseBefore,
 } from "routing-controllers";
+import sharp from "sharp";
 import { Readable } from "stream";
 import { z } from "zod";
 import fullConfig from "../config/config";
 import { IsLoggedInMiddleware } from "../helpers/auth";
 import { Upload as UploadModel } from "../models/upload";
 
-const MAX_UPLOAD_MB = 10;
+const MAX_FILE_SIZE_MB = 10;
+const MAX_IMAGE_SIZE_MB = 5;
+const ALLOWED_FILE_MIME_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "video/mp4",
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "text/plain",
+];
+const ALLOWED_IMAGE_MIME_TYPES = ["image/png", "image/jpeg"];
 
 let storage = new Storage();
 
@@ -32,7 +44,18 @@ const storageBucketName = fullConfig.storageBucketName;
 const UploadRequestQuerySchema = z.object({
   originalFileName: z.string(),
   base64File: z.string().refine((val) => {
-    return getOriginalByteSizeFromBase64(val) < MAX_UPLOAD_MB * 1024 * 1024;
+    return (
+      getOriginalByteSizeFromBase64(val) < MAX_FILE_SIZE_MB * 1024 * 1024
+    );
+  }, "File size too large"),
+});
+
+const UploadImageRequestQuerySchema = z.object({
+  originalFileName: z.string(),
+  base64File: z.string().refine((val) => {
+    return (
+      getOriginalByteSizeFromBase64(val) < MAX_IMAGE_SIZE_MB * 1024 * 1024
+    );
   }, "File size too large"),
 });
 
@@ -45,37 +68,18 @@ export class UploadController {
   ): Promise<Upload.uploadApiDomain.response> {
     const input = UploadRequestQuerySchema.parse(req.body);
 
-    const buffer = Buffer.from(input.base64File, "base64");
-    const fileType = await FileType.fromBuffer(buffer);
-    const mimeTypeFromExt = mime.lookup(input.originalFileName);
+    const {
+      buffer,
+      mimeType,
+      extension,
+    } = await this.validateAndExtractFileInfo(
+      input,
+      ALLOWED_FILE_MIME_TYPES,
+    );
 
-    if (!fileType) {
-      throw new BadRequestError("Invalid file: no mime type detected");
-    }
+    const newFileName = makeRandomName() + "." + extension;
 
-    if (!mimeTypeFromExt) {
-      throw new BadRequestError("Invalid file: missing extension");
-    }
-
-    if (mimeTypeFromExt !== fileType.mime) {
-      throw new BadRequestError(
-        "Invalid file: mismatched type and extension",
-      );
-    }
-
-    const uploadBucket = storage.bucket(storageBucketName);
-    const newFileName = makeRandomName();
-    const file = uploadBucket.file(newFileName);
-
-    try {
-      await file.save(buffer, { contentType: mimeTypeFromExt });
-    } catch (err) {
-      console.log(
-        "Error during file upload: " +
-        (err instanceof Error ? err.message : "unknown"),
-      );
-      throw new Error("Failed to upload file");
-    }
+    await this.saveBufferToBucket(newFileName, mimeType, buffer);
 
     const uploadRecord = {
       userId: req.user.id,
@@ -90,6 +94,62 @@ export class UploadController {
         originalFileName: input.originalFileName,
         fileName: newFileName,
         url: `https://storage.googleapis.com/${storageBucketName}/${newFileName}`,
+      },
+    };
+  }
+
+  @Post("/image")
+  @UseBefore(IsLoggedInMiddleware)
+  async uploadImage(
+    @Req() req: express.Request,
+  ): Promise<Upload.uploadImageApiDomain.response> {
+    const input = UploadImageRequestQuerySchema.parse(req.body);
+
+    const {
+      buffer,
+      mimeType,
+      extension,
+    } = await this.validateAndExtractFileInfo(
+      input,
+      ALLOWED_IMAGE_MIME_TYPES,
+    );
+
+    const imageBuffer = await this.resizeImage(buffer, { width: 1000 });
+    const thumbnailBuffer = await this.resizeImage(buffer, {
+      width: 500,
+      height: 500,
+    });
+
+    const newFileName = makeRandomName();
+    const imageFileName = newFileName + "." + extension;
+    const thumbnailFileName = newFileName + "_thumbnail" + "." + extension;
+
+    await this.saveBufferToBucket(imageFileName, mimeType, imageBuffer);
+    await this.saveBufferToBucket(
+      thumbnailFileName,
+      mimeType,
+      thumbnailBuffer,
+    );
+
+    await UploadModel.create({
+      userId: req.user.id,
+      originalFilename: input.originalFileName,
+      filename: imageFileName,
+    });
+
+    await UploadModel.create({
+      userId: req.user.id,
+      originalFilename: input.originalFileName,
+      filename: thumbnailFileName,
+    });
+
+    return {
+      message: "You have successfully uploaded the file",
+      payload: {
+        originalFileName: input.originalFileName,
+        fileName: imageFileName,
+        url: `https://storage.googleapis.com/${storageBucketName}/${imageFileName}`,
+        thumbnailUrl: `https://storage.googleapis.com/${storageBucketName}/${thumbnailFileName}`,
       },
     };
   }
@@ -125,6 +185,64 @@ export class UploadController {
       payload: base64Content,
     };
     return result;
+  }
+
+  private async validateAndExtractFileInfo(
+    input: z.infer<typeof UploadRequestQuerySchema>,
+    allowedMimeTypes: string[],
+  ) {
+    const buffer = Buffer.from(input.base64File, "base64");
+    const fileType = await FileType.fromBuffer(buffer);
+    const mimeTypeFromExt = mime.lookup(input.originalFileName);
+
+    if (!fileType) {
+      throw new BadRequestError("Invalid file: no mime type detected");
+    }
+
+    if (!mimeTypeFromExt) {
+      throw new BadRequestError("Invalid file: missing extension");
+    }
+
+    if (mimeTypeFromExt !== fileType.mime) {
+      throw new BadRequestError(
+        "Invalid file: mismatched type and extension",
+      );
+    }
+
+    if (!allowedMimeTypes.includes(mimeTypeFromExt)) {
+      throw new BadRequestError("Invalid file: mime type not allowed");
+    }
+
+    return { buffer, mimeType: fileType.mime, extension: fileType.ext };
+  }
+
+  private async resizeImage(
+    buffer: Buffer,
+    options: { width?: number; height?: number },
+  ) {
+    return await sharp(buffer)
+      .resize({ width: options.width, height: options.height })
+      .jpeg({ mozjpeg: true })
+      .toBuffer();
+  }
+
+  private async saveBufferToBucket(
+    fileName: string,
+    mimeType: string,
+    buffer: Buffer,
+  ) {
+    const uploadBucket = storage.bucket(storageBucketName);
+    const file = uploadBucket.file(fileName);
+
+    try {
+      await file.save(buffer, { contentType: mimeType });
+    } catch (err) {
+      console.log(
+        "Error during file upload: " +
+        (err instanceof Error ? err.message : "unknown"),
+      );
+      throw new Error("Failed to upload file");
+    }
   }
 }
 
