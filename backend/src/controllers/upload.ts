@@ -19,6 +19,7 @@ import { z } from "zod";
 import fullConfig from "../config/config";
 import { IsLoggedInMiddleware } from "../helpers/auth";
 import { Upload as UploadModel } from "../models/upload";
+import { zodBase64FileSchema } from "../utils/validation";
 
 const MAX_FILE_SIZE_MB = 10;
 const MAX_IMAGE_SIZE_MB = 5;
@@ -43,20 +44,12 @@ const storageBucketName = fullConfig.storageBucketName;
 
 const UploadRequestQuerySchema = z.object({
   originalFileName: z.string(),
-  base64File: z.string().refine((val) => {
-    return (
-      getOriginalByteSizeFromBase64(val) < MAX_FILE_SIZE_MB * 1024 * 1024
-    );
-  }, "File size too large"),
+  base64File: zodBase64FileSchema(MAX_FILE_SIZE_MB),
 });
 
 const UploadImageRequestQuerySchema = z.object({
   originalFileName: z.string(),
-  base64File: z.string().refine((val) => {
-    return (
-      getOriginalByteSizeFromBase64(val) < MAX_IMAGE_SIZE_MB * 1024 * 1024
-    );
-  }, "File size too large"),
+  base64File: zodBase64FileSchema(MAX_IMAGE_SIZE_MB),
 });
 
 @JsonController("/api/upload")
@@ -272,9 +265,4 @@ async function streamToString(stream: Readable): Promise<string> {
       resolve(Buffer.concat(chunks).toString("base64")),
     );
   });
-}
-
-function getOriginalByteSizeFromBase64(base64Str: string) {
-  const numPaddingChars = (base64Str.match(/=/g) ?? []).length;
-  return (base64Str.length * 3) / 4 - numPaddingChars;
 }
