@@ -210,7 +210,7 @@ export class UploadController {
     options: { width?: number; height?: number },
   ) {
     return await sharp(buffer)
-      .resize({ width: options.width, height: options.height })
+      .resize({ width: options.width, height: options.height, withoutEnlargement: true })
       .jpeg({ mozjpeg: true })
       .toBuffer();
   }
