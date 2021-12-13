@@ -98,29 +98,25 @@ export class UploadController {
   ): Promise<Upload.uploadImageApiDomain.response> {
     const input = UploadImageRequestQuerySchema.parse(req.body);
 
-    const {
-      buffer,
-      mimeType,
-      extension,
-    } = await this.validateAndExtractFileInfo(
+    const { buffer } = await this.validateAndExtractFileInfo(
       input,
       ALLOWED_IMAGE_MIME_TYPES,
     );
 
-    const imageBuffer = await this.resizeImage(buffer, { width: 1000 });
-    const thumbnailBuffer = await this.resizeImage(buffer, {
+    const imageBuffer = await this.resizeAndConvertImageToJpeg(buffer, { width: 1000 });
+    const thumbnailBuffer = await this.resizeAndConvertImageToJpeg(buffer, {
       width: 500,
       height: 500,
     });
 
     const newFileName = makeRandomName();
-    const imageFileName = newFileName + "." + extension;
-    const thumbnailFileName = newFileName + "_thumbnail" + "." + extension;
+    const imageFileName = newFileName + ".jpg";
+    const thumbnailFileName = newFileName + "_thumbnail.jpg";
 
-    await this.saveBufferToBucket(imageFileName, mimeType, imageBuffer);
+    await this.saveBufferToBucket(imageFileName, "image/jpeg", imageBuffer);
     await this.saveBufferToBucket(
       thumbnailFileName,
-      mimeType,
+      "image/jpeg",
       thumbnailBuffer,
     );
 
@@ -209,7 +205,7 @@ export class UploadController {
     return { buffer, mimeType: fileType.mime, extension: fileType.ext };
   }
 
-  private async resizeImage(
+  private async resizeAndConvertImageToJpeg(
     buffer: Buffer,
     options: { width?: number; height?: number },
   ) {
