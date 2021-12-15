@@ -2,6 +2,7 @@ import { QueryInterface } from "sequelize";
 
 export default {
   up: async (queryInterface: QueryInterface): Promise<void> => {
+    await queryInterface.bulkDelete("upload", {});
     await queryInterface.bulkDelete("user_animal_application", {});
     await queryInterface.bulkDelete("animal_image", {});
     await queryInterface.bulkDelete("animal", {});
