@@ -6,6 +6,7 @@ import ShelterLoginLayout from "layouts/shelter/ShelterLoginLayout";
 import styled from "styled-components";
 import createAxiosInstance from "api/createAxiosInstance";
 import { LoginFormValues } from "types";
+import { LoginResponse } from "@contract";
 
 const { TabPane } = Tabs;
 
@@ -14,9 +15,11 @@ const ShelterLogin = () => {
 		try {
 			const axios = createAxiosInstance();
 			const {
-				data: { payload }
-			} = await axios.post("/api/login", values);
-			window.location.assign("/shelter/home");
+				data: { payload },
+			} = await axios.post<LoginResponse>("/api/login", values);
+			if (payload.shelterId) {
+				window.location.assign("/shelter/home");
+			}
 		} catch (err) {
 			// TODO: handle error in UI
 			console.log(err);
@@ -26,9 +29,11 @@ const ShelterLogin = () => {
 		try {
 			const axios = createAxiosInstance();
 			const {
-				data: { payload }
-			} = await axios.post("/api/register", values);
-			window.location.assign("/shelter/home");
+				data: { payload },
+			} = await axios.post<LoginResponse>("/api/register", values);
+			if (payload.shelterId) {
+				window.location.assign("/shelter/home");
+			}
 		} catch (err) {
 			// TODO: handle error in UI
 			console.log(err);
