@@ -1,7 +1,9 @@
 import express from "express";
 import passport from "passport";
+import { LoginResponse } from "@contract";
 import { User } from "../models/user";
 import { NextFunction } from "express";
+import { StatusCodes } from "http-status-codes";
 
 const authRouteSetup = (
 	app: express.Application,
@@ -29,7 +31,7 @@ const authRouteSetup = (
 							}
 						});
 						user.password = "";
-						const result = {
+						const result: LoginResponse = {
 							status: "success",
 							message: "You have successfully registered",
 							payload: user,
@@ -66,7 +68,7 @@ const authRouteSetup = (
 							return next(loginErr);
 						}
 						user.password = "";
-						const result = {
+						const result: LoginResponse = {
 							status: "success",
 							message: "You have successfully logged in",
 							payload: user,
@@ -80,7 +82,7 @@ const authRouteSetup = (
 
 	app.post("/api/logout", (req: express.Request, res: express.Response) => {
 		req.logout();
-		res.redirect("/");
+		res.status(StatusCodes.UNAUTHORIZED).json({ redirectPath: "/" });
 	});
 };
 
