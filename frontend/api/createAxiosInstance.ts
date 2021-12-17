@@ -20,7 +20,7 @@ const createAxiosInstance = (): AxiosInstance => {
 				console.log(`Unauthenticated API call. Redirecting to ${path}`);
 				window.location.assign(path);
 			}
-			return error;
+			return Promise.reject(error);
 		},
 	);
 
