@@ -14,7 +14,7 @@ const ShelterLogin = () => {
 		try {
 			const axios = createAxiosInstance();
 			const {
-				data: { payload }
+				data: { payload },
 			} = await axios.post("/api/login", values);
 			window.location.assign("/shelter/home");
 		} catch (err) {
@@ -26,7 +26,7 @@ const ShelterLogin = () => {
 		try {
 			const axios = createAxiosInstance();
 			const {
-				data: { payload }
+				data: { payload },
 			} = await axios.post("/api/register", values);
 			window.location.assign("/shelter/home");
 		} catch (err) {
