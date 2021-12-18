@@ -7,6 +7,7 @@ import {
 	FormSection,
 	ImageSection,
 } from "components/shelter/pet/add/FormComponents";
+import { Formik, FormikHelpers } from "formik";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
 import { MenuKey } from "layouts/shelter/ShelterLayout/LeftMenu";
 import moment from "moment";
@@ -40,6 +41,11 @@ const initialPet: Animal.Attributes = {
 
 export default function AddNewPet() {
 	const [pet, setPet] = useState<Animal.Attributes>();
+
+	const handleSubmit = (
+		values: Animal.Attributes,
+		actions: FormikHelpers<Animal.Attributes>,
+	) => {};
 
 	const onValueChange = (
 		e: ChangeEvent<HTMLInputElement>,
@@ -177,22 +183,59 @@ export default function AddNewPet() {
 					<Breadcrumb.Item href="">Add Pet</Breadcrumb.Item>
 				</Breadcrumb>
 				<InnerContent>
+					<Formik initialValues={initialPet} onSubmit={handleSubmit}>
+						{(formikProps) => {
+							const pet = formikProps.values;
+							const addNewImage = (newImg: Animal.Image) => {
+								const currImages = pet.animalImages || [];
+
+								formikProps.setFieldValue(
+									"animalImages" as keyof Pick<
+										Animal.Attributes,
+										"animalImages"
+									>,
+									[...currImages, newImg],
+								);
+							};
+							const removeImage = (imageIndex: number) => {
+								const currImages = [...pet.animalImages!];
+								currImages.splice(imageIndex, 1);
+
+								formikProps.setFieldValue(
+									"animalImages" as keyof Pick<
+										Animal.Attributes,
+										"animalImages"
+									>,
+									currImages,
+								);
+							};
+							return (
+								<>
 					<PetDetailHeader>
 						<Title level={5}>Pet Details</Title>
 						<div>
-							<Button style={{ marginRight: 8 }}>Cancel</Button>
+											<Button style={{ marginRight: 8 }}>
+												Cancel
+											</Button>
 							<Button
 								type="primary"
 								icon={<EditOutlined />}
-								disabled={!isFormValidated}
+												// disabled={!isFormValidated}
+												onClick={() =>
+													console.log(
+														formikProps.dirty,
+														pet,
+													)
+												}
 							>
 								Save
 							</Button>
 						</div>
 					</PetDetailHeader>
 					<ImageSection
-						images={pet?.animalImages || []}
-						onChange={updateGallery}
+										images={pet.animalImages || []}
+										addNewImage={addNewImage}
+										removeImage={removeImage}
 						isEditMode
 					/>
 					<Flex>
@@ -211,6 +254,10 @@ export default function AddNewPet() {
 							onValueChange={onValueChange}
 						/>
 					</Flex>
+								</>
+							);
+						}}
+					</Formik>
 				</InnerContent>
 			</Container>
 		</ShelterLayout>

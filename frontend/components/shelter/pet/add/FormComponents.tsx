@@ -4,6 +4,7 @@ import { DatePicker, Input, Radio, RadioChangeEvent, Select } from "antd";
 import moment from "moment";
 import React, {
 	ChangeEvent,
+	CSSProperties,
 	ReactNode,
 	useEffect,
 	useRef,
@@ -14,8 +15,9 @@ import styled from "styled-components";
 interface ImageSectionProps extends ImageGalleryProps {}
 
 export const ImageSection = ({
-	images = [],
-	onChange = () => {},
+	images,
+	addNewImage,
+	removeImage,
 	isEditMode = false,
 }: ImageSectionProps) => (
 	<div>
@@ -25,7 +27,8 @@ export const ImageSection = ({
 			data={
 				<ImageGallery
 					images={images}
-					onChange={onChange}
+					addNewImage={addNewImage}
+					removeImage={removeImage}
 					isEditMode={isEditMode}
 				/>
 			}
@@ -334,80 +337,69 @@ const DataField = ({
 };
 
 interface ImageGalleryProps {
-	images: { photoUrl: string; thumbnailUrl: string }[];
-	onChange: (images: string[]) => void;
+	images: Animal.Image[];
+	addNewImage: (img: Animal.Image) => void;
+	removeImage: (imageIndex: number) => void;
 	isEditMode: boolean;
 }
 
 const ImageGallery = ({
-	images = [],
-	onChange = () => {},
+	images,
+	addNewImage,
+	removeImage,
 	isEditMode = false,
 }: ImageGalleryProps) => {
 	const imageUploadRef = useRef<HTMLInputElement>(null);
-	const [pickedImage, setPickedImage] = useState<File | null>(null);
-	const [cloned, setCloned] = useState([...images]);
 
-	useEffect(() => {
-		if (!pickedImage) return;
-		const waitForLoadedImage = (_pickedImage: File): Promise<string> => {
-			return new Promise((resolve, reject) => {
-				const reader = new FileReader();
-				reader.onloadend = () => {
-					resolve(reader.result as string);
-				};
-				reader.readAsDataURL(_pickedImage);
-			});
+	const waitForLoadedImage = (_pickedImage: File): Promise<string> => {
+		return new Promise((resolve) => {
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				resolve(reader.result as string);
+			};
+			reader.readAsDataURL(_pickedImage);
+		});
+	};
+
+	const storeImageToGcp = async (imageFile: File): Promise<Animal.Image> => {
+		const base64ImageString = await waitForLoadedImage(imageFile);
+		/* TODO::
+				send base64ImageString to backend for storage and receive image URL
+			*/
+		const imgUrl =
+			"https://iso.500px.com/wp-content/uploads/2016/03/stock-photo-142984111.jpg";
+
+		return {
+			thumbnailUrl: imgUrl,
+			photoUrl: imgUrl,
 		};
-		const runAsync = async () => {
-			const base64ImageString = await waitForLoadedImage(pickedImage);
-			setCloned((prev) => {
-				return [...prev, base64ImageString];
-			});
-			setPickedImage(null);
-		};
-		runAsync();
-	}, [pickedImage]);
+	};
 
-	useEffect(() => {
-		if (!isEditMode) return;
-		onChange(cloned);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cloned, isEditMode]);
-
-	const onDeleteImage = (index: number) => {
-		if (!!cloned[index]) {
-			const arr = [...cloned];
-			arr.splice(index, 1);
-			setCloned(arr);
+	const uploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
+		const file = event?.target?.files?.[0];
+		if (file && file.type.substring(0, 5)) {
+			const image = await storeImageToGcp(file);
+			addNewImage(image);
 		}
+		// Reset value so that onChange will trigger again alter
+		event.target.value = "";
 	};
 
 	return (
 		<GridContainer>
-			{cloned.length > 0 &&
-				cloned.map((image, index) => (
+			{images.length > 0 &&
+				images.map((image, index) => (
 					<GalleryItem key={index}>
 						{isEditMode && (
 							<GalleryOverlayAction>
-								<EyeOutlined
-									style={{
-										cursor: "pointer",
-										fontSize: 16,
-										color: "#FFFFFF",
-									}}
-								/>
+								<EyeOutlined style={overlayStyle} />
 								<DeleteOutlined
-									style={{
-										cursor: "pointer",
-										fontSize: 16,
-										color: "#FFFFFF",
-									}}
-									onClick={() => onDeleteImage(index)}
+									style={overlayStyle}
+									onClick={() => removeImage(index)}
 								/>
 							</GalleryOverlayAction>
 						)}
-						<GalleryImage src={image} alt="Pet Image" />
+						<GalleryImage src={image.photoUrl} alt="Pet Image" />
 					</GalleryItem>
 				))}
 			{isEditMode && (
@@ -417,23 +409,14 @@ const ImageGallery = ({
 						imageUploadRef?.current?.click();
 					}}
 				>
-					<span style={{ color: "#000000D9", fontSize: "20px" }}>
-						+
-					</span>
-					<span style={{ color: "#00000073" }}>Upload</span>
+					<span className="symbol">+</span>
+					<span className="upload">Upload</span>
 					<input
 						ref={imageUploadRef}
 						type="file"
 						style={{ display: "none" }}
 						accept="image/*"
-						onChange={(event) => {
-							const file = event?.target?.files?.[0];
-							if (file && file.type.substr(0, 5) === "image") {
-								setPickedImage(file);
-							}
-							// Reset value so that onChange will trigger again alter
-							event.target.value = "";
-						}}
+						onChange={uploadImage}
 					/>
 				</UploaderContainer>
 			)}
@@ -444,6 +427,12 @@ const ImageGallery = ({
 // =============================================================================
 // Styled Components
 // =============================================================================
+
+const overlayStyle: CSSProperties = {
+	cursor: "pointer",
+	fontSize: 16,
+	color: "#FFFFFF",
+};
 
 const GridContainer = styled.div`
 	display: grid;
@@ -509,4 +498,12 @@ const UploaderContainer = styled.div`
 	align-items: center;
 	background-color: #fafafa;
 	flex-direction: column;
+
+	span.symbol {
+		color: #000000d9;
+		font-size: 20px;
+	}
+	span.upload {
+		color: #00000073;
+	}
 `;
