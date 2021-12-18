@@ -56,13 +56,23 @@ const AddPetForm = () => {
 	const handleSubmit = (
 		values: Animal.Attributes,
 		actions: FormikHelpers<Animal.Attributes>,
-	) => {};
+	) => {
+		/*
+			TODO: Add submit pet here 
+			Append shelter ID from url? to pet data
+			missing form inputs -
+				adoption fee
+				description
+				dewormed
+				sizeCm
+				weightKg
+		*/
+	};
 
 	return (
 		<Formik initialValues={initialPet} onSubmit={handleSubmit}>
 			{(formikProps) => {
 				const pet = formikProps.values;
-				console.log(pet);
 				const updateImages = (images: Animal.Image[]) => {
 					formikProps.setFieldValue(
 						"animalImages" as keyof Pick<
