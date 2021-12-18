@@ -6,11 +6,22 @@ import { Formik, FormikHelpers } from "formik";
 import moment from "moment";
 import React from "react";
 import styled from "styled-components";
+import {
+	array,
+	boolean,
+	date,
+	mixed,
+	number,
+	object,
+	SchemaOf,
+	string,
+	StringSchema,
+} from "yup";
 import { FormSection } from "./FormComponents";
 
 const initialPet: Animal.Attributes = {
-	id: "",
-	shelterId: "",
+	id: "test", //TODO: revert to "" after testing
+	shelterId: "test", //TODO: revert to "" after testing
 	adoptionStatus: Animal.AdoptionStatus.Healthy,
 	species: Animal.Species.Cat,
 	name: "",
@@ -32,6 +43,39 @@ const initialPet: Animal.Attributes = {
 	visible: true,
 	animalImages: [],
 };
+const imageSchema: SchemaOf<Animal.Image> = object().shape({
+	thumbnailUrl: string().url().required(),
+	photoUrl: string().url().required(),
+});
+
+const schema: SchemaOf<Animal.Attributes> = object().shape({
+	id: string().required(),
+	shelterId: string().required(),
+	adoptionStatus: mixed<Animal.AdoptionStatus>()
+		.oneOf(Object.values(Animal.AdoptionStatus))
+		.required(),
+	species: mixed<Animal.Species>()
+		.oneOf(Object.values(Animal.Species))
+		.required(),
+	name: string().required(),
+	description: string() as StringSchema<string>, //TODO: revert to string().required() after testing and if added to form
+	healthIssues: string().required(),
+	gender: mixed<"M" | "F">().oneOf(["M", "F"]).required(),
+	dateOfBirth: date().required(),
+	sizeCm: number().nullable().defined(), //TODO: set validation if added to form
+	breed: string().required(),
+	color: string().required(),
+	weightKg: number().nullable().defined(), //TODO: set validation if added to form
+	furLength: string().required(),
+	vaccinated: boolean().nullable().defined(), //TODO: set validation if added to form
+	dewormed: boolean().nullable().defined(), //TODO: set validation if added to form
+	sterilised: boolean().nullable().defined(),
+	toiletTrained: boolean().required(),
+	adoptionFee: number().nullable().defined(), //TODO: set validation if added to form
+	intakeDate: date().required(),
+	visible: boolean().required(),
+	animalImages: array().of(imageSchema.required()).required().min(1),
+});
 
 export const AddPetForm = () => {
 	const handleSubmit = (
@@ -48,13 +92,16 @@ export const AddPetForm = () => {
 				sizeCm
 				weightKg
 		*/
+		alert("submitting. check console for form data");
+		console.log(values);
 	};
 
 	return (
 		<Formik
 			initialValues={initialPet}
 			onSubmit={handleSubmit}
-			validationSchema={undefined}
+			validationSchema={schema}
+			validateOnMount={true}
 		>
 			{(formikProps) => {
 				const pet = formikProps.values;
@@ -97,10 +144,8 @@ export const AddPetForm = () => {
 								<Button
 									type="primary"
 									icon={<EditOutlined />}
-									// disabled={!isFormValidated}
-									// onClick={() =>
-									// 	console.log(formikProps.dirty, pet)
-									// }
+									disabled={!formikProps.isValid}
+									onClick={formikProps.submitForm}
 								>
 									Save
 								</Button>
