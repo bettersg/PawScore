@@ -1,73 +1,84 @@
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { Animal } from "@contract";
 import { DatePicker, Input, Radio, RadioChangeEvent, Select } from "antd";
-import { FurLength, PetData, Sex, Species } from "common/enums";
 import moment from "moment";
-import React, { ChangeEvent, ReactNode, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import React, { ChangeEvent, CSSProperties, ReactNode, useRef } from "react";
+import styled, { css } from "styled-components";
 
-interface ImageSectionProps extends ImageGalleryProps { }
+interface ImageSectionProps extends ImageProps {
+	updateImages: (images: Animal.Image[]) => void;
+}
 
-export const ImageSection = ({
-	images = [],
-	onChange = () => { },
-	isEditMode = false
-}: ImageSectionProps) => (
-	<div>
-		<DataField
-			required
-			label="Image"
-			data={<ImageGallery images={images} onChange={onChange} isEditMode={isEditMode} />}
-			marginBottom={36}
-		/>
-	</div>
-);
+interface FormBaseProps {
+	pet: Animal.Attributes;
+	handleChange: (e: RadioChangeEvent | ChangeEvent<HTMLInputElement>) => void;
+	handleDateChange: (
+		fieldName: keyof Pick<Animal.Attributes, "intakeDate" | "dateOfBirth">,
+		value: moment.Moment | null,
+	) => void;
+}
+interface FormSectionOneProps extends FormBaseProps {
+	handleSelectChange: (value: Animal.Species) => void;
+}
+interface FormSectionTwoProps extends FormBaseProps {}
 
-interface FormSectionProps {
-	pet: PetData;
-	onValueChange: (
-		e: ChangeEvent<HTMLInputElement>,
-		key: keyof Pick<
-			PetData,
-			"name"
-		>
-	) => void;
-	onRadioChange: (
-		e: RadioChangeEvent,
-		key: keyof Pick<
-			PetData,
-			"visible" | "toiletTrained" | "sex" | "sterilised" | "status"
-		>,
-		isYesNo?: boolean
-	) => void;
-	onDateChange: (
-		date: moment.Moment,
-		key: keyof Pick<PetData, "acquired" | "dateOfBirth">
-	) => void;
-	onSelectChange: (
-		value: string | string[],
-		key: keyof Pick<
-			PetData,
-			"species" | "furLength" | "breed" | "medicalIssues" | "furColor"
-		>
-	) => void;
+// =============================================================================
+// Primary Form Sections
+// =============================================================================
+const ImageSection = ({
+	images,
+	updateImages,
+	isEditMode = false,
+}: ImageSectionProps) => {
+	const addNewImage = (newImg: Animal.Image) => {
+		const currImages = images || [];
+
+		updateImages([...currImages, newImg]);
+	};
+	const removeImage = (imageIndex: number) => {
+		const currImages = [...images!];
+		currImages.splice(imageIndex, 1);
+
+		updateImages(currImages);
+	};
+	return (
+		<div>
+			<DataField
+				flex={false}
+				required
+				label="Image"
+				data={
+					<ImageGallery
+						images={images}
+						addNewImage={addNewImage}
+						removeImage={removeImage}
+						isEditMode={isEditMode}
+					/>
+				}
+				marginBottom={36}
+			/>
+		</div>
+	);
 };
 
 const FormSectionOne = ({
 	pet,
-	onRadioChange,
-	onDateChange,
-	onSelectChange
-}: FormSectionProps) => (
+	handleChange,
+	handleSelectChange,
+	handleDateChange,
+}: FormSectionOneProps) => (
 	<div>
 		<DataField
 			required
 			label="Visibility"
 			data={
 				<Radio.Group
-					value={pet.visible ? "yes" : "no"}
-					onChange={(e) => onRadioChange(e, "visible", true)}>
-					<Radio value="yes">Yes</Radio>
-					<Radio value="no">No</Radio>
+					name={"visible" as keyof Pick<Animal.Attributes, "visible">}
+					defaultValue={pet.visible}
+					onChange={handleChange}
+				>
+					<Radio value={true}>Yes</Radio>
+					<Radio value={false}>No</Radio>
 				</Radio.Group>
 			}
 		/>
@@ -76,10 +87,12 @@ const FormSectionOne = ({
 			label="Sex"
 			data={
 				<Radio.Group
-					value={pet.sex === Sex.MALE ? "Male" : "Female"}
-					onChange={(e) => onRadioChange(e, "sex")}>
-					<Radio value="Male">Male</Radio>
-					<Radio value="Female">Female</Radio>
+					name={"gender" as keyof Pick<Animal.Attributes, "gender">}
+					defaultValue={pet.gender}
+					onChange={handleChange}
+				>
+					<Radio value="M">Male</Radio>
+					<Radio value="F">Female</Radio>
 				</Radio.Group>
 			}
 		/>
@@ -88,11 +101,17 @@ const FormSectionOne = ({
 			label="Date Acquired"
 			data={
 				<DatePicker
-					style={{ width: "100%" }}
-					onChange={(val) =>
-						onDateChange(val as moment.Moment, "acquired")
+					name={
+						"intakeDate" as keyof Pick<
+							Animal.Attributes,
+							"intakeDate"
+						>
 					}
-					defaultValue={moment(pet.acquired)}
+					style={{ width: "100%" }}
+					onChange={(value) => {
+						handleDateChange("intakeDate", value);
+					}}
+					defaultValue={moment(pet.intakeDate)}
 					format="YYYY/MM/DD"
 				/>
 			}
@@ -103,11 +122,12 @@ const FormSectionOne = ({
 				<Select
 					defaultValue={pet.species}
 					style={{ width: "100%" }}
-					onChange={(value: string) =>
-						onSelectChange(value, "species")
-					}>
-					{Object.values(Species).map((val, index) => (
-						<Select.Option value={val} key={index}>
+					onChange={(value) => {
+						handleSelectChange(value);
+					}}
+				>
+					{Object.values(Animal.Species).map((val) => (
+						<Select.Option value={val} key={val}>
 							{val}
 						</Select.Option>
 					))}
@@ -118,41 +138,32 @@ const FormSectionOne = ({
 			required
 			label="Fur Length"
 			data={
-				<Select
-					value={pet.furLength}
-					style={{ width: "100%" }}
-					onChange={(value: string) =>
-						onSelectChange(value, "furLength")
-					}>
-					{Object.values(FurLength).map((val, index) => (
-						<Select.Option value={val} key={index}>
-							{val}
-						</Select.Option>
-					))}
-				</Select>
+				<Input
+					name={
+						"furLength" as keyof Pick<
+							Animal.Attributes,
+							"furLength"
+						>
+					}
+					defaultValue={pet.name}
+					onChange={handleChange}
+				/>
 			}
 		/>
-
 		<DataField
 			required
 			label="Medical Issues"
 			data={
-				<Select
-					allowClear
-					style={{ width: "100%" }}
-					mode="multiple"
-					defaultValue={pet.medicalIssues ?? []}
-					onChange={(value: string[]) =>
-						onSelectChange(value, "medicalIssues")
-					}>
-					<Select.Option value="flu">Flu</Select.Option>
-					<Select.Option value="cough">Cough</Select.Option>
-					<Select.Option value="headache">Headache</Select.Option>
-					<Select.Option value="sorethroat">
-						Sore Throat
-					</Select.Option>
-					<Select.Option value="others">Others</Select.Option>
-				</Select>
+				<Input
+					name={
+						"healthIssues" as keyof Pick<
+							Animal.Attributes,
+							"healthIssues"
+						>
+					}
+					defaultValue={pet.healthIssues}
+					onChange={handleChange}
+				/>
 			}
 		/>
 		<DataField
@@ -160,11 +171,18 @@ const FormSectionOne = ({
 			label="Sterilised"
 			data={
 				<Radio.Group
-					value={pet.sterilised}
-					onChange={(e) => onRadioChange(e, "sterilised")}>
-					<Radio value="Yes">Yes</Radio>
-					<Radio value="No">No</Radio>
-					<Radio value="Others">Others</Radio>
+					name={
+						"sterilised" as keyof Pick<
+							Animal.Attributes,
+							"sterilised"
+						>
+					}
+					defaultValue={pet.sterilised}
+					onChange={handleChange}
+				>
+					<Radio value={true}>Yes</Radio>
+					<Radio value={false}>No</Radio>
+					<Radio value={null}>Others</Radio>
 				</Radio.Group>
 			}
 			marginBottom={0}
@@ -174,25 +192,42 @@ const FormSectionOne = ({
 
 const FormSectionTwo = ({
 	pet,
-	onValueChange,
-	onRadioChange,
-	onDateChange,
-	onSelectChange
-}: FormSectionProps) => (
+	handleChange,
+	handleDateChange,
+}: FormSectionTwoProps) => (
 	<div>
 		<div style={{ height: 46 }} />
-		<DataField required label="Name" data={<Input value={pet.name} onChange={(e) => onValueChange(e, "name")}/>} />
+		<DataField
+			required
+			label="Name"
+			data={
+				<Input
+					name={"name" as keyof Pick<Animal.Attributes, "name">}
+					defaultValue={pet.healthIssues}
+					onChange={handleChange}
+				/>
+			}
+		/>
 		<DataField
 			required
 			label="Status"
 			data={
 				<Radio.Group
-					value={pet.status}
-					onChange={(e) => onRadioChange(e, "status")}>
-					<Radio value="Healthy">Healthy</Radio>
-					<Radio value="Sick">Sick</Radio>
-					<Radio value="Fostered">Fostered</Radio>
-					<Radio value="Adopted">Adopted</Radio>
+					name={
+						"adoptionStatus" as keyof Pick<
+							Animal.Attributes,
+							"adoptionStatus"
+						>
+					}
+					defaultValue={pet.adoptionStatus}
+					onChange={handleChange}
+				>
+					{/* TODO: check if ENUMS fit */}
+					{Object.values(Animal.AdoptionStatus).map((value) => (
+						<Radio value={value} key={value}>
+							{value}
+						</Radio>
+					))}
 				</Radio.Group>
 			}
 		/>
@@ -201,12 +236,18 @@ const FormSectionTwo = ({
 			label="Date of Birth"
 			data={
 				<DatePicker
-					onChange={(val) =>
-						onDateChange(val as moment.Moment, "dateOfBirth")
+					name={
+						"dateOfBirth" as keyof Pick<
+							Animal.Attributes,
+							"dateOfBirth"
+						>
 					}
+					style={{ width: "100%" }}
+					onChange={(value) => {
+						handleDateChange("dateOfBirth", value);
+					}}
 					defaultValue={moment(pet.dateOfBirth)}
 					format="YYYY/MM/DD"
-					style={{ width: "100%" }}
 				/>
 			}
 		/>
@@ -214,51 +255,40 @@ const FormSectionTwo = ({
 			required
 			label="Breed"
 			data={
-				<Select
-					style={{ width: "100%" }}
-					value={pet.breed}
-					onChange={(value: string) =>
-						onSelectChange(value, "breed")
-					}>
-					<Select.Option value="persian">Persian</Select.Option>
-					<Select.Option value="mainecoon">Maine Coon</Select.Option>
-					<Select.Option value="bengal">Bengal</Select.Option>
-					<Select.Option value="britishshorthair">
-						British Shorthair
-					</Select.Option>
-					<Select.Option value="siamese">Siamese</Select.Option>
-				</Select>
+				<Input
+					name={"breed" as keyof Pick<Animal.Attributes, "breed">}
+					defaultValue={pet.breed || ""}
+					onChange={handleChange}
+				/>
 			}
 		/>
 		<DataField
 			required
 			label="Fur Color"
 			data={
-				<Select
-					allowClear
-					defaultValue={pet.furColor ?? []}
-					onChange={(value: string[]) =>
-						onSelectChange(value, "furColor")
-					}
-					style={{ width: "100%" }}
-					mode="multiple"
-					value={pet.furColor}>
-					<Select.Option value="brown">Brown</Select.Option>
-					<Select.Option value="white">White</Select.Option>
-					<Select.Option value="gray">Gray</Select.Option>
-				</Select>
+				<Input
+					name={"color" as keyof Pick<Animal.Attributes, "color">}
+					defaultValue={pet.color}
+					onChange={handleChange}
+				/>
 			}
 		/>
-
 		<DataField
 			required
 			label="Toilet Trained"
 			data={
 				<Radio.Group
-					value={pet.toiletTrained ? "yes" : "no"}
-					onChange={(e) => onRadioChange(e, "toiletTrained", true)}>
-					<Radio value="yes">Yes</Radio>
-					<Radio value="no">No</Radio>
+					name={
+						"toiletTrained" as keyof Pick<
+							Animal.Attributes,
+							"toiletTrained"
+						>
+					}
+					defaultValue={pet.toiletTrained}
+					onChange={handleChange}
+				>
+					<Radio value={true}>Yes</Radio>
+					<Radio value={false}>No</Radio>
 				</Radio.Group>
 			}
 			marginBottom={0}
@@ -267,8 +297,9 @@ const FormSectionTwo = ({
 );
 
 export const FormSection = {
+	ImageSection: ImageSection,
 	SectionOne: FormSectionOne,
-	SectionTwo: FormSectionTwo
+	SectionTwo: FormSectionTwo,
 };
 
 // =============================================================================
@@ -280,125 +311,115 @@ interface DataFieldProps {
 	data: string | ReactNode;
 	marginBottom?: number;
 	required?: boolean;
-};
+	flex?: boolean;
+}
 
 const DataField = ({
 	label,
 	data,
 	marginBottom,
-	required = false
+	required = false,
+	flex = true,
 }: DataFieldProps) => {
 	return (
-		<DataFieldContainer style={{ marginBottom: marginBottom ?? 24 }}>
+		<DataFieldContainer
+			style={{ marginBottom: marginBottom ?? 24 }}
+			flex={flex}
+		>
 			<div className="label">
-				{required && <span style={{ color: "red" }}>* </span>}
+				{required && <span>*</span>}
 				{label} :
 			</div>
-			<div style={{ width: "80%" }}>{data}</div>
+			<div className="data">{data}</div>
 		</DataFieldContainer>
 	);
 };
 
-interface ImageGalleryProps {
-	images: string[];
-	onChange: (images: string[]) => void;
+interface ImageProps {
+	images: Animal.Image[];
 	isEditMode: boolean;
-};
+}
+interface ImageGalleryProps extends ImageProps {
+	addNewImage: (img: Animal.Image) => void;
+	removeImage: (imageIndex: number) => void;
+}
 
 const ImageGallery = ({
-	images = [],
-	onChange = () => { },
-	isEditMode = false
+	images,
+	addNewImage,
+	removeImage,
+	isEditMode = false,
 }: ImageGalleryProps) => {
 	const imageUploadRef = useRef<HTMLInputElement>(null);
-	const [pickedImage, setPickedImage] = useState<File | null>(null);
-	const [cloned, setCloned] = useState([...images]);
-	
-	useEffect(() => {
-		if (!pickedImage) return;
-		const waitForLoadedImage = (_pickedImage: File): Promise<string> => {
-			return new Promise((resolve, reject) => {
-				const reader = new FileReader();
-				reader.onloadend = () => {
-					resolve(reader.result as string)
-				};
-				reader.readAsDataURL(_pickedImage);
-			})
-		}
-		const runAsync = async () => {
-			const base64ImageString = await waitForLoadedImage(pickedImage)
-			setCloned((prev) => {
-				return [...prev, base64ImageString];
-			});
-			setPickedImage(null)
-		}
-		runAsync()
-	}, [pickedImage]);
 
-	useEffect(() => {
-		if (!isEditMode) return;
-		onChange(cloned);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cloned, isEditMode]);
+	const waitForLoadedImage = (_pickedImage: File): Promise<string> => {
+		return new Promise((resolve) => {
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				resolve(reader.result as string);
+			};
+			reader.readAsDataURL(_pickedImage);
+		});
+	};
 
-	const onDeleteImage = (index: number) => {
-		if (!!cloned[index]) {
-			const arr = [...cloned];
-			arr.splice(index, 1);
-			setCloned(arr);
+	const storeImageToGcp = async (imageFile: File): Promise<Animal.Image> => {
+		const base64ImageString = await waitForLoadedImage(imageFile);
+		/* TODO::
+				send base64ImageString to backend for storage and receive image URL
+			*/
+		const imgUrl =
+			"https://iso.500px.com/wp-content/uploads/2016/03/stock-photo-142984111.jpg";
+
+		return {
+			thumbnailUrl: imgUrl,
+			photoUrl: imgUrl,
+		};
+	};
+
+	const uploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
+		const file = event?.target?.files?.[0];
+		if (file && file.type.substring(0, 5)) {
+			const image = await storeImageToGcp(file);
+			addNewImage(image);
 		}
+		// Reset value so that onChange will trigger again alter
+		event.target.value = "";
 	};
 
 	return (
 		<GridContainer>
-			{cloned.length > 0 &&
-				cloned.map((image, index) => (
+			{images.length > 0 &&
+				images.map((image, index) => (
 					<GalleryItem key={index}>
 						{isEditMode && (
-						<GalleryOverlayAction>
-							<EyeOutlined
-								style={{
-									cursor: "pointer",
-									fontSize: 16,
-									color: "#FFFFFF"
-								}}
-							/>
-							<DeleteOutlined
-								style={{
-									cursor: "pointer",
-									fontSize: 16,
-									color: "#FFFFFF"
-								}}
-								onClick={() => onDeleteImage(index)}
-							/>
-						</GalleryOverlayAction>
+							<GalleryOverlayAction>
+								<EyeOutlined style={overlayStyle} />
+								<DeleteOutlined
+									style={overlayStyle}
+									onClick={() => removeImage(index)}
+								/>
+							</GalleryOverlayAction>
 						)}
-						<GalleryImage src={image} alt="Pet Image" />
+						<GalleryImage src={image.photoUrl} alt="Pet Image" />
 					</GalleryItem>
 				))}
 			{isEditMode && (
-			<UploaderContainer
-				onClick={() => {
-					if (!imageUploadRef.current) return;
-					imageUploadRef?.current?.click();
-				}}>
-				<span style={{ color: "#000000D9", fontSize: "20px" }}>+</span>
-				<span style={{ color: "#00000073" }}>Upload</span>
-				<input
-					ref={imageUploadRef}
-					type="file"
-					style={{ display: "none" }}
-					accept="image/*"
-					onChange={(event) => {
-						const file = event?.target?.files?.[0];
-						if (file && file.type.substr(0, 5) === "image") {
-							setPickedImage(file);
-						}
-						// Reset value so that onChange will trigger again alter
-						event.target.value = "";
+				<UploaderContainer
+					onClick={() => {
+						if (!imageUploadRef.current) return;
+						imageUploadRef?.current?.click();
 					}}
-				/>
-			</UploaderContainer>
+				>
+					<span className="symbol">+</span>
+					<span className="upload">Upload</span>
+					<input
+						ref={imageUploadRef}
+						type="file"
+						style={{ display: "none" }}
+						accept="image/*"
+						onChange={uploadImage}
+					/>
+				</UploaderContainer>
 			)}
 		</GridContainer>
 	);
@@ -408,22 +429,40 @@ const ImageGallery = ({
 // Styled Components
 // =============================================================================
 
+const overlayStyle: CSSProperties = {
+	cursor: "pointer",
+	fontSize: 16,
+	color: "#FFFFFF",
+};
+
 const GridContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(3, 104px);
 	grid-gap: 8px;
 `;
 
-const DataFieldContainer = styled.div`
+const DataFieldContainer = styled.div<{ flex: boolean }>`
 	display: flex;
 	flex-direction: row;
 
-	> div:first-child {
+	div.label {
 		text-align: right;
 		width: 120px;
+		${({ flex }) =>
+			flex &&
+			css`
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+			`}
+		span {
+			color: red;
+			padding-right: 3px;
+		}
 	}
-	> div:last-child {
+	div.data {
 		padding-left: 8px;
+		width: 80%;
 	}
 `;
 
@@ -472,4 +511,12 @@ const UploaderContainer = styled.div`
 	align-items: center;
 	background-color: #fafafa;
 	flex-direction: column;
+
+	span.symbol {
+		color: #000000d9;
+		font-size: 20px;
+	}
+	span.upload {
+		color: #00000073;
+	}
 `;

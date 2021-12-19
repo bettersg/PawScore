@@ -10,7 +10,7 @@ export enum AdoptionStatus {
 	Sick = "Sick",
 	Healthy = "Healthy",
 }
-interface Image {
+export interface Image {
 	photoUrl: string;
 	thumbnailUrl: string;
 }
