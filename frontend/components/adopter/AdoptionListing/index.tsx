@@ -111,6 +111,7 @@ function AdoptionListingPage() {
             <Space size="large" wrap style={{ marginTop: "30px" }}>
                 <FilterSelector
                     label="Species"
+                    values={speciesFilter}
                     selections={[
                         {
                             title: "",
@@ -123,6 +124,7 @@ function AdoptionListingPage() {
                 />
                 <FilterSelector
                     label="Age"
+                    values={ageFilter}
                     selections={[
                         {
                             title: "Under a year",
@@ -163,6 +165,7 @@ function AdoptionListingPage() {
                             ],
                         },
                     ]}
+                    values={genderFilter}
                     onChange={(filter) => setGenderFilter(filter)}
                 />
                 <FilterSelector
@@ -177,6 +180,7 @@ function AdoptionListingPage() {
                             ],
                         },
                     ]}
+                    values={breedFilter}
                     onChange={(filter) => setBreedFilter(filter)}
                 />
                 {/* <div>More filters</div> */}

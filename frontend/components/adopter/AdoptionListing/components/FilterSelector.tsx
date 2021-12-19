@@ -1,10 +1,12 @@
 import { CaretDownFilled } from "@ant-design/icons";
 import { Button, Checkbox, Col, Divider, Row, Typography } from "antd";
-import { useState } from "react";
+import { CheckboxValueType } from "antd/lib/checkbox/Group";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 
 interface FilterSelectorProps<T> {
     label: string;
+    values?: T[];
     selections: {
         title?: string;
         options: { label: string; value: T }[];
@@ -12,19 +14,46 @@ interface FilterSelectorProps<T> {
     onChange: (options: T[]) => void;
 }
 
-export function FilterSelector<T>(props: FilterSelectorProps<T>) {
-    const { label, selections, onChange } = props;
+export function FilterSelector<T extends string | number>(
+    props: FilterSelectorProps<T>,
+) {
+    const { label, values, selections, onChange } = props;
     const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     return (
         <div style={{ position: "relative" }}>
-            <SelectorButton size="large" onClick={(e) => setIsOpen(true)}>
+            <SelectorButton
+                size="large"
+                onClick={() => {
+                    setIsOpen(true);
+                    dropdownRef.current?.focus();
+                }}
+            >
                 {label} <CaretDownFilled style={{ color: "#858C94" }} />
             </SelectorButton>
-            {isOpen && (
-                <SelectorDropdown>
+            {
+                <SelectorDropdown
+                    isOpen={isOpen}
+                    tabIndex={-1}
+                    ref={dropdownRef}
+                    onBlur={(e) => {
+                        if (
+                            !dropdownRef.current?.contains(
+                                e.relatedTarget as Node,
+                            )
+                        ) {
+                            setIsOpen(false);
+                        } else {
+                            e.preventDefault();
+                        }
+                    }}
+                >
                     <CheckboxSection>
-                        <Checkbox.Group onChange={onChange}>
+                        <Checkbox.Group
+                            onChange={onChange as any}
+                            value={values}
+                        >
                             {selections.map((selection) => (
                                 <Row
                                     key={selection.title}
@@ -58,7 +87,7 @@ export function FilterSelector<T>(props: FilterSelectorProps<T>) {
                         Done
 					</Button>
                 </SelectorDropdown>
-            )}
+            }
         </div>
     );
 }
@@ -76,7 +105,7 @@ const SectionHeading = styled(Typography.Title)`
 	}
 `;
 
-const SelectorDropdown = styled.div`
+const SelectorDropdown = styled.div<{ isOpen: boolean }>`
 	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 	border: 1px solid #dadee3;
 	border-radius: 4px;
@@ -85,6 +114,7 @@ const SelectorDropdown = styled.div`
 	margin-top: 10px;
 	z-index: 1;
 	width: 253px;
+	opacity: ${(props) => (props.isOpen ? "1" : "0")};
 `;
 
 const CheckboxSection = styled.div`
