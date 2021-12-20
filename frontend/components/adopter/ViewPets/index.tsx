@@ -1,8 +1,8 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Animal } from "@contract";
-import { Col, Input, Row, Space, Typography } from "antd";
+import { Col, Input, Pagination, Row, Space, Typography } from "antd";
 import AdopterLayout from "layouts/adopter/AdopterLayout";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import styled from "styled-components";
 import { AnimalListing } from "./components/AnimalListing";
 import { FilterSelector } from "./components/FilterSelector";
@@ -12,14 +12,15 @@ import {
     BreedFilterOptions,
     GenderFilter,
     GenderFilterOptions,
-    SpeciesFilterOptions,
+    SpeciesFilterOptions
 } from "./data/filters";
 
-const MOCK_ANIMAL_DATA = [
-    {
-        id: "1",
+const MOCK_ANIMAL_DATA = new Array(200).fill(0).map(
+    (_, i) =>
+    ({
+        id: (i + 1).toString(),
         species: Animal.Species.Dog,
-        name: "Bean",
+        name: "Bean" + (i + 1),
         gender: "M",
         breed: "Dachshund",
         weightKg: 10,
@@ -29,50 +30,10 @@ const MOCK_ANIMAL_DATA = [
                 photoUrl: "https://picsum.photos/1000/800",
             },
         ],
-    },
-    {
-        id: "2",
-        species: Animal.Species.Dog,
-        name: "Bean",
-        gender: "M",
-        breed: "Dachshund",
-        weightKg: 10,
-        animalImages: [
-            {
-                thumbnailUrl: "https://picsum.photos/500",
-                photoUrl: "https://picsum.photos/1000/800",
-            },
-        ],
-    },
-    {
-        id: "3",
-        species: Animal.Species.Dog,
-        name: "Bean",
-        gender: "M",
-        breed: "Dachshund",
-        weightKg: 10,
-        animalImages: [
-            {
-                thumbnailUrl: "https://picsum.photos/500",
-                photoUrl: "https://picsum.photos/1000/800",
-            },
-        ],
-    },
-    {
-        id: "4",
-        species: Animal.Species.Dog,
-        name: "Bean",
-        gender: "M",
-        breed: "Dachshund",
-        weightKg: 10,
-        animalImages: [
-            {
-                thumbnailUrl: "https://picsum.photos/500",
-                photoUrl: "https://picsum.photos/1000/800",
-            },
-        ],
-    },
-] as Animal.Attributes[];
+    } as Animal.Attributes),
+);
+
+const PAGE_SIZE = 18;
 
 function AdoptionListingPage() {
     const [animals, setAnimals] =
@@ -83,6 +44,11 @@ function AdoptionListingPage() {
     const [genderFilter, setGenderFilter] = useState<GenderFilter[]>([]);
     // TODO:
     const [breedFilter, setBreedFilter] = useState<number[]>([]);
+
+    const [page, setPage] = useState<number>(1);
+    const display = useMemo(() => {
+        return animals.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    }, [animals, page]);
 
     return (
         <AdopterLayout>
@@ -131,12 +97,19 @@ function AdoptionListingPage() {
                         {/* <div>More filters</div> */}
                     </Space>
                     <Row gutter={[26, 26]}>
-                        {animals.map((animal) => (
+                        {display.map((animal) => (
                             <Col key={animal.id} xs={24} sm={12} lg={8}>
                                 <AnimalListing animal={animal} />
                             </Col>
                         ))}
                     </Row>
+                    <Pager
+                        total={animals.length}
+                        pageSize={18}
+                        current={page}
+                        showSizeChanger={false}
+                        onChange={(page) => setPage(page)}
+                    />
                 </Page>
             </Background>
         </AdopterLayout>
@@ -172,5 +145,26 @@ const Searchbar = styled(Input)`
 	&:focus,
 	&:hover {
 		background-color: #f4f6f9;
+	}
+`;
+
+const Pager = styled(Pagination)`
+	margin: 60px auto;
+	width: fit-content;
+	font-weight: 600;
+
+	.ant-pagination-item-link,
+	.ant-pagination-item {
+		border: none;
+		&:hover * {
+			color: #fdac0f;
+		}
+		&:active * {
+			color: #fdac0f;
+		}
+	}
+
+	.ant-pagination-item-active a {
+		color: #fdac0f;
 	}
 `;
