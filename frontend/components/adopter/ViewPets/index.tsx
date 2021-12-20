@@ -5,6 +5,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { AnimalListing } from "./components/AnimalListing";
 import { FilterSelector } from "./components/FilterSelector";
+import { AgeFilter, AgeFilterOptions, BreedFilterOptions, GenderFilter, GenderFilterOptions, SpeciesFilterOptions } from "./data/filters";
 
 const MOCK_ANIMAL_DATA = [
     {
@@ -65,38 +66,15 @@ const MOCK_ANIMAL_DATA = [
     },
 ] as Animal.Attributes[];
 
-enum SpeciesFilter {
-    Cat,
-    Dog,
-    Others,
-}
-
-enum AgeFilter {
-    Above0Months,
-    Above6Months,
-    Above12Months,
-    Above36Months,
-    Above72Months,
-    Above120Months,
-}
-
-enum GenderFilter {
-    F,
-    M,
-}
-
-enum BreedFilter {
-    AmericanBulldog = "American bulldog",
-}
-
 function AdoptionListingPage() {
     const [animals, setAnimals] =
         useState<Animal.Attributes[]>(MOCK_ANIMAL_DATA);
 
-    const [speciesFilter, setSpeciesFilter] = useState<SpeciesFilter[]>([]);
+    const [speciesFilter, setSpeciesFilter] = useState<Animal.Species[]>([]);
     const [ageFilter, setAgeFilter] = useState<AgeFilter[]>([]);
     const [genderFilter, setGenderFilter] = useState<GenderFilter[]>([]);
-    const [breedFilter, setBreedFilter] = useState<BreedFilter[]>([]);
+    // TODO:
+    const [breedFilter, setBreedFilter] = useState<number[]>([]);
 
     return (
         <Page>
@@ -112,74 +90,24 @@ function AdoptionListingPage() {
                 <FilterSelector
                     label="Species"
                     values={speciesFilter}
-                    selections={[
-                        {
-                            title: "",
-                            options: [
-                                { label: "Cat", value: SpeciesFilter.Cat },
-                            ],
-                        },
-                    ]}
+                    selections={SpeciesFilterOptions}
                     onChange={(filter) => setSpeciesFilter(filter)}
                 />
                 <FilterSelector
                     label="Age"
                     values={ageFilter}
-                    selections={[
-                        {
-                            title: "Under a year",
-                            options: [
-                                {
-                                    label: "1-6 months",
-                                    value: AgeFilter.Above0Months,
-                                },
-                                {
-                                    label: "7-12 months",
-                                    value: AgeFilter.Above6Months,
-                                },
-                            ],
-                        },
-                        {
-                            title: "Beyond a year",
-                            options: [
-                                {
-                                    label: "1-3 years",
-                                    value: AgeFilter.Above12Months,
-                                },
-                                {
-                                    label: "4-6 years",
-                                    value: AgeFilter.Above36Months,
-                                },
-                            ],
-                        },
-                    ]}
+                    selections={AgeFilterOptions}
                     onChange={(filter) => setAgeFilter(filter)}
                 />
                 <FilterSelector
                     label="Gender"
-                    selections={[
-                        {
-                            options: [
-                                { label: "Female", value: GenderFilter.F },
-                                { label: "Male", value: GenderFilter.M },
-                            ],
-                        },
-                    ]}
+                    selections={GenderFilterOptions}
                     values={genderFilter}
                     onChange={(filter) => setGenderFilter(filter)}
                 />
                 <FilterSelector
                     label="Breed"
-                    selections={[
-                        {
-                            options: [
-                                {
-                                    label: BreedFilter.AmericanBulldog,
-                                    value: BreedFilter.AmericanBulldog,
-                                },
-                            ],
-                        },
-                    ]}
+                    selections={BreedFilterOptions}
                     values={breedFilter}
                     onChange={(filter) => setBreedFilter(filter)}
                 />

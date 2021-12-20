@@ -1,6 +1,5 @@
 import { CaretDownFilled } from "@ant-design/icons";
 import { Button, Checkbox, Col, Divider, Row, Typography } from "antd";
-import { CheckboxValueType } from "antd/lib/checkbox/Group";
 import { useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -114,6 +113,8 @@ const SelectorDropdown = styled.div<{ isOpen: boolean }>`
 	margin-top: 10px;
 	z-index: 1;
 	width: 253px;
+	max-height: 50vh;
+	overflow: auto;
 	opacity: ${(props) => (props.isOpen ? "1" : "0")};
 `;
 
