@@ -1,6 +1,6 @@
 import { CaretDownFilled } from "@ant-design/icons";
 import { Button, Checkbox, Col, Divider, Row, Typography } from "antd";
-import { useRef, useState } from "react";
+import { FocusEvent, useRef, useState } from "react";
 import styled from "styled-components";
 
 interface FilterSelectorProps<T> {
@@ -20,15 +20,19 @@ export function FilterSelector<T extends string | number>(
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const closeDropdown = (e: FocusEvent<any>) => {
+        if (!dropdownRef.current?.contains(e.relatedTarget as Node)) {
+            setIsOpen(false);
+        }
+    };
+
     return (
         <div style={{ position: "relative" }}>
-            <SelectorButton
-                size="large"
-                onClick={() => {
-                    setIsOpen(true);
-                    dropdownRef.current?.focus();
-                }}
-            >
+            <SelectorButton size="large" onClick={toggleDropdown} onBlur={closeDropdown}>
                 {label} <CaretDownFilled style={{ color: "#858C94" }} />
             </SelectorButton>
             {
@@ -36,17 +40,7 @@ export function FilterSelector<T extends string | number>(
                     isOpen={isOpen}
                     tabIndex={-1}
                     ref={dropdownRef}
-                    onBlur={(e) => {
-                        if (
-                            !dropdownRef.current?.contains(
-                                e.relatedTarget as Node,
-                            )
-                        ) {
-                            setIsOpen(false);
-                        } else {
-                            e.preventDefault();
-                        }
-                    }}
+                    onBlur={closeDropdown}
                 >
                     <CheckboxSection>
                         <Checkbox.Group
@@ -80,7 +74,7 @@ export function FilterSelector<T extends string | number>(
                     <Divider style={{ margin: 0 }} />
                     <Button
                         type="primary"
-                        onClick={(e) => setIsOpen(false)}
+                        onClick={closeDropdown}
                         style={{ float: "right", margin: "10px 16px" }}
                     >
                         Done
@@ -111,11 +105,11 @@ const SelectorDropdown = styled.div<{ isOpen: boolean }>`
 	position: absolute;
 	background-color: #fff;
 	margin-top: 10px;
-	z-index: 1;
 	width: 253px;
 	max-height: 50vh;
 	overflow: auto;
-	opacity: ${(props) => (props.isOpen ? "1" : "0")};
+	z-index: 1;
+	display: ${(props) => (props.isOpen ? "block" : "none")};
 `;
 
 const CheckboxSection = styled.div`
