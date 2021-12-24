@@ -20,7 +20,7 @@ export class BaseApi {
 		});
 	}
 
-	protected fetch<T>(
+	protected request<T>(
 		method: Methods,
 		url: string,
 		params?: Record<string, any>,

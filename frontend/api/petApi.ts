@@ -1,18 +1,26 @@
 import { Shelter, Animal, Upload } from "@contract";
+import { NewAnimal } from "common/types";
 import { BaseApi } from "./baseApi";
 
 export class PetApi extends BaseApi {
 	public async fetchShelterPets(shelterId: string) {
 		// TODO: restore actual API request when ready
 
-		// const query: Shelter.fetchPetsApiDomain.requestQuery = {
-		// 	shelterId,
-		// };
-		// const res = await this.fetch<Shelter.fetchPetsApiDomain.response>(
-		// 	Shelter.fetchPetsApiDomain.method,
-		// 	Shelter.fetchPetsApiDomain.endpoint,
-		// 	query,
-		// );
+		// try {
+		// 	const query: Shelter.fetchPetsApiDomain.requestQuery = {
+		// 		shelterId,
+		// 	};
+		// 	const res = await this.request<Shelter.fetchPetsApiDomain.response>(
+		// 		Shelter.fetchPetsApiDomain.method,
+		// 		Shelter.fetchPetsApiDomain.endpoint,
+		// 		query,
+		// 	);
+
+		// 	return res!.data;
+		// } catch (error) {
+
+		// }
+
 		await delay();
 		return generateMockPetData();
 	}
@@ -22,13 +30,17 @@ export class PetApi extends BaseApi {
 	) {
 		// TODO: restore actual API request when ready
 
-		// const res = await this.fetch<Upload.uploadImageApiDomain.response>(
-		// 	Upload.uploadImageApiDomain.method,
-		// 	Upload.uploadImageApiDomain.endpoint,
-		// 	imageData,
-		// );
+		// try {
+		// 	const res = await this.request<Upload.uploadImageApiDomain.response>(
+		// 		Upload.uploadImageApiDomain.method,
+		// 		Upload.uploadImageApiDomain.endpoint,
+		// 		imageData,
+		// 	);
 
-		// return res!.data;
+		// 	return res!.data;
+		// } catch (e) {
+
+		// }
 
 		const mockImgUrl =
 			"https://iso.500px.com/wp-content/uploads/2016/03/stock-photo-142984111.jpg";
@@ -43,6 +55,18 @@ export class PetApi extends BaseApi {
 			},
 		};
 		return mockReturn;
+	}
+
+	public async addNewPet(petData: NewAnimal) {
+		// TODO: restore actual API request when ready
+
+		try {
+			await this.request(
+				Shelter.addNewPetApiDomain.method,
+				Shelter.addNewPetApiDomain.endpoint,
+				petData,
+			);
+		} catch (e) {}
 	}
 }
 

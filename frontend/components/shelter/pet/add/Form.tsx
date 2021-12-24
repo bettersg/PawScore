@@ -2,6 +2,8 @@ import { EditOutlined } from "@ant-design/icons";
 import { Animal } from "@contract";
 import { Button } from "antd";
 import Title from "antd/lib/typography/Title";
+import { PetApi } from "api/petApi";
+import { NewAnimal } from "common/types";
 import { Formik, FormikHelpers } from "formik";
 import moment from "moment";
 import React from "react";
@@ -19,8 +21,7 @@ import {
 } from "yup";
 import { FormSection } from "./FormComponents";
 
-const initialPet: Animal.Attributes = {
-	id: "test", //TODO: revert to "" after testing
+const initialPet: NewAnimal = {
 	shelterId: "test", //TODO: revert to "" after testing
 	adoptionStatus: Animal.AdoptionStatus.Healthy,
 	species: Animal.Species.Cat,
@@ -48,8 +49,7 @@ const imageSchema: SchemaOf<Animal.Image> = object().shape({
 	photoUrl: string().url().required(),
 });
 
-const schema: SchemaOf<Animal.Attributes> = object().shape({
-	id: string().required(),
+const schema: SchemaOf<NewAnimal> = object().shape({
 	shelterId: string().required(),
 	adoptionStatus: mixed<Animal.AdoptionStatus>()
 		.oneOf(Object.values(Animal.AdoptionStatus))
@@ -78,9 +78,9 @@ const schema: SchemaOf<Animal.Attributes> = object().shape({
 });
 
 export const AddPetForm = () => {
-	const handleSubmit = (
-		values: Animal.Attributes,
-		actions: FormikHelpers<Animal.Attributes>,
+	const handleSubmit = async (
+		values: NewAnimal,
+		actions: FormikHelpers<NewAnimal>,
 	) => {
 		/*
 			TODO: Add submit pet here 
@@ -92,6 +92,8 @@ export const AddPetForm = () => {
 				sizeCm
 				weightKg
 		*/
+		// await new PetApi().addNewPet(values);
+
 		alert("submitting. check console for form data");
 		console.log(values);
 	};

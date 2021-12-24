@@ -2,6 +2,7 @@ import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { Animal, Upload } from "@contract";
 import { DatePicker, Input, Radio, RadioChangeEvent, Select } from "antd";
 import { PetApi } from "api/petApi";
+import { NewAnimal } from "common/types";
 import moment from "moment";
 import React, { ChangeEvent, CSSProperties, ReactNode, useRef } from "react";
 import styled, { css } from "styled-components";
@@ -11,7 +12,7 @@ interface ImageSectionProps extends ImageProps {
 }
 
 interface FormBaseProps {
-	pet: Animal.Attributes;
+	pet: NewAnimal;
 	handleChange: (e: RadioChangeEvent | ChangeEvent<HTMLInputElement>) => void;
 	handleDateChange: (
 		fieldName: keyof Pick<Animal.Attributes, "intakeDate" | "dateOfBirth">,
