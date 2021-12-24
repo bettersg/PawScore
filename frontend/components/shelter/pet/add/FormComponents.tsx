@@ -1,6 +1,7 @@
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { Animal } from "@contract";
+import { Animal, Upload } from "@contract";
 import { DatePicker, Input, Radio, RadioChangeEvent, Select } from "antd";
+import { PetApi } from "api/petApi";
 import moment from "moment";
 import React, { ChangeEvent, CSSProperties, ReactNode, useRef } from "react";
 import styled, { css } from "styled-components";
@@ -363,16 +364,15 @@ const ImageGallery = ({
 	};
 
 	const storeImageToGcp = async (imageFile: File): Promise<Animal.Image> => {
-		const base64ImageString = await waitForLoadedImage(imageFile);
-		/* TODO::
-				send base64ImageString to backend for storage and receive image URL
-			*/
-		const imgUrl =
-			"https://iso.500px.com/wp-content/uploads/2016/03/stock-photo-142984111.jpg";
+		const imageData: Upload.uploadImageApiDomain.requestBody = {
+			originalFileName: imageFile.name,
+			base64File: await waitForLoadedImage(imageFile),
+		};
+		const res = await new PetApi().uploadImage(imageData);
 
 		return {
-			thumbnailUrl: imgUrl,
-			photoUrl: imgUrl,
+			thumbnailUrl: res.payload.thumbnailUrl,
+			photoUrl: res.payload.url,
 		};
 	};
 
