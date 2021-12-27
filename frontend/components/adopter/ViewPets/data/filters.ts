@@ -1,4 +1,10 @@
 import { Animal } from "@contract";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 export const SpeciesFilterOptions = [
     {
@@ -65,9 +71,30 @@ export const AgeFilterOptions = [
     },
 ];
 
+export const AgeFilterMatcher = new Map<
+    AgeFilter,
+    (ageMonths: number) => boolean
+>([
+    [AgeFilter.Above0Months, (ageMonths) => ageMonths >= 0 && ageMonths <= 6],
+    [AgeFilter.Above6Months, (ageMonths) => ageMonths >= 7 && ageMonths <= 12],
+    [
+        AgeFilter.Above12Months,
+        (ageMonths) => ageMonths >= 13 && ageMonths <= 36,
+    ],
+    [
+        AgeFilter.Above36Months,
+        (ageMonths) => ageMonths >= 37 && ageMonths <= 72,
+    ],
+    [
+        AgeFilter.Above72Months,
+        (ageMonths) => ageMonths >= 72 && ageMonths <= 120,
+    ],
+    [AgeFilter.Above120Months, (ageMonths) => ageMonths >= 121],
+]);
+
 export enum GenderFilter {
-    F,
-    M,
+    F = "F",
+    M = "M",
 }
 
 export const GenderFilterOptions = [
@@ -80,7 +107,7 @@ export const GenderFilterOptions = [
             {
                 label: "Male",
                 value: GenderFilter.M,
-            }
+            },
         ],
     },
 ];
@@ -90,7 +117,55 @@ export const BreedFilterOptions = [
     {
         options: new Array(50).fill(0).map((_, i) => ({
             label: `Test ${i}`,
-            value: i
-        }))
-    }
+            value: i,
+        })),
+    },
 ];
+
+export function filterAnimals(
+    animals: Animal.Attributes[],
+    {
+        speciesFilter,
+        genderFilter,
+        ageFilter,
+    }: {
+        speciesFilter: Animal.Species[];
+        genderFilter: GenderFilter[];
+        ageFilter: AgeFilter[];
+    },
+) {
+    const now = dayjs.utc();
+    return animals.filter((a) => {
+        if (
+            !speciesFilter.length &&
+            !genderFilter.length &&
+            !ageFilter.length
+        ) {
+            return true;
+        }
+
+        if (speciesFilter.length && speciesFilter.includes(a.species)) {
+            return true;
+        }
+
+        if (
+            genderFilter.length &&
+            genderFilter.includes(a.gender as GenderFilter)
+        ) {
+            return true;
+        }
+
+        if (ageFilter.length && a.dateOfBirth) {
+            const numMonths = now.diff(dayjs.utc(a.dateOfBirth), "month");
+            if (
+                ageFilter.some((filter) =>
+                    AgeFilterMatcher.get(filter)!(numMonths),
+                )
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    });
+}

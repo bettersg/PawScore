@@ -10,9 +10,10 @@ import {
     AgeFilter,
     AgeFilterOptions,
     BreedFilterOptions,
+    filterAnimals,
     GenderFilter,
     GenderFilterOptions,
-    SpeciesFilterOptions
+    SpeciesFilterOptions,
 } from "./data/filters";
 
 const MOCK_ANIMAL_DATA = new Array(200).fill(0).map(
@@ -26,10 +27,11 @@ const MOCK_ANIMAL_DATA = new Array(200).fill(0).map(
         weightKg: 10,
         animalImages: [
             {
-                thumbnailUrl: "https://picsum.photos/500",
+                thumbnailUrl: "https://picsum.photos/500" + (Math.random() < 0.5 ? "?1" : "?2"),
                 photoUrl: "https://picsum.photos/1000/800",
             },
         ],
+        dateOfBirth: Math.random() < 0.3 ? new Date("2021-01-01") : new Date("2021-08-01"),
     } as Animal.Attributes),
 );
 
@@ -46,9 +48,19 @@ function AdoptionListingPage() {
     const [breedFilter, setBreedFilter] = useState<number[]>([]);
 
     const [page, setPage] = useState<number>(1);
-    const display = useMemo(() => {
-        return animals.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    }, [animals, page]);
+
+    const filteredAnimals = useMemo(() => {
+        setPage(1);
+        return filterAnimals(animals, {
+            speciesFilter,
+            genderFilter,
+            ageFilter,
+        });
+    }, [animals, speciesFilter, ageFilter, genderFilter]);
+
+    const paginatedAnimals = useMemo(() => {
+        return filteredAnimals.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    }, [filteredAnimals, page]);
 
     return (
         <AdopterLayout>
@@ -97,14 +109,14 @@ function AdoptionListingPage() {
                         {/* <div>More filters</div> */}
                     </Space>
                     <Row gutter={[26, 26]}>
-                        {display.map((animal) => (
+                        {paginatedAnimals.map((animal) => (
                             <Col key={animal.id} xs={24} sm={12} lg={8}>
                                 <AnimalListing animal={animal} />
                             </Col>
                         ))}
                     </Row>
                     <Pager
-                        total={animals.length}
+                        total={filteredAnimals.length}
                         pageSize={18}
                         current={page}
                         showSizeChanger={false}
@@ -120,7 +132,7 @@ export default AdoptionListingPage;
 
 const Background = styled.div`
 	padding: 78px 26px;
-	background-color: #fff;
+	background-color: var(--color-white);
 `;
 
 const Page = styled.div`
