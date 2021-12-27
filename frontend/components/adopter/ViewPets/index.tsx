@@ -1,6 +1,6 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Animal } from "@contract";
-import { Col, Input, Pagination, Row, Space, Typography } from "antd";
+import { Col, Empty, Input, Pagination, Row, Space, Typography } from "antd";
 import AdopterLayout from "layouts/adopter/AdopterLayout";
 import { useMemo, useState } from "react";
 import styled from "styled-components";
@@ -27,11 +27,16 @@ const MOCK_ANIMAL_DATA = new Array(200).fill(0).map(
         weightKg: 10,
         animalImages: [
             {
-                thumbnailUrl: "https://picsum.photos/500" + (Math.random() < 0.5 ? "?1" : "?2"),
+                thumbnailUrl:
+                    "https://picsum.photos/500" +
+                    (Math.random() < 0.5 ? "?1" : "?2"),
                 photoUrl: "https://picsum.photos/1000/800",
             },
         ],
-        dateOfBirth: Math.random() < 0.3 ? new Date("2021-01-01") : new Date("2021-08-01"),
+        dateOfBirth:
+            Math.random() < 0.3
+                ? new Date("2021-01-01")
+                : new Date("2021-08-01"),
     } as Animal.Attributes),
 );
 
@@ -108,13 +113,17 @@ function AdoptionListingPage() {
                         />
                         {/* <div>More filters</div> */}
                     </Space>
-                    <Row gutter={[26, 26]}>
-                        {paginatedAnimals.map((animal) => (
-                            <Col key={animal.id} xs={24} sm={12} lg={8}>
-                                <AnimalListing animal={animal} />
-                            </Col>
-                        ))}
-                    </Row>
+                    {paginatedAnimals.length ? (
+                        <Row gutter={[26, 26]}>
+                            {paginatedAnimals.map((animal) => (
+                                <Col key={animal.id} xs={24} sm={12} lg={8}>
+                                    <AnimalListing animal={animal} />
+                                </Col>
+                            ))}
+                        </Row>
+                    ) : (
+                            <Empty description="No matches" />
+                        )}
                     <Pager
                         total={filteredAnimals.length}
                         pageSize={18}
