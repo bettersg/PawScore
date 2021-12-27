@@ -1,10 +1,11 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Animal } from "@contract";
-import { Col, Empty, Input, Pagination, Row, Space, Typography } from "antd";
+import { Col, Empty, Input, Row, Space, Typography } from "antd";
 import AdopterLayout from "layouts/adopter/AdopterLayout";
 import { useMemo, useState } from "react";
 import styled from "styled-components";
 import { AnimalListing } from "./components/AnimalListing";
+import { CustomPagination } from "./components/CustomPagination";
 import { FilterSelector } from "./components/FilterSelector";
 import {
     AgeFilter,
@@ -13,7 +14,7 @@ import {
     filterAnimals,
     GenderFilter,
     GenderFilterOptions,
-    SpeciesFilterOptions,
+    SpeciesFilterOptions
 } from "./data/filters";
 
 const MOCK_ANIMAL_DATA = new Array(200).fill(0).map(
@@ -124,11 +125,10 @@ function AdoptionListingPage() {
                     ) : (
                             <Empty description="No matches" />
                         )}
-                    <Pager
+                    <PositionedPagination
                         total={filteredAnimals.length}
                         pageSize={18}
                         current={page}
-                        showSizeChanger={false}
                         onChange={(page) => setPage(page)}
                     />
                 </Page>
@@ -169,23 +169,7 @@ const Searchbar = styled(Input)`
 	}
 `;
 
-const Pager = styled(Pagination)`
+const PositionedPagination = styled(CustomPagination)`
 	margin: 60px auto;
 	width: fit-content;
-	font-weight: 600;
-
-	.ant-pagination-item-link,
-	.ant-pagination-item {
-		border: none;
-		&:hover * {
-			color: #fdac0f;
-		}
-		&:active * {
-			color: #fdac0f;
-		}
-	}
-
-	.ant-pagination-item-active a {
-		color: #fdac0f;
-	}
 `;
