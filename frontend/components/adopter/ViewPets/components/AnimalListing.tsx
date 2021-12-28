@@ -3,30 +3,35 @@ import { Typography } from "antd";
 import styled from "styled-components";
 
 interface AnimalListingProps {
-    animal: Animal.Attributes;
+	animal: Animal.Attributes;
 }
 
+const GenderDisplay = {
+	F: "Female",
+	M: "Male",
+};
+
 export function AnimalListing(props: AnimalListingProps) {
-    const {
-        animal: { name, gender, breed, weightKg, animalImages },
-    } = props;
-    const thumbnail = animalImages?.[0].thumbnailUrl;
-    return (
-        <Wrapper>
-            <PetImage src={thumbnail} alt={`${name} image`} />
-            <PetInfo>
-                <PetName>{name}</PetName>
-                <PetInfoGrid>
-                    <PetInfoCell>Gender</PetInfoCell>
-                    <PetInfoCell>{gender}</PetInfoCell>
-                    <PetInfoCell>Breed</PetInfoCell>
-                    <PetInfoCell>{breed}</PetInfoCell>
-                    <PetInfoCell>Weight</PetInfoCell>
-                    <PetInfoCell>{weightKg}kg</PetInfoCell>
-                </PetInfoGrid>
-            </PetInfo>
-        </Wrapper>
-    );
+	const {
+		animal: { name, gender, breed, weightKg, animalImages },
+	} = props;
+	const thumbnail = animalImages?.[0].thumbnailUrl;
+	return (
+		<Wrapper>
+			<PetImage src={thumbnail} alt={`${name} image`} />
+			<PetInfo>
+				<PetName>{name}</PetName>
+				<PetInfoGrid>
+					<PetInfoCell>Gender</PetInfoCell>
+					<PetInfoCell>{GenderDisplay[gender] || "-"}</PetInfoCell>
+					<PetInfoCell>Breed</PetInfoCell>
+					<PetInfoCell>{breed}</PetInfoCell>
+					<PetInfoCell>Weight</PetInfoCell>
+					<PetInfoCell>{weightKg}kg</PetInfoCell>
+				</PetInfoGrid>
+			</PetInfo>
+		</Wrapper>
+	);
 }
 
 const Wrapper = styled.div`
@@ -70,8 +75,8 @@ const PetName = styled(Typography.Title)`
 
 const PetInfoGrid = styled.div`
 	display: grid;
-    grid-template-columns: auto 1fr;
-    column-gap: 1rem;
+	grid-template-columns: auto 1fr;
+	column-gap: 1rem;
 `;
 
 const PetInfoCell = styled(Typography.Text)`

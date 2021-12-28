@@ -23,7 +23,7 @@ const MOCK_ANIMAL_DATA = new Array(200).fill(0).map(
         id: (i + 1).toString(),
         species: Animal.Species.Dog,
         name: "Bean" + (i + 1),
-        gender: "M",
+        gender: Math.random() < 0.5 ? "F" : "M",
         breed: "Dachshund",
         weightKg: 10,
         animalImages: [
