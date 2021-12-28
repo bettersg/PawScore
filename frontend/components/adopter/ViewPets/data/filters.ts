@@ -26,11 +26,11 @@ export const SpeciesFilterOptions = [
 ];
 
 export enum AgeFilter {
-    Above0Months,
-    Above6Months,
-    Above12Months,
-    Above36Months,
-    Above72Months,
+    Between1To6Months,
+    Between7To12Months,
+    Between13To36Months,
+    Between37To72Months,
+    Between73To120Months,
     Above120Months,
 }
 
@@ -40,11 +40,11 @@ export const AgeFilterOptions = [
         options: [
             {
                 label: "1-6 months",
-                value: AgeFilter.Above0Months,
+                value: AgeFilter.Between1To6Months,
             },
             {
                 label: "7-12 months",
-                value: AgeFilter.Above6Months,
+                value: AgeFilter.Between7To12Months,
             },
         ],
     },
@@ -53,15 +53,15 @@ export const AgeFilterOptions = [
         options: [
             {
                 label: "1-3 years",
-                value: AgeFilter.Above12Months,
+                value: AgeFilter.Between13To36Months,
             },
             {
                 label: "4-6 years",
-                value: AgeFilter.Above36Months,
+                value: AgeFilter.Between37To72Months,
             },
             {
                 label: "6-9 years",
-                value: AgeFilter.Above72Months,
+                value: AgeFilter.Between73To120Months,
             },
             {
                 label: "10 years and above",
@@ -71,26 +71,22 @@ export const AgeFilterOptions = [
     },
 ];
 
-export const AgeFilterMatcher = new Map<
+export const AgeFilterMatcher: Record<
     AgeFilter,
     (ageMonths: number) => boolean
->([
-    [AgeFilter.Above0Months, (ageMonths) => ageMonths >= 0 && ageMonths <= 6],
-    [AgeFilter.Above6Months, (ageMonths) => ageMonths >= 7 && ageMonths <= 12],
-    [
-        AgeFilter.Above12Months,
-        (ageMonths) => ageMonths >= 13 && ageMonths <= 36,
-    ],
-    [
-        AgeFilter.Above36Months,
-        (ageMonths) => ageMonths >= 37 && ageMonths <= 72,
-    ],
-    [
-        AgeFilter.Above72Months,
-        (ageMonths) => ageMonths >= 72 && ageMonths <= 120,
-    ],
-    [AgeFilter.Above120Months, (ageMonths) => ageMonths >= 121],
-]);
+> = {
+    [AgeFilter.Between1To6Months]: (ageMonths) =>
+        ageMonths >= 0 && ageMonths <= 6,
+    [AgeFilter.Between7To12Months]: (ageMonths) =>
+        ageMonths >= 7 && ageMonths <= 12,
+    [AgeFilter.Between13To36Months]: (ageMonths) =>
+        ageMonths >= 13 && ageMonths <= 36,
+    [AgeFilter.Between37To72Months]: (ageMonths) =>
+        ageMonths >= 37 && ageMonths <= 72,
+    [AgeFilter.Between73To120Months]: (ageMonths) =>
+        ageMonths >= 72 && ageMonths <= 120,
+    [AgeFilter.Above120Months]: (ageMonths) => ageMonths >= 121,
+};
 
 export enum GenderFilter {
     F = "F",
@@ -112,7 +108,7 @@ export const GenderFilterOptions = [
     },
 ];
 
-function toTitlecase(str: string) {
+function toTitleCase(str: string) {
     return str.replace(/\b\S/g, (t) => t.toUpperCase());
 }
 
@@ -127,7 +123,7 @@ export function generateBreedFilterOptions(animals: Animal.Attributes[]) {
     return [
         {
             options: Array.from(breeds).map((breed) => ({
-                label: toTitlecase(breed),
+                label: toTitleCase(breed),
                 value: breed,
             })),
         },
@@ -177,7 +173,7 @@ export function filterAnimals(
 
             const numMonths = now.diff(dayjs.utc(a.dateOfBirth), "month");
             const matchesAgeFilter = ageFilter.some((filter) =>
-                AgeFilterMatcher.get(filter)!(numMonths),
+                AgeFilterMatcher[filter](numMonths),
             );
 
             if (!matchesAgeFilter) {
