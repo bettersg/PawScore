@@ -112,15 +112,27 @@ export const GenderFilterOptions = [
     },
 ];
 
-// TODO: mock for now
-export const BreedFilterOptions = [
-    {
-        options: new Array(50).fill(0).map((_, i) => ({
-            label: `Test ${i}`,
-            value: i,
-        })),
-    },
-];
+function toTitlecase(str: string) {
+    return str.replace(/\b\S/g, (t) => t.toUpperCase());
+}
+
+export function generateBreedFilterOptions(animals: Animal.Attributes[]) {
+    const breeds = animals.reduce((group, animal) => {
+        if (animal.breed) {
+            group.add(animal.breed.toLowerCase());
+        }
+        return group;
+    }, new Set<string>());
+
+    return [
+        {
+            options: Array.from(breeds).map((breed) => ({
+                label: toTitlecase(breed),
+                value: breed,
+            })),
+        },
+    ];
+}
 
 export function filterAnimals(
     animals: Animal.Attributes[],
@@ -128,10 +140,12 @@ export function filterAnimals(
         speciesFilter,
         genderFilter,
         ageFilter,
+        breedFilter,
     }: {
         speciesFilter: Animal.Species[];
         genderFilter: GenderFilter[];
         ageFilter: AgeFilter[];
+        breedFilter: string[];
     },
 ) {
     const now = dayjs.utc();
@@ -139,7 +153,8 @@ export function filterAnimals(
         if (
             !speciesFilter.length &&
             !genderFilter.length &&
-            !ageFilter.length
+            !ageFilter.length &&
+            !breedFilter.length
         ) {
             return true;
         }
@@ -164,6 +179,14 @@ export function filterAnimals(
             ) {
                 return true;
             }
+        }
+
+        if (
+            breedFilter.length &&
+            a.breed &&
+            breedFilter.includes(a.breed.toLowerCase())
+        ) {
+            return true;
         }
 
         return false;

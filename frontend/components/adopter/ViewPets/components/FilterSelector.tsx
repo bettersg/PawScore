@@ -3,7 +3,7 @@ import { Button, Checkbox, Col, Divider, Row, Typography } from "antd";
 import { FocusEvent, useRef, useState } from "react";
 import styled from "styled-components";
 
-interface FilterSelectorProps<T> {
+export interface FilterSelectorProps<T> {
     label: string;
     values?: T[];
     selections: {

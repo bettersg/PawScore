@@ -2,18 +2,18 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Animal } from "@contract";
 import { Col, Empty, Input, Row, Space, Typography } from "antd";
 import AdopterLayout from "layouts/adopter/AdopterLayout";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { AnimalListing } from "./components/AnimalListing";
 import { CustomPagination } from "./components/CustomPagination";
-import { FilterSelector } from "./components/FilterSelector";
+import { FilterSelector, FilterSelectorProps } from "./components/FilterSelector";
 import {
     AgeFilter,
     AgeFilterOptions,
-    BreedFilterOptions,
     filterAnimals,
     GenderFilter,
     GenderFilterOptions,
+    generateBreedFilterOptions,
     SpeciesFilterOptions
 } from "./data/filters";
 
@@ -24,7 +24,7 @@ const MOCK_ANIMAL_DATA = new Array(200).fill(0).map(
         species: Animal.Species.Dog,
         name: "Bean" + (i + 1),
         gender: Math.random() < 0.5 ? "F" : "M",
-        breed: "Dachshund",
+        breed: "Test dog" + (i % 30),
         weightKg: 10,
         animalImages: [
             {
@@ -46,14 +46,18 @@ const PAGE_SIZE = 18;
 function AdoptionListingPage() {
     const [animals, setAnimals] =
         useState<Animal.Attributes[]>(MOCK_ANIMAL_DATA);
+    const [breedFilterOptions, setBreedOptions] = useState<FilterSelectorProps<string>['selections']>([]);
 
     const [speciesFilter, setSpeciesFilter] = useState<Animal.Species[]>([]);
     const [ageFilter, setAgeFilter] = useState<AgeFilter[]>([]);
     const [genderFilter, setGenderFilter] = useState<GenderFilter[]>([]);
-    // TODO:
-    const [breedFilter, setBreedFilter] = useState<number[]>([]);
+    const [breedFilter, setBreedFilter] = useState<string[]>([]);
 
     const [page, setPage] = useState<number>(1);
+
+    useEffect(() => {
+        setBreedOptions(generateBreedFilterOptions(animals));
+    }, [animals])
 
     const filteredAnimals = useMemo(() => {
         setPage(1);
@@ -61,8 +65,9 @@ function AdoptionListingPage() {
             speciesFilter,
             genderFilter,
             ageFilter,
+            breedFilter
         });
-    }, [animals, speciesFilter, ageFilter, genderFilter]);
+    }, [animals, speciesFilter, ageFilter, genderFilter, breedFilter]);
 
     const paginatedAnimals = useMemo(() => {
         return filteredAnimals.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -108,7 +113,7 @@ function AdoptionListingPage() {
                         />
                         <FilterSelector
                             label="Breed"
-                            selections={BreedFilterOptions}
+                            selections={breedFilterOptions}
                             values={breedFilter}
                             onChange={(filter) => setBreedFilter(filter)}
                         />
