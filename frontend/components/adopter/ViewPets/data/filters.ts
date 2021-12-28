@@ -148,47 +148,49 @@ export function filterAnimals(
         breedFilter: string[];
     },
 ) {
+    if (
+        !speciesFilter.length &&
+        !genderFilter.length &&
+        !ageFilter.length &&
+        !breedFilter.length
+    ) {
+        return animals;
+    }
+
     const now = dayjs.utc();
     return animals.filter((a) => {
-        if (
-            !speciesFilter.length &&
-            !genderFilter.length &&
-            !ageFilter.length &&
-            !breedFilter.length
-        ) {
-            return true;
-        }
-
-        if (speciesFilter.length && speciesFilter.includes(a.species)) {
-            return true;
+        if (speciesFilter.length && !speciesFilter.includes(a.species)) {
+            return false;
         }
 
         if (
             genderFilter.length &&
-            genderFilter.includes(a.gender as GenderFilter)
+            !genderFilter.includes(a.gender as GenderFilter)
         ) {
-            return true;
+            return false;
         }
 
-        if (ageFilter.length && a.dateOfBirth) {
+        if (ageFilter.length) {
+            if (!a.dateOfBirth) {
+                return false;
+            }
+
             const numMonths = now.diff(dayjs.utc(a.dateOfBirth), "month");
-            if (
-                ageFilter.some((filter) =>
-                    AgeFilterMatcher.get(filter)!(numMonths),
-                )
-            ) {
-                return true;
+            const matchesAgeFilter = ageFilter.some((filter) =>
+                AgeFilterMatcher.get(filter)!(numMonths),
+            );
+
+            if (!matchesAgeFilter) {
+                return false;
             }
         }
 
-        if (
-            breedFilter.length &&
-            a.breed &&
-            breedFilter.includes(a.breed.toLowerCase())
-        ) {
-            return true;
+        if (breedFilter.length) {
+            if (!a.breed || !breedFilter.includes(a.breed.toLowerCase())) {
+                return false;
+            }
         }
 
-        return false;
+        return true;
     });
 }

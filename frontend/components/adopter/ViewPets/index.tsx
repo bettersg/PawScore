@@ -6,7 +6,10 @@ import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { AnimalListing } from "./components/AnimalListing";
 import { CustomPagination } from "./components/CustomPagination";
-import { FilterSelector, FilterSelectorProps } from "./components/FilterSelector";
+import {
+    FilterSelector,
+    FilterSelectorProps
+} from "./components/FilterSelector";
 import {
     AgeFilter,
     AgeFilterOptions,
@@ -46,7 +49,9 @@ const PAGE_SIZE = 18;
 function AdoptionListingPage() {
     const [animals, setAnimals] =
         useState<Animal.Attributes[]>(MOCK_ANIMAL_DATA);
-    const [breedFilterOptions, setBreedOptions] = useState<FilterSelectorProps<string>['selections']>([]);
+    const [breedFilterOptions, setBreedOptions] = useState<
+        FilterSelectorProps<string>["selections"]
+    >([]);
 
     const [speciesFilter, setSpeciesFilter] = useState<Animal.Species[]>([]);
     const [ageFilter, setAgeFilter] = useState<AgeFilter[]>([]);
@@ -57,7 +62,7 @@ function AdoptionListingPage() {
 
     useEffect(() => {
         setBreedOptions(generateBreedFilterOptions(animals));
-    }, [animals])
+    }, [animals]);
 
     const filteredAnimals = useMemo(() => {
         setPage(1);
@@ -65,7 +70,7 @@ function AdoptionListingPage() {
             speciesFilter,
             genderFilter,
             ageFilter,
-            breedFilter
+            breedFilter,
         });
     }, [animals, speciesFilter, ageFilter, genderFilter, breedFilter]);
 
