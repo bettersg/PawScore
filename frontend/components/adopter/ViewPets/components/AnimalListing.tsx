@@ -37,7 +37,7 @@ export function AnimalListing(props: AnimalListingProps) {
 const Wrapper = styled.div`
 	position: relative;
 	aspect-ratio: 1;
-	color: #fff;
+	color: var(--color-white);
 	border-radius: 7px;
 	overflow: hidden;
 `;
@@ -53,7 +53,7 @@ const PetInfo = styled.div`
 	left: 0;
 	right: 0;
 	bottom: 0;
-	padding: 1rem;
+	padding: 16px;
 	background-image: linear-gradient(
 		180deg,
 		rgba(0, 0, 0, 0) 0%,
@@ -68,17 +68,20 @@ const PetInfo = styled.div`
 
 const PetName = styled(Typography.Title)`
 	&& {
-		color: #fff;
+		color: var(--color-white);
 		font-size: 23px;
+		line-height: 36px;
 	}
 `;
 
 const PetInfoGrid = styled.div`
 	display: grid;
 	grid-template-columns: auto 1fr;
-	column-gap: 1rem;
+	column-gap: 16px;
 `;
 
 const PetInfoCell = styled(Typography.Text)`
-	color: #fff;
+	color: var(--color-white);
+	font-size: 20px;
+	line-height: 28px;
 `;

@@ -170,7 +170,7 @@ const PageHeading = styled(Typography.Title)`
 const Searchbar = styled(Input)`
 	background-color: #f4f6f9;
 	border-color: #f4f6f9;
-	border-radius: 0.5rem;
+	border-radius: 8px;
 	margin-bottom: 30px;
 
 	&:focus,

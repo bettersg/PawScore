@@ -32,7 +32,11 @@ export function FilterSelector<T extends string | number>(
 
     return (
         <div style={{ position: "relative" }}>
-            <SelectorButton size="large" onClick={toggleDropdown} onBlur={closeDropdown}>
+            <SelectorButton
+                size="large"
+                onClick={toggleDropdown}
+                onBlur={closeDropdown}
+            >
                 {label} <CaretDownFilled style={{ color: "#858C94" }} />
             </SelectorButton>
             {
@@ -72,13 +76,9 @@ export function FilterSelector<T extends string | number>(
                         </Checkbox.Group>
                     </CheckboxSection>
                     <Divider style={{ margin: 0 }} />
-                    <Button
-                        type="primary"
-                        onClick={closeDropdown}
-                        style={{ float: "right", margin: "10px 16px" }}
-                    >
+                    <DoneButton type="primary" onClick={toggleDropdown}>
                         Done
-					</Button>
+					</DoneButton>
                 </SelectorDropdown>
             }
         </div>
@@ -114,4 +114,11 @@ const SelectorDropdown = styled.div<{ isOpen: boolean }>`
 
 const CheckboxSection = styled.div`
 	padding: 8px 16px 0 16px;
+`;
+
+const DoneButton = styled(Button)`
+	float: right;
+	margin: 10px 16px;
+	background-color: #41419f;
+	border-radius: 6px;
 `;
