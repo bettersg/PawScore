@@ -83,12 +83,12 @@ function AdoptionListingPage() {
             <Background>
                 <Page>
                     <PageHeading>Adopt an Animal</PageHeading>
-                    <Searchbar
+                    {/* <Searchbar
                         placeholder="Search e.g. try 'British Shorthair'"
                         prefix={<SearchOutlined style={{ color: "#FFAC7E" }} />}
                         size="large"
                         bordered={false}
-                    />
+                    /> */}
                     <Space
                         size="large"
                         wrap
