@@ -1,15 +1,17 @@
-import { Button } from "./Button";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import {
 	PICTURE_ONE,
 	PICTURE_THREE,
 	PICTURE_TWO,
-	VerticalDivider
+	VerticalDivider,
 } from "../common";
+import { Button } from "./Button";
 
 const Hero = () => {
+	const router = useRouter();
 	const handleAdoptClick = () => {
-		alert("adopt");
+		router.push("/adopter");
 	};
 	return (
 		<Container>
