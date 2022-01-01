@@ -4,85 +4,85 @@ import { FocusEvent, useRef, useState } from "react";
 import styled from "styled-components";
 
 export interface FilterSelectorProps<T> {
-    label: string;
-    values?: T[];
-    selections: {
-        title?: string;
-        options: { label: string; value: T }[];
-    }[];
-    onChange: (options: T[]) => void;
+	label: string;
+	values?: T[];
+	selections: {
+		title?: string;
+		options: { label: string; value: T }[];
+	}[];
+	onChange: (options: T[]) => void;
 }
 
 export function FilterSelector<T extends string | number>(
-    props: FilterSelectorProps<T>,
+	props: FilterSelectorProps<T>,
 ) {
-    const { label, values, selections, onChange } = props;
-    const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
+	const { label, values, selections, onChange } = props;
+	const [isOpen, setIsOpen] = useState(false);
+	const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
+	const toggleDropdown = () => {
+		setIsOpen(!isOpen);
+	};
 
-    const closeDropdown = (e: FocusEvent<any>) => {
-        if (!dropdownRef.current?.contains(e.relatedTarget as Node)) {
-            setIsOpen(false);
-        }
-    };
+	const closeDropdown = (e: FocusEvent<any>) => {
+		if (!dropdownRef.current?.contains(e.relatedTarget as Node)) {
+			setIsOpen(false);
+		}
+	};
 
-    return (
-        <div style={{ position: "relative" }}>
-            <SelectorButton
-                size="large"
-                onClick={toggleDropdown}
-                onBlur={closeDropdown}
-            >
-                {label} <CaretDownFilled style={{ color: "#858C94" }} />
-            </SelectorButton>
-            {
-                <SelectorDropdown
-                    isOpen={isOpen}
-                    tabIndex={-1}
-                    ref={dropdownRef}
-                    onBlur={closeDropdown}
-                >
-                    <CheckboxSection>
-                        <Checkbox.Group
-                            onChange={onChange as any}
-                            value={values}
-                        >
-                            {selections.map((selection) => (
-                                <Row
-                                    key={selection.title}
-                                    gutter={[16, 16]}
-                                    style={{ marginBottom: 18 }}
-                                >
-                                    {selection.title && (
-                                        <Col span={24}>
-                                            <SectionHeading>
-                                                {selection.title}
-                                            </SectionHeading>
-                                        </Col>
-                                    )}
-                                    {selection.options.map((option) => (
-                                        <Col span={24} key={option.value}>
-                                            <Checkbox value={option.value}>
-                                                {option.label}
-                                            </Checkbox>
-                                        </Col>
-                                    ))}
-                                </Row>
-                            ))}
-                        </Checkbox.Group>
-                    </CheckboxSection>
-                    <Divider style={{ margin: 0 }} />
-                    <DoneButton type="primary" onClick={toggleDropdown}>
-                        Done
+	return (
+		<div style={{ position: "relative" }}>
+			<SelectorButton
+				size="large"
+				onClick={toggleDropdown}
+				onBlur={closeDropdown}
+			>
+				{label} <CaretDownFilled style={{ color: "#858C94" }} />
+			</SelectorButton>
+			{
+				<SelectorDropdown
+					isOpen={isOpen}
+					tabIndex={-1}
+					ref={dropdownRef}
+					onBlur={closeDropdown}
+				>
+					<CheckboxSection>
+						<Checkbox.Group
+							onChange={onChange as any}
+							value={values}
+						>
+							{selections.map((selection, i) => (
+								<Row
+									key={selection.title ?? i}
+									gutter={[16, 16]}
+									style={{ marginBottom: 18 }}
+								>
+									{selection.title && (
+										<Col span={24}>
+											<SectionHeading>
+												{selection.title}
+											</SectionHeading>
+										</Col>
+									)}
+									{selection.options.map((option) => (
+										<Col span={24} key={option.value}>
+											<Checkbox value={option.value}>
+												{option.label}
+											</Checkbox>
+										</Col>
+									))}
+								</Row>
+							))}
+						</Checkbox.Group>
+					</CheckboxSection>
+					<Divider style={{ margin: 0 }} />
+					<DoneButton type="primary" onClick={toggleDropdown}>
+						Done
 					</DoneButton>
-                </SelectorDropdown>
-            }
-        </div>
-    );
+				</SelectorDropdown>
+			}
+		</div>
+	);
 }
 
 const SelectorButton = styled(Button)`

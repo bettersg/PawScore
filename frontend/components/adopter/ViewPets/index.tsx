@@ -8,125 +8,125 @@ import styled from "styled-components";
 import { AnimalListing } from "./components/AnimalListing";
 import { CustomPagination } from "./components/CustomPagination";
 import {
-    FilterSelector,
-    FilterSelectorProps,
+	FilterSelector,
+	FilterSelectorProps,
 } from "./components/FilterSelector";
 import {
-    AgeFilter,
-    AgeFilterOptions,
-    filterAnimals,
-    GenderFilter,
-    GenderFilterOptions,
-    generateBreedFilterOptions,
-    SpeciesFilterOptions,
+	AgeFilter,
+	AgeFilterOptions,
+	filterAnimals,
+	GenderFilter,
+	GenderFilterOptions,
+	generateBreedFilterOptions,
+	SpeciesFilterOptions,
 } from "./data/filters";
 
 const PAGE_SIZE = 18;
 
 function AdoptionListingPage() {
-    const [animals, setAnimals] = useState<Animal.Attributes[]>([]);
-    const [breedFilterOptions, setBreedOptions] = useState<
-        FilterSelectorProps<string>["selections"]
-    >([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isError, setIsError] = useState(false);
+	const [animals, setAnimals] = useState<Animal.Attributes[]>([]);
+	const [breedFilterOptions, setBreedOptions] = useState<
+		FilterSelectorProps<string>["selections"]
+	>([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [isError, setIsError] = useState(false);
 
-    const [speciesFilter, setSpeciesFilter] = useState<Animal.Species[]>([]);
-    const [ageFilter, setAgeFilter] = useState<AgeFilter[]>([]);
-    const [genderFilter, setGenderFilter] = useState<GenderFilter[]>([]);
-    const [breedFilter, setBreedFilter] = useState<string[]>([]);
+	const [speciesFilter, setSpeciesFilter] = useState<Animal.Species[]>([]);
+	const [ageFilter, setAgeFilter] = useState<AgeFilter[]>([]);
+	const [genderFilter, setGenderFilter] = useState<GenderFilter[]>([]);
+	const [breedFilter, setBreedFilter] = useState<string[]>([]);
 
-    const [page, setPage] = useState<number>(1);
+	const [page, setPage] = useState<number>(1);
 
-    useEffect(() => {
-        new PetApi()
-            .fetchAllAvailablePets()
-            .then((animals) => setAnimals(animals))
-            .catch(() => setIsError(true))
-            .finally(() => setIsLoading(false));
-    }, []);
+	useEffect(() => {
+		new PetApi()
+			.fetchAllAvailablePets()
+			.then((animals) => setAnimals(animals))
+			.catch(() => setIsError(true))
+			.finally(() => setIsLoading(false));
+	}, []);
 
-    useEffect(() => {
-        setBreedOptions(generateBreedFilterOptions(animals));
-    }, [animals]);
+	useEffect(() => {
+		setBreedOptions(generateBreedFilterOptions(animals));
+	}, [animals]);
 
-    const filteredAnimals = useMemo(() => {
-        setPage(1);
-        return filterAnimals(animals, {
-            speciesFilter,
-            genderFilter,
-            ageFilter,
-            breedFilter,
-        });
-    }, [animals, speciesFilter, ageFilter, genderFilter, breedFilter]);
+	const filteredAnimals = useMemo(() => {
+		setPage(1);
+		return filterAnimals(animals, {
+			speciesFilter,
+			genderFilter,
+			ageFilter,
+			breedFilter,
+		});
+	}, [animals, speciesFilter, ageFilter, genderFilter, breedFilter]);
 
-    const paginatedAnimals = useMemo(() => {
-        return filteredAnimals.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    }, [filteredAnimals, page]);
+	const paginatedAnimals = useMemo(() => {
+		return filteredAnimals.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+	}, [filteredAnimals, page]);
 
-    return (
-        <AdopterLayout>
-            <Background>
-                <Page>
-                    <PageHeading>Adopt an Animal</PageHeading>
-                    {/* <Searchbar
+	return (
+		<AdopterLayout>
+			<Background>
+				<Page>
+					<PageHeading>Adopt an Animal</PageHeading>
+					{/* <Searchbar
                         placeholder="Search e.g. try 'British Shorthair'"
                         prefix={<SearchOutlined style={{ color: "#FFAC7E" }} />}
                         size="large"
                         bordered={false}
                     /> */}
-                    <Space
-                        size="large"
-                        wrap
-                        style={{
-                            marginBottom: 51,
-                            // leave enough space for dropdown to render within the viewport
-                            maxWidth: "max(1px, calc(100vw - 253px))",
-                        }}
-                    >
-                        <FilterSelector
-                            label="Species"
-                            values={speciesFilter}
-                            selections={SpeciesFilterOptions}
-                            onChange={(filter) => setSpeciesFilter(filter)}
-                        />
-                        <FilterSelector
-                            label="Age"
-                            values={ageFilter}
-                            selections={AgeFilterOptions}
-                            onChange={(filter) => setAgeFilter(filter)}
-                        />
-                        <FilterSelector
-                            label="Gender"
-                            selections={GenderFilterOptions}
-                            values={genderFilter}
-                            onChange={(filter) => setGenderFilter(filter)}
-                        />
-                        <FilterSelector
-                            label="Breed"
-                            selections={breedFilterOptions}
-                            values={breedFilter}
-                            onChange={(filter) => setBreedFilter(filter)}
-                        />
-                        {/* <div>More filters</div> */}
-                    </Space>
-                    <AnimalContent
-                        isLoading={isLoading}
-                        isError={isError}
-                        animals={paginatedAnimals}
-                    />
-                    {!isLoading && !isError && (
-                        <PositionedPagination
-                            total={filteredAnimals.length}
-                            pageSize={PAGE_SIZE}
-                            current={page}
-                            onChange={(page) => setPage(page)}
-                        />
-                    )}
-                </Page>
-            </Background>
-        </AdopterLayout>
-    );
+					<Space
+						size="large"
+						wrap
+						style={{
+							marginBottom: 51,
+							// leave enough space for dropdown to render within the viewport
+							maxWidth: "max(1px, calc(100vw - 253px))",
+						}}
+					>
+						<FilterSelector
+							label="Species"
+							values={speciesFilter}
+							selections={SpeciesFilterOptions}
+							onChange={(filter) => setSpeciesFilter(filter)}
+						/>
+						<FilterSelector
+							label="Age"
+							values={ageFilter}
+							selections={AgeFilterOptions}
+							onChange={(filter) => setAgeFilter(filter)}
+						/>
+						<FilterSelector
+							label="Gender"
+							selections={GenderFilterOptions}
+							values={genderFilter}
+							onChange={(filter) => setGenderFilter(filter)}
+						/>
+						<FilterSelector
+							label="Breed"
+							selections={breedFilterOptions}
+							values={breedFilter}
+							onChange={(filter) => setBreedFilter(filter)}
+						/>
+						{/* <div>More filters</div> */}
+					</Space>
+					<AnimalContent
+						isLoading={isLoading}
+						isError={isError}
+						animals={paginatedAnimals}
+					/>
+					{!isLoading && !isError && (
+						<PositionedPagination
+							total={filteredAnimals.length}
+							pageSize={PAGE_SIZE}
+							current={page}
+							onChange={(page) => setPage(page)}
+						/>
+					)}
+				</Page>
+			</Background>
+		</AdopterLayout>
+	);
 }
 
 interface AnimalContentProps {
