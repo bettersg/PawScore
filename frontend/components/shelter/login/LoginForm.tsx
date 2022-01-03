@@ -3,7 +3,7 @@ import {
 	UserOutlined,
 	LockOutlined,
 	GoogleOutlined,
-	FacebookFilled
+	FacebookFilled,
 } from "@ant-design/icons";
 import { Input, Button, QuickSignInButton } from "./components";
 import styles from "./IconStyle.module.css";
@@ -11,23 +11,29 @@ import { LoginFormValues } from "types";
 
 type LoginFormProps = {
 	onFinish: (values: LoginFormValues) => void;
+	disableButton: boolean;
+	invalid: boolean;
 };
 
-const LoginForm = ({ onFinish }: LoginFormProps) => (
+const LoginForm = ({ onFinish, disableButton, invalid }: LoginFormProps) => (
 	<Form
 		name="normal_login"
 		className="login-form"
 		initialValues={{ remember: true }}
-		onFinish={onFinish}>
+		onFinish={onFinish}
+	>
+		{/* TODO: Have proper invalid login warning */}
+		{invalid && <>INVALID</>}
 		<Form.Item
 			name="email"
 			rules={[
 				{
 					type: "email",
 					required: true,
-					message: "Please input a valid Email!"
-				}
-			]}>
+					message: "Please input a valid Email!",
+				},
+			]}
+		>
 			<Input
 				prefix={<UserOutlined className={styles.inputFieldIcons} />}
 				placeholder="Email"
@@ -38,9 +44,10 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 			rules={[
 				{
 					required: true,
-					message: "Please input your Password!"
-				}
-			]}>
+					message: "Please input your Password!",
+				},
+			]}
+		>
 			<Input.Password
 				prefix={<LockOutlined className={styles.inputFieldIcons} />}
 				type="password"
@@ -57,7 +64,7 @@ const LoginForm = ({ onFinish }: LoginFormProps) => (
 			</a>
 		</Form.Item> */}
 		<Form.Item>
-			<Button type="primary" htmlType="submit">
+			<Button type="primary" htmlType="submit" disabled={disableButton}>
 				Login
 			</Button>
 		</Form.Item>
