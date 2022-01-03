@@ -15,9 +15,7 @@ export class BaseApi {
 	}
 
 	private post<T>(url: string, body?: Record<string, any>) {
-		return this.client.post<T>(url, {
-			body,
-		});
+		return this.client.post<T>(url, body);
 	}
 
 	protected request<T>(

@@ -18,13 +18,17 @@ const ShelterLogin = () => {
 	const [disableButton, setDisableButton] = useState(false);
 	const [invalid, setInvalid] = useState(false);
 
-	const handleSubmit = (type: keyof AuthApi) => {
+	const handleSubmit = (type: Exclude<keyof AuthApi, "logout">) => {
 		return async (values: LoginFormValues) => {
 			setInvalid(false);
 			setDisableButton(true);
 			try {
 				const token = await new AuthApi()[type](values);
 
+				/* TODO: No shelter ID is attached to registered users, so appending for test 
+				remove once fixed
+				*/
+				token.shelterId = "test-shelter";
 				if (token.shelterId) {
 					AuthToken.store(token);
 					router.push(`/shelter/${token.shelterId}`);
