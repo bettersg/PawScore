@@ -7,12 +7,14 @@ import styled from "styled-components";
 import TableName from "./components/Name";
 import TablePill, { TablePillType } from "./components/Pill";
 import styles from "./PetsTable.module.css";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 const { tableHeader, actionButton } = styles;
 const { Search } = Input;
 
 const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
+	const router = useRouter();
+
 	/* commenting out for now as not implemented yet */
 	// const [searchText, setSearchText] = useState("");
 	// const [searchedColumn, setSearchedColumn] = useState("");
@@ -129,7 +131,7 @@ const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
 					<Button
 						type="primary"
 						style={{ margin: "4px" }}
-						onClick={() => Router.push("/shelter/pet/add")}
+						onClick={() => router.push("/shelter/pet/add")}
 					>
 						<PlusOutlined />
 						Add New
