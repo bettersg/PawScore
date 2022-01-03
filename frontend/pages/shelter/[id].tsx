@@ -24,9 +24,13 @@ const Home = () => {
 		if (!isValidShelterId(shelterId)) return;
 
 		const fetchPetData = async () => {
-			const res = await new PetApi().fetchShelterPets(shelterId);
-			setPetData(res);
-			setLoading(false);
+			try {
+				const res = await new PetApi().fetchShelterPets(shelterId);
+				setPetData(res);
+			} catch (e) {
+			} finally {
+				setLoading(false);
+			}
 		};
 		fetchPetData();
 	}, [shelterId]);

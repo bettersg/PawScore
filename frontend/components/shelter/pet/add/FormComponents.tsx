@@ -379,12 +379,17 @@ const ImageGallery = ({
 
 	const uploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event?.target?.files?.[0];
-		if (file && file.type.substring(0, 5)) {
-			const image = await storeImageToGcp(file);
-			addNewImage(image);
+		try {
+			if (file && file.type.substring(0, 5)) {
+				const image = await storeImageToGcp(file);
+				addNewImage(image);
+			}
+		} catch (error) {
+			alert("error uploading image");
+		} finally {
+			// Reset value so that onChange will trigger again alter
+			event.target.value = "";
 		}
-		// Reset value so that onChange will trigger again alter
-		event.target.value = "";
 	};
 
 	return (
