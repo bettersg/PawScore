@@ -5,6 +5,8 @@ import HeaderContent from "./HeaderContent";
 import LeftMenu from "./LeftMenu";
 import styles from "./ShelterLayout.module.css";
 import { MenuKey } from "./LeftMenu";
+import { AuthApi } from "api/authApi";
+import { AuthToken } from "common/utils";
 
 const { Header, Content } = Layout;
 const { header, sideMenu } = styles;
@@ -23,11 +25,9 @@ const ShelterLayout = ({ children, selectedMenu }: Props) => {
 
 	const onClickSignOut = async () => {
 		try {
-			const axios = createAxiosInstance();
-			const {
-				data: { payload },
-			} = await axios.post("/api/logout");
-			window.location.assign("/shelter/login");
+			AuthToken.remove();
+			await new AuthApi().logout();
+			// LOGOUT TODO: redirect currently handled on BE. should redirect be handled on FE?
 		} catch (err) {
 			console.log(err);
 		}

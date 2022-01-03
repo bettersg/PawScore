@@ -19,4 +19,10 @@ export class AuthApi extends BaseApi {
 		);
 		return res!.data!.payload;
 	}
+
+	public async logout() {
+		const res = await this.request(Methods.POST, "/api/logout");
+		// LOGOUT TODO: redirect currently handled on BE. should redirect be handled on FE?
+		return;
+	}
 }

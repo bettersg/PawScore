@@ -82,6 +82,7 @@ const authRouteSetup = (
 
 	app.post("/api/logout", (req: express.Request, res: express.Response) => {
 		req.logout();
+		// LOGOUT TODO: should redirect be handled on FE?
 		res.status(StatusCodes.UNAUTHORIZED).json({ redirectPath: "/" });
 	});
 };
