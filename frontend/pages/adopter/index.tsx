@@ -1,7 +1,7 @@
-import ViewPets from "components/adopter/ViewPets"
+import ViewPets from "components/adopter/ViewPets";
 
 function ViewPetsPage() {
-    return <ViewPets />
+	return <ViewPets />;
 }
 
 export default ViewPetsPage;

@@ -123,7 +123,7 @@ const Pagination = styled(AntPagination)`
 			font-size: 23px;
 			color: #858c94;
 		}
-		
+
 		&:hover a,
 		&:active a,
 		&:focus-visible a {

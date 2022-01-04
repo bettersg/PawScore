@@ -1,4 +1,4 @@
-import { Shelter, Animal } from "@contract";
+import { Animal, Shelter } from "@contract";
 import { BaseApi } from "./baseApi";
 
 export class PetApi extends BaseApi {
@@ -15,6 +15,18 @@ export class PetApi extends BaseApi {
 		// );
 		await delay();
 		return generateMockPetData();
+	}
+
+	public async fetchAllAvailablePets() {
+		const response = await this.fetch<Animal.fetchPetsApiDomain.requestQuery, Animal.fetchPetsApiDomain.response>(
+			Animal.fetchPetsApiDomain.method,
+			Animal.fetchPetsApiDomain.endpoint,
+			{
+				visible: true
+			},
+		);
+
+		return response?.data!;
 	}
 }
 
@@ -42,8 +54,8 @@ export const mockPetData = (id = "id"): Animal.Attributes => {
 			Math.random() > 0.3
 				? Animal.Species.Cat
 				: Math.random() > 0.5
-				? Animal.Species.Dog
-				: Animal.Species.Others,
+					? Animal.Species.Dog
+					: Animal.Species.Others,
 		name: `Mock Pet ${id}`,
 		description: "desccripter",
 		healthIssues: "none",
