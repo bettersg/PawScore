@@ -23,7 +23,6 @@ interface BaseAttributes {
 	description: string;
 	healthIssues: string;
 	gender: "F" | "M";
-	dateOfBirth: Date | null;
 	sizeCm: number | null;
 	breed: string | null;
 	color: string;
@@ -34,7 +33,6 @@ interface BaseAttributes {
 	sterilised: boolean | null;
 	toiletTrained: boolean | null;
 	adoptionFee: number | null;
-	intakeDate: Date;
 	visible: boolean;
 	animalImages?: Image[];
 }
@@ -45,7 +43,7 @@ export interface Attributes extends BaseAttributes {
 	intakeDate: Date;
 }
 
-export interface NewAnimalAttributes {
+export interface NewAnimalAttributes extends BaseAttributes {
 	dateOfBirth: string | undefined;
 	intakeDate: string;
 }

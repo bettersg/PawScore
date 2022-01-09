@@ -1,3 +1,3 @@
 import { Animal } from "@contract";
 
-export type NewAnimal = Omit<Animal.Attributes, "id">;
+export type NewAnimal = Omit<Animal.Attributes, "id" | "shelterId">;
