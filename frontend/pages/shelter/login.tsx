@@ -1,41 +1,38 @@
 import { Col, Row, Tabs } from "antd";
 import { AuthApi } from "api/authApi";
 import { AxiosError } from "axios";
-import { AuthToken } from "common/utils";
 import LoginForm from "components/shelter/login/LoginForm";
 import LogoHeader from "components/shelter/login/LogoHeader";
 import SignUpForm from "components/shelter/login/SignUpForm";
+import { useLoginContext } from "contexts/LoginContext";
 import ShelterLoginLayout from "layouts/shelter/ShelterLoginLayout";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
-import { LoginFormValues } from "types";
+import { loginApiDomain } from "@contract";
 
 const { TabPane } = Tabs;
 
 const ShelterLogin = () => {
 	const router = useRouter();
+	const { handleLogin } = useLoginContext();
 	const [disableButton, setDisableButton] = useState(false);
 	const [invalid, setInvalid] = useState(false);
 
 	const handleSubmit = (type: Exclude<keyof AuthApi, "logout">) => {
-		return async (values: LoginFormValues) => {
+		return async (values: loginApiDomain.requestBody) => {
 			setInvalid(false);
 			setDisableButton(true);
 			try {
 				const token = await new AuthApi()[type](values);
 
-				/* TODO: No shelter ID is attached to registered users, so appending for test 
-				remove once fixed
-				*/
-				token.shelterId = "test-shelter";
 				if (token.shelterId) {
-					AuthToken.store(token);
+					handleLogin(token);
 					router.push(`/shelter/${token.shelterId}`);
 				}
 			} catch (_err) {
 				const err = (_err as AxiosError)?.response?.data;
-				if (err.status === "failure") {
+				if (err?.status === "failure") {
 					setInvalid(true);
 				} else {
 					alert(
