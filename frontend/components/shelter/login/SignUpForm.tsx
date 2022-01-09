@@ -7,10 +7,10 @@ import {
 	FacebookFilled,
 } from "@ant-design/icons";
 import styles from "./IconStyle.module.css";
-import { LoginFormValues } from "types";
+import { loginApiDomain } from "@contract";
 
 type SignUpFormProps = {
-	onFinish: (values: LoginFormValues) => void;
+	onFinish: (values: loginApiDomain.requestBody) => void;
 	disableButton: boolean;
 };
 const SignUpForm = ({ onFinish, disableButton }: SignUpFormProps) => (
