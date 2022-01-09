@@ -358,7 +358,8 @@ const ImageGallery = ({
 		return new Promise((resolve) => {
 			const reader = new FileReader();
 			reader.onloadend = () => {
-				resolve(reader.result as string);
+				const base64String = (reader.result as string).split(",")[1];
+				resolve(base64String);
 			};
 			reader.readAsDataURL(_pickedImage);
 		});
