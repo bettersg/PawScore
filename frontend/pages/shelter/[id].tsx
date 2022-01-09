@@ -8,6 +8,7 @@ import { MenuKey } from "layouts/shelter/ShelterLayout/LeftMenu";
 import ErrorPage from "next/error";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import validateUuid from "uuid-validate";
 
 const Home = () => {
 	const router = useRouter();
@@ -16,8 +17,8 @@ const Home = () => {
 	const [loading, setLoading] = useState(true);
 
 	const isValidShelterId = (id: string) => {
-		//TODO: refactor to check if shelterId is valid
-		return true;
+		//TODO: implement proper validation?
+		return validateUuid(id);
 	};
 
 	useEffect(() => {
@@ -37,6 +38,7 @@ const Home = () => {
 
 	if (shelterId && !isValidShelterId(shelterId)) {
 		/* needs `if (shelterId)` to prevent error page showing on initial load as id starts off undefined */
+		alert("invalid shelter id");
 		return <ErrorPage statusCode={404} />;
 	}
 
