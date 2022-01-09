@@ -4,7 +4,7 @@ import { BaseApi } from "./baseApi";
 
 export class AuthApi extends BaseApi {
 	public async login(creds: LoginFormValues) {
-		const res = await this.request<LoginResponse>(
+		const res = await this.fetch<LoginFormValues, LoginResponse>(
 			Methods.POST,
 			"/api/login",
 			creds,
@@ -12,7 +12,7 @@ export class AuthApi extends BaseApi {
 		return res!.data!.payload;
 	}
 	public async register(creds: LoginFormValues) {
-		const res = await this.request<LoginResponse>(
+		const res = await this.fetch<LoginFormValues, LoginResponse>(
 			Methods.POST,
 			"/api/register",
 			creds,
@@ -21,8 +21,8 @@ export class AuthApi extends BaseApi {
 	}
 
 	public async logout() {
-		const res = await this.request(Methods.POST, "/api/logout");
-		// LOGOUT TODO: redirect currently handled on BE. should redirect be handled on FE?
+		const res = await this.fetch(Methods.POST, "/api/logout");
+		// LOGOUT TODO: redirect after logout currently handled on BE. should redirect be handled on FE?
 		return;
 	}
 }

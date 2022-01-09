@@ -9,11 +9,11 @@ export const AuthToken = {
 	remove: () => {
 		localStorage.removeItem(TOKEN_NAME);
 	},
-	get: () => {
+	get: (): LoginPayload | undefined => {
 		const token = localStorage.getItem(TOKEN_NAME);
 		if (token) {
-			return JSON.parse(token);
+			return JSON.parse(token) as LoginPayload;
 		}
-		return null;
+		return;
 	},
 };
