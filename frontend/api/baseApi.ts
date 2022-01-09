@@ -15,9 +15,7 @@ export class BaseApi {
 	}
 
 	private post<Body, Response>(url: string, body?: Body) {
-		return this.client.post<Response>(url, {
-			body,
-		});
+		return this.client.post<Response>(url, body);
 	}
 
 	protected fetch<Params, Response>(
