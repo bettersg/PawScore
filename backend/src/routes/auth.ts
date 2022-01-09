@@ -1,6 +1,6 @@
 import express from "express";
 import passport from "passport";
-import { LoginResponse } from "@contract";
+import { loginApiDomain } from "@contract";
 import { User } from "../models/user";
 import { NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
@@ -31,7 +31,7 @@ const authRouteSetup = (
 							}
 						});
 						user.password = "";
-						const result: LoginResponse = {
+						const result: loginApiDomain.response = {
 							status: "success",
 							message: "You have successfully registered",
 							payload: user,
@@ -68,7 +68,7 @@ const authRouteSetup = (
 							return next(loginErr);
 						}
 						user.password = "";
-						const result: LoginResponse = {
+						const result: loginApiDomain.response = {
 							status: "success",
 							message: "You have successfully logged in",
 							payload: user,
