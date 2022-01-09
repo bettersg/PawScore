@@ -8,26 +8,26 @@ export class BaseApi {
 		this.client = createAxiosInstance();
 	}
 
-	private get<T>(url: string, params?: Record<string, any>) {
-		return this.client.get<T>(url, {
+	private get<Params, Response>(url: string, params?: Params) {
+		return this.client.get<Response>(url, {
 			params,
 		});
 	}
 
-	private post<T>(url: string, body?: Record<string, any>) {
-		return this.client.post<T>(url, body);
+	private post<Body, Response>(url: string, body?: Body) {
+		return this.client.post<Response>(url, body);
 	}
 
-	protected request<T>(
-		method: Methods,
+	protected fetch<Params, Response>(
+		method: Methods.GET | Methods.POST,
 		url: string,
-		params?: Record<string, any>,
+		params?: Params,
 	) {
 		switch (method) {
 			case Methods.GET:
-				return this.get<T>(url, params);
+				return this.get<Params, Response>(url, params);
 			case Methods.POST:
-				return this.post<T>(url, params);
+				return this.post<Params, Response>(url, params);
 		}
 	}
 }
