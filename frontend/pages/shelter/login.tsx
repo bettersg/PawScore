@@ -7,7 +7,7 @@ import SignUpForm from "components/shelter/login/SignUpForm";
 import { useLoginContext } from "contexts/LoginContext";
 import ShelterLoginLayout from "layouts/shelter/ShelterLoginLayout";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { loginApiDomain } from "@contract";
 
@@ -15,7 +15,7 @@ const { TabPane } = Tabs;
 
 const ShelterLogin = () => {
 	const router = useRouter();
-	const { handleLogin } = useLoginContext();
+	const { handleLogin, checkingLogin, isLoggedIn, token } = useLoginContext();
 	const [disableButton, setDisableButton] = useState(false);
 	const [invalid, setInvalid] = useState(false);
 
@@ -46,6 +46,15 @@ const ShelterLogin = () => {
 		};
 	};
 
+	useEffect(() => {
+		if (!checkingLogin && isLoggedIn) {
+			router.push(`/shelter/${token!.shelterId}`);
+		}
+	}, [checkingLogin, isLoggedIn, token, router]);
+
+	if (checkingLogin || isLoggedIn) {
+		return <></>;
+	}
 	return (
 		<ShelterLoginLayout>
 			<Container>
