@@ -12,7 +12,7 @@ import validateUuid from "uuid-validate";
 
 const Home = () => {
 	const router = useRouter();
-	const shelterId = router.query.id as string;
+	const shelterId = router.query.shelterId as string;
 	const [petData, setPetData] = useState<Animal.Attributes[]>([]);
 	const [loading, setLoading] = useState(true);
 
@@ -44,7 +44,11 @@ const Home = () => {
 
 	const renderData = () => {
 		if (loading) return <Container>LOADINGGGG</Container>;
-		return petData.length ? <PetsTable petData={petData} /> : <NoData />;
+		return petData.length ? (
+			<PetsTable petData={petData} shelterId={shelterId} />
+		) : (
+			<NoData shelterId={shelterId} />
+		);
 	};
 	return (
 		<ShelterLayout selectedMenu={MenuKey.PETS}>

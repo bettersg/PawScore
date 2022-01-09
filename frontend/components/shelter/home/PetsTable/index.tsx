@@ -12,7 +12,13 @@ import { useRouter } from "next/router";
 const { tableHeader, actionButton } = styles;
 const { Search } = Input;
 
-const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
+const PetTableDisplay = ({
+	shelterId,
+	petData,
+}: {
+	shelterId: string;
+	petData: Animal.Attributes[];
+}) => {
 	const router = useRouter();
 
 	/* commenting out for now as not implemented yet */
@@ -24,6 +30,9 @@ const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
 	};
 	const onViewMore = (id: string) => {
 		console.log("clicked view more ", id);
+	};
+	const redirectToAddPet = () => {
+		router.push(`/shelter/${shelterId}/pet/add`);
 	};
 
 	const columns: ColumnsType<Animal.Attributes> = [
@@ -131,7 +140,7 @@ const PetTableDisplay = ({ petData }: { petData: Animal.Attributes[] }) => {
 					<Button
 						type="primary"
 						style={{ margin: "4px" }}
-						onClick={() => router.push("/shelter/pet/add")}
+						onClick={redirectToAddPet}
 					>
 						<PlusOutlined />
 						Add New
