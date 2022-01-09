@@ -1,5 +1,4 @@
-import { Shelter, Animal, Upload } from "@contract";
-import { NewAnimal } from "common/types";
+import { Animal, Shelter, Upload } from "@contract";
 import { BaseApi } from "./baseApi";
 
 export class PetApi extends BaseApi {
@@ -7,7 +6,10 @@ export class PetApi extends BaseApi {
 		const query: Shelter.fetchPetsApiDomain.requestQuery = {
 			shelterId,
 		};
-		const res = await this.request<Shelter.fetchPetsApiDomain.response>(
+		const res = await this.fetch<
+			Shelter.fetchPetsApiDomain.requestQuery,
+			Shelter.fetchPetsApiDomain.response
+		>(
 			Shelter.fetchPetsApiDomain.method,
 			Shelter.fetchPetsApiDomain.endpoint,
 			query,
@@ -16,10 +18,28 @@ export class PetApi extends BaseApi {
 		return res.data;
 	}
 
+	public async fetchAllAvailablePets() {
+		const response = await this.fetch<
+			Animal.fetchPetsApiDomain.requestQuery,
+			Animal.fetchPetsApiDomain.response
+		>(
+			Animal.fetchPetsApiDomain.method,
+			Animal.fetchPetsApiDomain.endpoint,
+			{
+				visible: true,
+			},
+		);
+
+		return response?.data!;
+	}
+
 	public async uploadImage(
 		imageData: Upload.uploadImageApiDomain.requestBody,
 	) {
-		const res = await this.request<Upload.uploadImageApiDomain.response>(
+		const res = await this.fetch<
+			Upload.uploadImageApiDomain.requestBody,
+			Upload.uploadImageApiDomain.response
+		>(
 			Upload.uploadImageApiDomain.method,
 			Upload.uploadImageApiDomain.endpoint,
 			imageData,
@@ -29,7 +49,7 @@ export class PetApi extends BaseApi {
 	}
 
 	public async addNewPet(petData: Shelter.addNewPetApiDomain.requestBody) {
-		await this.request(
+		await this.fetch<Shelter.addNewPetApiDomain.requestBody, null>(
 			Shelter.addNewPetApiDomain.method,
 			Shelter.addNewPetApiDomain.endpoint,
 			petData,
