@@ -299,7 +299,7 @@ const FormSectionTwo = ({
 );
 
 export const FormSection = {
-	ImageSection: ImageSection,
+	ImageSection,
 	SectionOne: FormSectionOne,
 	SectionTwo: FormSectionTwo,
 };
