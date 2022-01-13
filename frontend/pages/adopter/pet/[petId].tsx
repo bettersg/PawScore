@@ -81,10 +81,6 @@ function PetDetailsPage() {
 			<Page>
 				<Grid>
 					<GridCell id="header">
-						<Breadcrumb separator=">">
-							<Breadcrumb.Item>Pets</Breadcrumb.Item>
-							<Breadcrumb.Item>{animal.name}</Breadcrumb.Item>
-						</Breadcrumb>
 						<AnimalInfoHeader animal={animal} shelter={shelter} />
 					</GridCell>
 					<GridCell id="gallery">

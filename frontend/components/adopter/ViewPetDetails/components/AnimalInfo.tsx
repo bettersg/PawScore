@@ -6,7 +6,7 @@ import {
 	WarningFilled,
 } from "@ant-design/icons";
 import { Animal } from "@contract";
-import { Button, Popover, Space } from "antd";
+import { Breadcrumb, Button, Popover, Space } from "antd";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import React, { useEffect, useState } from "react";
@@ -26,19 +26,35 @@ interface AnimalHeaderProps {
 export function AnimalInfoHeader(props: AnimalHeaderProps) {
 	const { animal, shelter } = props;
 	return (
-		<AnimalHeaderWrapper>
-			<AnimalName>{animal.name}</AnimalName>
-			<ShelterName>{shelter.name}</ShelterName>
-			<Space size="large">
-				<Time>
-					<ClockCircleOutlined /> Posted{" "}
-					{dayjs(animal.createdAt).fromNow()}
-				</Time>
-				<Time>Updated {dayjs(animal.updatedAt).fromNow()}</Time>
-			</Space>
-		</AnimalHeaderWrapper>
+		<>
+			<StyledBreadcrumb separator=">">
+				<Breadcrumb.Item>Pets</Breadcrumb.Item>
+				<Breadcrumb.Item>{animal.name}</Breadcrumb.Item>
+			</StyledBreadcrumb>
+			<AnimalHeaderWrapper>
+				<AnimalInfo>
+					<Thumbnail src={animal.animalImages?.[0]?.photoUrl} />
+					<AnimalName>{animal.name}</AnimalName>
+					<ShelterName>
+						{shelter.name} <Separator /> Singapore
+					</ShelterName>
+				</AnimalInfo>
+				<Space size="large">
+					<Time>
+						<ClockCircleOutlined /> Posted{" "}
+						{dayjs(animal.createdAt).fromNow()}
+					</Time>
+					<Time>Updated {dayjs(animal.updatedAt).fromNow()}</Time>
+				</Space>
+			</AnimalHeaderWrapper>
+		</>
 	);
 }
+
+const StyledBreadcrumb = styled(Breadcrumb)`
+	font-size: 23px;
+	line-height: 24px;
+`;
 
 const AnimalName = styled.h2`
 	font-weight: 600;
@@ -51,7 +67,6 @@ const ShelterName = styled.h2`
 	font-weight: 600;
 	font-size: 23px;
 	line-height: 24px;
-	margin-bottom: 24px;
 `;
 
 const Time = styled.div`
@@ -63,6 +78,39 @@ const Time = styled.div`
 
 const AnimalHeaderWrapper = styled.div`
 	margin: 24px 0px;
+`;
+
+const Thumbnail = styled.img`
+	border-radius: 8px;
+	height: 100%;
+`;
+
+const AnimalInfo = styled.div`
+	display: grid;
+	margin-bottom: 24px;
+	grid-template-areas:
+		"thumbnail animal"
+		"thumbnail shelter";
+	grid-auto-columns: auto 1fr;
+	grid-template-rows: 0fr auto;
+	column-gap: 29px;
+
+	${Thumbnail} {
+		grid-area: thumbnail;
+	}
+	${AnimalName} {
+		grid-area: animal;
+	}
+	${ShelterName} {
+		grid-area: shelter;
+	}
+`;
+
+const Separator = styled.span`
+	&::after {
+		color: #d2d2d2;
+		content: "\\1F784";
+	}
 `;
 
 // =============================================================================
@@ -194,18 +242,53 @@ export function AboutSection(props: AnimalHeaderProps) {
 	);
 }
 
+// TODO: show values
 export function DetailsSection(props: AnimalHeaderProps) {
 	return (
 		<Section>
 			<Header>More details</Header>
+			<Space wrap size="large">
+				<DetailCard>Species</DetailCard>
+				<DetailCard>Size</DetailCard>
+				<DetailCard>Age</DetailCard>
+				<DetailCard>Breed</DetailCard>
+				<DetailCard>Gender</DetailCard>
+				<DetailCard>Color</DetailCard>
+			</Space>
 		</Section>
 	);
 }
 
+const DetailCard = styled.div`
+	background: #ffffff;
+	box-shadow: 0px 0px 6px rgba(48, 27, 150, 0.2);
+	border-radius: 10px;
+	width: 125px;
+	height: 125px;
+	font-weight: 600;
+	font-size: 20px;
+	line-height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-transform: uppercase;
+`;
+
 export function ShelterSection(props: AnimalHeaderProps) {
+	const { name, address } = props.shelter;
+	const addressLines = address.split(/,|\n/).map((line) => line.trim());
+
 	return (
 		<Section>
 			<Header>About the shelter</Header>
+			{/* TODO: should be a logo here? */}
+			<ShelterLabel>{name}</ShelterLabel>
+			<Address>
+				<AddressLabel>Address:</AddressLabel>
+				{addressLines.map((line) => (
+					<span>{line}</span>
+				))}
+			</Address>
 		</Section>
 	);
 }
@@ -228,4 +311,25 @@ const ExpandableTextbox = styled.p<{ $isExpanded: boolean }>`
 	display: -webkit-box;
 	overflow: hidden;
 	white-space: pre-line;
+`;
+
+const Address = styled.address`
+	& > span {
+		display: block;
+		font-weight: 600;
+		font-size: 21px;
+		line-height: 32px;
+	}
+`;
+
+const ShelterLabel = styled.span`
+	font-weight: 600;
+	font-size: 24px;
+	line-height: 28px;
+`;
+
+const AddressLabel = styled.span`
+	font-weight: 600;
+	font-size: 24px;
+	line-height: 28px;
 `;

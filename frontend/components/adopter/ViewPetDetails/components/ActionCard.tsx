@@ -11,11 +11,13 @@ export function ActionCard(props: ActionCardProps) {
 
 	return (
 		<Card>
-			<Title>Adoption Fee</Title>
-			<Fee>{adoptionFee === null ? "-" : "$" + adoptionFee}</Fee>
-			<AdoptButton type="primary" block size="large">
+			<AdoptionFee>
+				<Title>Adoption Fee</Title>
+				<Fee>{adoptionFee === null ? "-" : "$" + adoptionFee}</Fee>
+			</AdoptionFee>
+			{/* <AdoptButton type="primary" block size="large">
 				Adopt
-			</AdoptButton>
+			</AdoptButton> */}
 		</Card>
 	);
 }
@@ -34,18 +36,22 @@ const Card = styled.div`
 	border-radius: 30px;
 `;
 
-const Title = styled.h2`
-	font-style: normal;
+const AdoptionFee = styled.h2`
+	text-align: center;
+`;
+
+const Title = styled.span`
 	font-weight: 600;
 	font-size: 29px;
 	line-height: 32px;
+	display: block;
 `;
 
-const Fee = styled.h2`
-	font-style: normal;
-	font-weight: 600;
+const Fee = styled.span`
+	font-weight: 700;
 	font-size: 69px;
 	line-height: 76px;
+	display: block;
 `;
 
 const AdoptButton = styled(Button)`
@@ -56,4 +62,5 @@ const AdoptButton = styled(Button)`
 	font-size: 24px;
 	padding: 14px;
 	height: fit-content;
+	margin-top: 20px;
 `;
