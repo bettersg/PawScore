@@ -5,6 +5,7 @@ import { LoginResponse } from "@contract";
 import { User } from "../models/user";
 import { NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
+import { passwordRegex } from "./helpers/passwordRegex";
 
 const authRouteSetup = (
 	app: express.Application,
@@ -16,9 +17,16 @@ const authRouteSetup = (
 			try {
 				const reqSchema = z.object({
 					body: z.object({
-						username: z.string(),
-						password: z.string(),
-						email: z.string(),
+						username: z.string().max(100),
+						password: z
+							.string()
+							.min(8)
+							.max(72)
+							.refine(
+								(val) => val.match(passwordRegex),
+								"password should have at least 8 characters, and only contain alphanumeric or the following special characters: ~`! @#$%^&*()_-+={[}]|:;\"'<,>.?/",
+							),
+						email: z.string().email().max(100),
 					}),
 				});
 				const { body } = reqSchema.parse(req);
@@ -67,8 +75,15 @@ const authRouteSetup = (
 			try {
 				const reqSchema = z.object({
 					body: z.object({
-						password: z.string(),
-						email: z.string(),
+						password: z
+							.string()
+							.min(8)
+							.max(72)
+							.refine(
+								(val) => val.match(passwordRegex),
+								"password should have at least 8 characters, and only contain alphanumeric or the following special characters: ~`! @#$%^&*()_-+={[}]|:;\"'<,>.?/",
+							),
+						email: z.string().email().max(100),
 					}),
 				});
 				const { body } = reqSchema.parse(req);
