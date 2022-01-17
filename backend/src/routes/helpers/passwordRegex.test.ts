@@ -16,14 +16,14 @@ describe("passwordRegex", () => {
 			),
 		).toBe(null);
 	});
-	test("should only work for ~`! @#$%^&*()_-+={[}]|:;\"'<,>.?/", () => {
+	test("should only work for ~`! @#$%^&*()_-+={[}]|:;\"'<,>.?/ ", () => {
 		expect("12345678".match(passwordRegex)).not.toBe(null);
 		expect(
-			"12345678~`!@#$%^&*()_-+={[}]|:;\"'<,>.?/".match(passwordRegex),
+			"12345678~`!@#$%^&*()_-+={[}]|:;\"'<,>.?/ ".match(passwordRegex),
 		).not.toBe(null);
 		// Reorder special characters, different from regex order
 		expect(
-			"12345678'<,>.?/~`!@#$%^&*()_-+={[}]|:;\"abcdefghijklmnopqrstuvwxyz".match(
+			" 12345678'<,>.?/~`!@#$%^&*()_-+={[}]|:;\"abcdefghijklmnopqrstuvwxyz".match(
 				passwordRegex,
 			),
 		).not.toBe(null);
