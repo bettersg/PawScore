@@ -17,7 +17,6 @@ const authRouteSetup = (
 			try {
 				const reqSchema = z.object({
 					body: z.object({
-						username: z.string().max(100),
 						password: z
 							.string()
 							.min(8)
