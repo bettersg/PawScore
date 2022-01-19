@@ -1,5 +1,3 @@
-type Status = "pending" | "rejected";
-
 interface Adopter {
 	key: string;
 	name: string;
@@ -7,4 +5,9 @@ interface Adopter {
 	score: number;
 	status: Status;
 	image: string;
+}
+
+declare module "uuid-validate" {
+	function validate(uuid: string): boolean;
+	export = validate;
 }

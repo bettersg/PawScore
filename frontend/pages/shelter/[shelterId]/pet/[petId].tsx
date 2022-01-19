@@ -35,7 +35,7 @@ import styled from "styled-components";
 
 export default function PetDetails() {
 	const router = useRouter();
-	const petId = router.query.id as string;
+	const petId = router.query.petId as string;
 	const [petData, setPetData] = useState<Animal.Attributes>();
 	const [petAdopters, setPetAdopters] = useState<Adopter[]>();
 

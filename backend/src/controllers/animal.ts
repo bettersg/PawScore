@@ -25,8 +25,8 @@ import { zodDateOnlyStringSchema } from "../utils/validation";
 export class AnimalController {
 	@Get("/")
 	async getAll(
-		@QueryParams() query: Shelter.fetchPetsApiDomain.requestQuery,
-	): Promise<Shelter.fetchPetsApiDomain.response> {
+		@QueryParams() query: Shelter.FetchPetsApiDomain.requestQuery,
+	): Promise<Shelter.FetchPetsApiDomain.response> {
 		const input = GetAnimalRequestQuerySchema.parse(query);
 
 		const whereOptions: WhereOptions<Animal.Attributes> = {};
