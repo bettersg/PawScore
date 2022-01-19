@@ -1,4 +1,4 @@
-import { LoginPayload } from "@contract";
+import { Auth } from "@contract";
 import { AuthToken } from "common/utils";
 import {
 	useContext,
@@ -12,14 +12,14 @@ import {
 type DefaultContext = {
 	checkingLogin: boolean;
 	isLoggedIn: boolean;
-	handleLogin: (token: LoginPayload) => void;
+	handleLogin: (token: Auth.LoginPayload) => void;
 	handleLogout: () => void;
-	token: LoginPayload | undefined;
+	token: Auth.LoginPayload | undefined;
 };
 const defaultContext: DefaultContext = {
 	checkingLogin: true,
 	isLoggedIn: false,
-	handleLogin: (token: LoginPayload) => {},
+	handleLogin: (token: Auth.LoginPayload) => {},
 	handleLogout: () => {},
 	token: undefined,
 };
@@ -33,7 +33,7 @@ export function LoginContextProvider({ children }: { children: ReactNode }) {
 	const [checkingLogin, setCheckingLogin] = useState(true);
 	const [isFirstLoad, setIsFirstLoad] = useState(true);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [token, setToken] = useState<LoginPayload | undefined>();
+	const [token, setToken] = useState<Auth.LoginPayload | undefined>();
 
 	useEffect(() => {
 		if (isFirstLoad) {
@@ -44,14 +44,14 @@ export function LoginContextProvider({ children }: { children: ReactNode }) {
 		}
 	}, [isFirstLoad]);
 
-	const storeToken = (token: LoginPayload) => {
+	const storeToken = (token: Auth.LoginPayload) => {
 		AuthToken.store(token);
 	};
 	const removeToken = () => {
 		AuthToken.remove();
 	};
 
-	const handleLogin = (token: LoginPayload) => {
+	const handleLogin = (token: Auth.LoginPayload) => {
 		storeToken(token);
 		setToken(token);
 		setIsLoggedIn(true);
