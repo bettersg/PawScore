@@ -1,4 +1,4 @@
-import { Animal } from "@contract";
+import { Animal, Shelter } from "@contract";
 import { Breadcrumb } from "antd";
 import { ActionCard } from "components/adopter/ViewPetDetails/components/ActionCard";
 import {
@@ -67,11 +67,11 @@ const MOCK_SHELTER = {
 	address: "50 Sungei Tengah Rd, Singapore 699012",
 	country: "Singapore",
 	contact: "6287 5355",
-};
+} as Shelter.Attributes;
 
 function PetDetailsPage() {
 	const [animal] = useState<Animal.Attributes>(MOCK_ANIMAL);
-	const [shelter] = useState<any>(MOCK_SHELTER);
+	const [shelter] = useState<Shelter.Attributes>(MOCK_SHELTER);
 
 	const images = animal.animalImages?.map((image) => image.photoUrl) ?? [];
 	const highlights = mapAttributesToHighlights(animal);

@@ -5,7 +5,7 @@ import {
 	InfoCircleFilled,
 	WarningFilled,
 } from "@ant-design/icons";
-import { Animal } from "@contract";
+import { Animal, Shelter } from "@contract";
 import { Breadcrumb, Button, Popover, Space } from "antd";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -14,16 +14,16 @@ import styled from "styled-components";
 
 dayjs.extend(relativeTime);
 
+interface AnimalInfoProps {
+	animal: Animal.Attributes;
+	shelter: Shelter.Attributes;
+}
+
 // =============================================================================
 // Header
 // =============================================================================
 
-interface AnimalHeaderProps {
-	animal: Animal.Attributes;
-	shelter: any;
-}
-
-export function AnimalInfoHeader(props: AnimalHeaderProps) {
+export function AnimalInfoHeader(props: AnimalInfoProps) {
 	const { animal, shelter } = props;
 	return (
 		<>
@@ -42,9 +42,11 @@ export function AnimalInfoHeader(props: AnimalHeaderProps) {
 				<Space size="large">
 					<Time>
 						<ClockCircleOutlined /> Posted{" "}
-						{dayjs(animal.createdAt).fromNow()}
+						{dayjs((animal as any).createdAt).fromNow()}
 					</Time>
-					<Time>Updated {dayjs(animal.updatedAt).fromNow()}</Time>
+					<Time>
+						Updated {dayjs((animal as any).updatedAt).fromNow()}
+					</Time>
 				</Space>
 			</AnimalHeaderWrapper>
 		</>
@@ -218,7 +220,7 @@ const PopoverWarnIcon = styled(WarningFilled)`
 // Sections
 // =============================================================================
 
-export function AboutSection(props: AnimalHeaderProps) {
+export function AboutSection(props: AnimalInfoProps) {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [showReadMore, setShowReadMore] = useState(false);
 
@@ -243,7 +245,7 @@ export function AboutSection(props: AnimalHeaderProps) {
 }
 
 // TODO: show values
-export function DetailsSection(props: AnimalHeaderProps) {
+export function DetailsSection(props: AnimalInfoProps) {
 	return (
 		<Section>
 			<Header>More details</Header>
@@ -274,7 +276,7 @@ const DetailCard = styled.div`
 	text-transform: uppercase;
 `;
 
-export function ShelterSection(props: AnimalHeaderProps) {
+export function ShelterSection(props: AnimalInfoProps) {
 	const { name, address } = props.shelter;
 	const addressLines = address.split(/,|\n/).map((line) => line.trim());
 
@@ -285,8 +287,8 @@ export function ShelterSection(props: AnimalHeaderProps) {
 			<ShelterLabel>{name}</ShelterLabel>
 			<Address>
 				<AddressLabel>Address:</AddressLabel>
-				{addressLines.map((line) => (
-					<span>{line}</span>
+				{addressLines.map((line, i) => (
+					<span key={i}>{line}</span>
 				))}
 			</Address>
 		</Section>
