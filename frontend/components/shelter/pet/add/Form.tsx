@@ -1,7 +1,10 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Animal } from "@contract";
+import { Animal, Shelter } from "@contract";
 import { Button } from "antd";
 import Title from "antd/lib/typography/Title";
+import { PetApi } from "api/petApi";
+import { NewAnimal } from "common/types";
+import dayjs from "dayjs";
 import { Formik, FormikHelpers } from "formik";
 import moment from "moment";
 import React from "react";
@@ -19,8 +22,10 @@ import {
 } from "yup";
 import { FormSection } from "./FormComponents";
 
-const initialPet: Animal.Attributes = {
-	id: "test", //TODO: revert to "" after testing
+// =============================================================================
+// Schema
+// =============================================================================
+const initialPet: NewAnimal = {
 	shelterId: "test", //TODO: revert to "" after testing
 	adoptionStatus: Animal.AdoptionStatus.Healthy,
 	species: Animal.Species.Cat,
@@ -48,8 +53,7 @@ const imageSchema: SchemaOf<Animal.Image> = object().shape({
 	photoUrl: string().url().required(),
 });
 
-const schema: SchemaOf<Animal.Attributes> = object().shape({
-	id: string().required(),
+const schema: SchemaOf<NewAnimal> = object().shape({
 	shelterId: string().required(),
 	adoptionStatus: mixed<Animal.AdoptionStatus>()
 		.oneOf(Object.values(Animal.AdoptionStatus))
@@ -77,14 +81,31 @@ const schema: SchemaOf<Animal.Attributes> = object().shape({
 	animalImages: array().of(imageSchema.required()).required().min(1),
 });
 
+// =============================================================================
+// Helpers
+// =============================================================================
+const dateToDateString = (date: Date | null) => {
+	if (date) {
+		return dayjs(date).format("YYYY-MM-DD");
+	}
+};
+
+// =============================================================================
+// Form
+// =============================================================================
 export const AddPetForm = () => {
-	const handleSubmit = (
-		values: Animal.Attributes,
-		actions: FormikHelpers<Animal.Attributes>,
+	const handleSubmit = async (
+		values: NewAnimal,
+		actions: FormikHelpers<NewAnimal>,
 	) => {
+		const transformedValues: Shelter.addNewPetApiDomain.requestBody = {
+			...values,
+			dateOfBirth: dateToDateString(values.dateOfBirth),
+			intakeDate: dateToDateString(values.intakeDate)!,
+		};
 		/*
-			TODO: Add submit pet here 
-			Append shelter ID from url? to pet data
+			TODO:
+			Append shelter ID from url/login context
 			missing form inputs -
 				adoption fee
 				description
@@ -92,8 +113,7 @@ export const AddPetForm = () => {
 				sizeCm
 				weightKg
 		*/
-		alert("submitting. check console for form data");
-		console.log(values);
+		await new PetApi().addNewPet(transformedValues);
 	};
 
 	return (
