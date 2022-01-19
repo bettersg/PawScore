@@ -3,6 +3,10 @@ import styled from "styled-components";
 export const Page = styled.div`
 	background-color: #fff;
 	padding: 58px;
+
+	@media screen and (max-width: 576px) {
+		padding: 58px 24px;
+	}
 `;
 
 export const Grid = styled.div`

@@ -1,5 +1,4 @@
 import { Animal, Shelter } from "@contract";
-import { Breadcrumb } from "antd";
 import { ActionCard } from "components/adopter/ViewPetDetails/components/ActionCard";
 import {
 	AboutSection,

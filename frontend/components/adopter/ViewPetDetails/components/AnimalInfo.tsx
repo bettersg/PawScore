@@ -84,7 +84,9 @@ const AnimalHeaderWrapper = styled.div`
 
 const Thumbnail = styled.img`
 	border-radius: 8px;
-	height: 100%;
+	height: 76px;
+	object-fit: cover;
+	aspect-ratio: 1 / 1;
 `;
 
 const AnimalInfo = styled.div`
