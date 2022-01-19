@@ -2,6 +2,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { Animal } from "@contract";
 import { Button, Tag } from "antd";
 import Title from "antd/lib/typography/Title";
+import dayjs from "dayjs";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
@@ -16,10 +17,14 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 		breed,
 		name,
 		species,
-		intakeDate,
+		intakeDate: _intakeDate,
 		adoptionStatus,
-		dateOfBirth,
+		dateOfBirth: _dateOfBirth,
 	} = petData;
+
+	const dateOfBirth = dayjs(_dateOfBirth).format("DD MMM YYYY");
+	const intakeDate = dayjs(_intakeDate).format("DD MMM YYYY");
+
 	return (
 		<InnerContent>
 			<PetDetailHeader>
