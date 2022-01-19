@@ -7,10 +7,10 @@ import {
 } from "@ant-design/icons";
 import { Input, Button, QuickSignInButton } from "./components";
 import styles from "./IconStyle.module.css";
-import { loginApiDomain } from "@contract";
+import { Auth } from "@contract";
 
 type LoginFormProps = {
-	onFinish: (values: loginApiDomain.requestBody) => void;
+	onFinish: (values: Auth.LoginApiDomain.requestBody) => void;
 	disableButton: boolean;
 	invalid: boolean;
 };

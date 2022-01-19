@@ -1,26 +1,30 @@
-import { loginApiDomain, logoutApiDomain } from "@contract";
+import { Auth } from "@contract";
 import { BaseApi } from "./baseApi";
 
 export class AuthApi extends BaseApi {
-	public async login(creds: loginApiDomain.requestBody) {
+	public async login(creds: Auth.LoginApiDomain.requestBody) {
 		const res = await this.fetch<
-			loginApiDomain.requestBody,
-			loginApiDomain.response
-		>(loginApiDomain.method, loginApiDomain.loginEndpoint, creds);
+			Auth.LoginApiDomain.requestBody,
+			Auth.LoginApiDomain.response
+		>(Auth.LoginApiDomain.method, Auth.LoginApiDomain.loginEndpoint, creds);
 		return res.data.payload;
 	}
-	public async register(creds: loginApiDomain.requestBody) {
+	public async register(creds: Auth.LoginApiDomain.requestBody) {
 		const res = await this.fetch<
-			loginApiDomain.requestBody,
-			loginApiDomain.response
-		>(loginApiDomain.method, loginApiDomain.registerEndpoint, creds);
+			Auth.LoginApiDomain.requestBody,
+			Auth.LoginApiDomain.response
+		>(
+			Auth.LoginApiDomain.method,
+			Auth.LoginApiDomain.registerEndpoint,
+			creds,
+		);
 		return res.data.payload;
 	}
 
 	public async logout() {
 		await this.fetch<null, null>(
-			logoutApiDomain.method,
-			logoutApiDomain.endpoint,
+			Auth.LogoutApiDomain.method,
+			Auth.LogoutApiDomain.endpoint,
 		);
 		// LOGOUT TODO: redirect after logout currently handled on BE. should redirect be handled on FE?
 		return;

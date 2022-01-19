@@ -20,7 +20,7 @@ type LoginResponse = {
 	payload: LoginPayload;
 };
 
-export namespace loginApiDomain {
+export namespace LoginApiDomain {
 	export const loginEndpoint = "/api/login";
 	export const registerEndpoint = "/api/register";
 	export const method = Methods.POST;
@@ -28,7 +28,7 @@ export namespace loginApiDomain {
 	export type response = LoginResponse;
 }
 
-export namespace logoutApiDomain {
+export namespace LogoutApiDomain {
 	export const endpoint = "/api/logout";
 	export const method = Methods.POST;
 }

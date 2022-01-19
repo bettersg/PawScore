@@ -9,7 +9,7 @@ import ShelterLoginLayout from "layouts/shelter/ShelterLoginLayout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { loginApiDomain } from "@contract";
+import { Auth } from "@contract";
 
 const { TabPane } = Tabs;
 
@@ -20,7 +20,7 @@ const ShelterLogin = () => {
 	const [invalid, setInvalid] = useState(false);
 
 	const handleSubmit = (type: Exclude<keyof AuthApi, "logout">) => {
-		return async (values: loginApiDomain.requestBody) => {
+		return async (values: Auth.LoginApiDomain.requestBody) => {
 			setInvalid(false);
 			setDisableButton(true);
 			try {
