@@ -8,37 +8,47 @@ import { MenuKey } from "layouts/shelter/ShelterLayout/LeftMenu";
 import ErrorPage from "next/error";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import validateUuid from "uuid-validate";
 
 const Home = () => {
 	const router = useRouter();
-	const shelterId = router.query.id as string;
+	const shelterId = router.query.shelterId as string;
 	const [petData, setPetData] = useState<Animal.Attributes[]>([]);
 	const [loading, setLoading] = useState(true);
 
 	const isValidShelterId = (id: string) => {
-		//TODO: refactor to check if shelterId is valid
-		return true;
+		//TODO: implement proper validation?
+		return validateUuid(id);
 	};
 
 	useEffect(() => {
 		if (!isValidShelterId(shelterId)) return;
 
 		const fetchPetData = async () => {
-			const res = await new PetApi().fetchShelterPets(shelterId);
-			setPetData(res);
-			setLoading(false);
+			try {
+				const res = await new PetApi().fetchShelterPets(shelterId);
+				setPetData(res);
+			} catch (e) {
+			} finally {
+				setLoading(false);
+			}
 		};
 		fetchPetData();
 	}, [shelterId]);
 
 	if (shelterId && !isValidShelterId(shelterId)) {
 		/* needs `if (shelterId)` to prevent error page showing on initial load as id starts off undefined */
+		alert("invalid shelter id");
 		return <ErrorPage statusCode={404} />;
 	}
 
 	const renderData = () => {
 		if (loading) return <Container>LOADINGGGG</Container>;
-		return petData.length ? <PetsTable petData={petData} /> : <NoData />;
+		return petData.length ? (
+			<PetsTable petData={petData} shelterId={shelterId} />
+		) : (
+			<NoData shelterId={shelterId} />
+		);
 	};
 	return (
 		<ShelterLayout selectedMenu={MenuKey.PETS}>

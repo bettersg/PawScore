@@ -1,27 +1,22 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Animal } from "@contract";
+import { Animal, Shelter } from "@contract";
 import { Button } from "antd";
 import Title from "antd/lib/typography/Title";
-import { Formik, FormikHelpers } from "formik";
+import { PetApi } from "api/petApi";
+import { NewAnimal } from "common/types";
+import dayjs from "dayjs";
+import { Formik } from "formik";
 import moment from "moment";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
-import {
-	array,
-	boolean,
-	date,
-	mixed,
-	number,
-	object,
-	SchemaOf,
-	string,
-	StringSchema,
-} from "yup";
 import { FormSection } from "./FormComponents";
+import { schema } from "./schema";
 
-const initialPet: Animal.Attributes = {
-	id: "test", //TODO: revert to "" after testing
-	shelterId: "test", //TODO: revert to "" after testing
+// =============================================================================
+// Schema
+// =============================================================================
+const initialPet: NewAnimal = {
 	adoptionStatus: Animal.AdoptionStatus.Healthy,
 	species: Animal.Species.Cat,
 	name: "",
@@ -43,48 +38,32 @@ const initialPet: Animal.Attributes = {
 	visible: true,
 	animalImages: [],
 };
-const imageSchema: SchemaOf<Animal.Image> = object().shape({
-	thumbnailUrl: string().url().required(),
-	photoUrl: string().url().required(),
-});
 
-const schema: SchemaOf<Animal.Attributes> = object().shape({
-	id: string().required(),
-	shelterId: string().required(),
-	adoptionStatus: mixed<Animal.AdoptionStatus>()
-		.oneOf(Object.values(Animal.AdoptionStatus))
-		.required(),
-	species: mixed<Animal.Species>()
-		.oneOf(Object.values(Animal.Species))
-		.required(),
-	name: string().required(),
-	description: string() as StringSchema<string>, //TODO: revert to string().required() after testing and if added to form
-	healthIssues: string().required(),
-	gender: mixed<"M" | "F">().oneOf(["M", "F"]).required(),
-	dateOfBirth: date().required(),
-	sizeCm: number().nullable().defined(), //TODO: set validation if added to form
-	breed: string().required(),
-	color: string().required(),
-	weightKg: number().nullable().defined(), //TODO: set validation if added to form
-	furLength: string().required(),
-	vaccinated: boolean().nullable().defined(), //TODO: set validation if added to form
-	dewormed: boolean().nullable().defined(), //TODO: set validation if added to form
-	sterilised: boolean().nullable().defined(),
-	toiletTrained: boolean().required(),
-	adoptionFee: number().nullable().defined(), //TODO: set validation if added to form
-	intakeDate: date().required(),
-	visible: boolean().required(),
-	animalImages: array().of(imageSchema.required()).required().min(1),
-});
+// =============================================================================
+// Helpers
+// =============================================================================
+const dateToDateString = (date: Date | null) => {
+	if (date) {
+		return dayjs(date).format("YYYY-MM-DD");
+	}
+};
 
+// =============================================================================
+// Form
+// =============================================================================
 export const AddPetForm = () => {
-	const handleSubmit = (
-		values: Animal.Attributes,
-		actions: FormikHelpers<Animal.Attributes>,
-	) => {
+	const router = useRouter();
+	const shelterId = router.query.shelterId as string;
+
+	const handleSubmit = async (values: NewAnimal) => {
+		const transformedValues: Shelter.addNewPetApiDomain.requestBody = {
+			...values,
+			dateOfBirth: dateToDateString(values.dateOfBirth),
+			intakeDate: dateToDateString(values.intakeDate)!,
+			shelterId,
+		};
 		/*
-			TODO: Add submit pet here 
-			Append shelter ID from url? to pet data
+			TODO:
 			missing form inputs -
 				adoption fee
 				description
@@ -92,8 +71,7 @@ export const AddPetForm = () => {
 				sizeCm
 				weightKg
 		*/
-		alert("submitting. check console for form data");
-		console.log(values);
+		await new PetApi().addNewPet(transformedValues);
 	};
 
 	return (

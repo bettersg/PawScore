@@ -15,8 +15,7 @@ export interface Image {
 	thumbnailUrl: string;
 }
 
-export interface Attributes {
-	id: string;
+interface BaseAttributes {
 	shelterId: string;
 	adoptionStatus: AdoptionStatus;
 	species: Species;
@@ -24,7 +23,6 @@ export interface Attributes {
 	description: string;
 	healthIssues: string;
 	gender: "F" | "M";
-	dateOfBirth: Date | null;
 	sizeCm: number | null;
 	breed: string | null;
 	color: string;
@@ -35,7 +33,17 @@ export interface Attributes {
 	sterilised: boolean | null;
 	toiletTrained: boolean | null;
 	adoptionFee: number | null;
-	intakeDate: Date;
 	visible: boolean;
 	animalImages?: Image[];
+}
+
+export interface Attributes extends BaseAttributes {
+	id: string;
+	dateOfBirth: Date | null;
+	intakeDate: Date;
+}
+
+export interface NewAnimalAttributes extends BaseAttributes {
+	dateOfBirth: string | undefined;
+	intakeDate: string;
 }

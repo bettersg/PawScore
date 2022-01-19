@@ -4,24 +4,26 @@ import {
 	UserOutlined,
 	LockOutlined,
 	GoogleOutlined,
-	FacebookFilled
+	FacebookFilled,
 } from "@ant-design/icons";
 import styles from "./IconStyle.module.css";
-import { LoginFormValues } from "types";
+import { Auth } from "@contract";
 
 type SignUpFormProps = {
-	onFinish: (values: LoginFormValues) => void;
+	onFinish: (values: Auth.LoginApiDomain.requestBody) => void;
+	disableButton: boolean;
 };
-const SignUpForm = ({ onFinish }: SignUpFormProps) => (
+const SignUpForm = ({ onFinish, disableButton }: SignUpFormProps) => (
 	<Form name="signup" className="signup-form" onFinish={onFinish}>
 		<Form.Item
 			name="email"
 			rules={[
 				{
 					required: true,
-					message: "Please input a valid Email!"
-				}
-			]}>
+					message: "Please input a valid Email!",
+				},
+			]}
+		>
 			<Input
 				prefix={<UserOutlined className={styles.inputFieldIcons} />}
 				placeholder="Email"
@@ -32,9 +34,10 @@ const SignUpForm = ({ onFinish }: SignUpFormProps) => (
 			rules={[
 				{
 					required: true,
-					message: "Please input a Password!"
-				}
-			]}>
+					message: "Please input a Password!",
+				},
+			]}
+		>
 			<Input.Password
 				prefix={<LockOutlined className={styles.inputFieldIcons} />}
 				type="password"
@@ -42,7 +45,7 @@ const SignUpForm = ({ onFinish }: SignUpFormProps) => (
 			/>
 		</Form.Item>
 		<Form.Item>
-			<Button type="primary" htmlType="submit">
+			<Button type="primary" htmlType="submit" disabled={disableButton}>
 				Sign Up
 			</Button>
 		</Form.Item>

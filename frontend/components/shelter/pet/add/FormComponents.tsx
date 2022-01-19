@@ -1,6 +1,8 @@
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { Animal } from "@contract";
+import { Animal, Upload } from "@contract";
 import { DatePicker, Input, Radio, RadioChangeEvent, Select } from "antd";
+import { PetApi } from "api/petApi";
+import { NewAnimal } from "common/types";
 import moment from "moment";
 import React, { ChangeEvent, CSSProperties, ReactNode, useRef } from "react";
 import styled, { css } from "styled-components";
@@ -10,7 +12,7 @@ interface ImageSectionProps extends ImageProps {
 }
 
 interface FormBaseProps {
-	pet: Animal.Attributes;
+	pet: NewAnimal;
 	handleChange: (e: RadioChangeEvent | ChangeEvent<HTMLInputElement>) => void;
 	handleDateChange: (
 		fieldName: keyof Pick<Animal.Attributes, "intakeDate" | "dateOfBirth">,
@@ -297,7 +299,7 @@ const FormSectionTwo = ({
 );
 
 export const FormSection = {
-	ImageSection: ImageSection,
+	ImageSection,
 	SectionOne: FormSectionOne,
 	SectionTwo: FormSectionTwo,
 };
@@ -356,34 +358,39 @@ const ImageGallery = ({
 		return new Promise((resolve) => {
 			const reader = new FileReader();
 			reader.onloadend = () => {
-				resolve(reader.result as string);
+				const base64String = (reader.result as string).split(",")[1];
+				resolve(base64String);
 			};
 			reader.readAsDataURL(_pickedImage);
 		});
 	};
 
 	const storeImageToGcp = async (imageFile: File): Promise<Animal.Image> => {
-		const base64ImageString = await waitForLoadedImage(imageFile);
-		/* TODO::
-				send base64ImageString to backend for storage and receive image URL
-			*/
-		const imgUrl =
-			"https://iso.500px.com/wp-content/uploads/2016/03/stock-photo-142984111.jpg";
+		const imageData: Upload.uploadImageApiDomain.requestBody = {
+			originalFileName: imageFile.name,
+			base64File: await waitForLoadedImage(imageFile),
+		};
+		const res = await new PetApi().uploadImage(imageData);
 
 		return {
-			thumbnailUrl: imgUrl,
-			photoUrl: imgUrl,
+			thumbnailUrl: res.payload.thumbnailUrl,
+			photoUrl: res.payload.url,
 		};
 	};
 
 	const uploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event?.target?.files?.[0];
-		if (file && file.type.substring(0, 5)) {
-			const image = await storeImageToGcp(file);
-			addNewImage(image);
+		try {
+			if (file && file.type.substring(0, 5)) {
+				const image = await storeImageToGcp(file);
+				addNewImage(image);
+			}
+		} catch (error) {
+			alert("error uploading image");
+		} finally {
+			// Reset value so that onChange will trigger again alter
+			event.target.value = "";
 		}
-		// Reset value so that onChange will trigger again alter
-		event.target.value = "";
 	};
 
 	return (
