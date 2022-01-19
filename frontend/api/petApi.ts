@@ -1,17 +1,17 @@
-import { Animal, Shelter, Upload } from "@contract";
+import { Shelter, Upload } from "@contract";
 import { BaseApi } from "./baseApi";
 
 export class PetApi extends BaseApi {
 	public async fetchShelterPets(shelterId: string) {
-		const query: Shelter.fetchPetsApiDomain.requestQuery = {
+		const query: Shelter.FetchPetsApiDomain.requestQuery = {
 			shelterId,
 		};
 		const res = await this.fetch<
-			Shelter.fetchPetsApiDomain.requestQuery,
-			Shelter.fetchPetsApiDomain.response
+			Shelter.FetchPetsApiDomain.requestQuery,
+			Shelter.FetchPetsApiDomain.response
 		>(
-			Shelter.fetchPetsApiDomain.method,
-			Shelter.fetchPetsApiDomain.endpoint,
+			Shelter.FetchPetsApiDomain.method,
+			Shelter.FetchPetsApiDomain.endpoint,
 			query,
 		);
 
@@ -20,11 +20,11 @@ export class PetApi extends BaseApi {
 
 	public async fetchAllAvailablePets() {
 		const response = await this.fetch<
-			Animal.fetchPetsApiDomain.requestQuery,
-			Animal.fetchPetsApiDomain.response
+			Shelter.FetchPetsApiDomain.requestQuery,
+			Shelter.FetchPetsApiDomain.response
 		>(
-			Animal.fetchPetsApiDomain.method,
-			Animal.fetchPetsApiDomain.endpoint,
+			Shelter.FetchPetsApiDomain.method,
+			Shelter.FetchPetsApiDomain.endpoint,
 			{
 				visible: true,
 			},
