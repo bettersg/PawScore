@@ -9,6 +9,7 @@ import { Animal, Shelter } from "@contract";
 import { Breadcrumb, Button, Popover, Space } from "antd";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -28,7 +29,9 @@ export function AnimalInfoHeader(props: AnimalInfoProps) {
 	return (
 		<>
 			<StyledBreadcrumb separator=">">
-				<Breadcrumb.Item>Pets</Breadcrumb.Item>
+				<Breadcrumb.Item>
+					<Link href="/adopter">Pets</Link>
+				</Breadcrumb.Item>
 				<Breadcrumb.Item>{animal.name}</Breadcrumb.Item>
 			</StyledBreadcrumb>
 			<AnimalHeaderWrapper>
