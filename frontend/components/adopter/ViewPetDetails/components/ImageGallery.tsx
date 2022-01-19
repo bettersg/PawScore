@@ -20,6 +20,10 @@ export function ImageGallery(props: ImageGalleryProps) {
 		carouselRef.current?.next();
 	};
 
+	const selectImage = (index: number) => {
+		carouselRef.current?.goTo(index);
+	};
+
 	return (
 		<CarouselWrapper>
 			<LeftArrowWrapper>
@@ -34,6 +38,13 @@ export function ImageGallery(props: ImageGalleryProps) {
 					<StyledImage key={image} src={image} alt="" />
 				))}
 			</Carousel>
+			<CarouselThumbnailRow>
+				{images.map((image, i) => (
+					<CarouselThumbnailButton onClick={() => selectImage(i)}>
+						<CarouselThumbnail key={image} src={image} alt="" />
+					</CarouselThumbnailButton>
+				))}
+			</CarouselThumbnailRow>
 			<RightArrowWrapper>
 				<Button
 					shape="circle"
@@ -72,9 +83,41 @@ const RightArrowWrapper = styled.div`
 const CarouselWrapper = styled.div`
 	width: 100%;
 	position: relative;
+	border-radius: 7px;
+	overflow: hidden;
+
+	& .slick-dots-bottom {
+		display: none !important;
+	}
 `;
 
 const StyledImage = styled.img`
 	object-fit: cover;
 	aspect-ratio: 1 / 1;
+`;
+
+const CarouselThumbnailRow = styled.div`
+	position: absolute;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin-bottom: 14px;
+`;
+
+const CarouselThumbnailButton = styled.button`
+	background-color: transparent;
+	border: none;
+	margin: 0px 4px;
+	padding: 0;
+	border-radius: 7px;
+	overflow: hidden;
+	cursor: pointer;
+`;
+
+const CarouselThumbnail = styled.img`
+	width: 32px;
+	height: 32px;
 `;
