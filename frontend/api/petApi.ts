@@ -33,6 +33,17 @@ export class PetApi extends BaseApi {
 		return response?.data!;
 	}
 
+	public async fetchPetData(id: Shelter.FetchPetDataApiDomain.requestPetId) {
+		const response = await this.fetch<
+			null,
+			Shelter.FetchPetDataApiDomain.response
+		>(
+			Shelter.FetchPetsApiDomain.method,
+			`${Shelter.FetchPetsApiDomain.endpoint}/${id}`,
+		);
+		return response.data;
+	}
+
 	public async uploadImage(
 		imageData: Upload.uploadImageApiDomain.requestBody,
 	) {
