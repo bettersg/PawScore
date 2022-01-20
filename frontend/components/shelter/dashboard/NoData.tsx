@@ -1,7 +1,7 @@
 import { Button } from "antd";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { Container } from "./PetsTable/EmptyContainer";
+import { EmptyContainer } from "../../common/EmptyContainer";
 
 const NoData = ({ shelterId }: { shelterId: string }) => {
 	const router = useRouter();
@@ -9,7 +9,7 @@ const NoData = ({ shelterId }: { shelterId: string }) => {
 		router.push(`/shelter/${shelterId}/pet/add`);
 	};
 	return (
-		<Container>
+		<EmptyContainer>
 			<CenteredDiv>
 				<img
 					src="https://via.placeholder.com/97"
@@ -31,7 +31,7 @@ const NoData = ({ shelterId }: { shelterId: string }) => {
 					Add a pet
 				</Button>
 			</CenteredDiv>
-		</Container>
+		</EmptyContainer>
 	);
 };
 
