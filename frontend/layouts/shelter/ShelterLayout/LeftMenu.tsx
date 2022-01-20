@@ -1,5 +1,6 @@
 import { Menu } from "antd";
-// import Link from "next/link";
+import { useLoginContext } from "contexts/LoginContext";
+import Router from "next/router";
 
 export enum MenuKey {
 	PETS = "pets",
@@ -10,15 +11,15 @@ export enum MenuKey {
 type TMenuItem = {
 	key: MenuKey;
 	label: string;
-	onClick: () => void;
+	onClick: (shelterId: string) => void;
 };
 
 const menuItems: TMenuItem[] = [
 	{
 		key: MenuKey.PETS,
 		label: "Pets",
-		onClick: () => {
-			alert("going to pets");
+		onClick: (shelterId: string) => {
+			Router.push(`/shelter/${shelterId}`);
 		},
 	},
 	{
@@ -31,17 +32,22 @@ const menuItems: TMenuItem[] = [
 	{
 		key: MenuKey.DASHBOARD,
 		label: "Dashboard",
-		onClick: () => {
-			alert("going to Dashboard");
+		onClick: (shelterId: string) => {
+			Router.push(`/shelter/${shelterId}`);
 		},
 	},
 ];
 
 const LeftMenu = ({ selectedKey }: { selectedKey: MenuKey }) => {
+	const { token } = useLoginContext();
+
 	return (
 		<Menu mode="inline" selectedKeys={[selectedKey]}>
 			{menuItems.map((item) => (
-				<Menu.Item key={item.key} onClick={item.onClick}>
+				<Menu.Item
+					key={item.key}
+					onClick={() => item.onClick(token!.shelterId!)}
+				>
 					{item.label}
 					{/* <Link href={`/shelter/home/${item.key}`}>{item.label}</Link> */}
 				</Menu.Item>
