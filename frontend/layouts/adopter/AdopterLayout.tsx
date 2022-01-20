@@ -53,7 +53,6 @@ const HeaderContent = () => (
 );
 
 const Logo = styled.div`
-	background: pink;
 	width: 139px;
 	cursor: pointer;
 `;
