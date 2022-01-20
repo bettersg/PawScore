@@ -17,6 +17,7 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 		breed,
 		name,
 		species,
+		healthIssues,
 		intakeDate: _intakeDate,
 		adoptionStatus,
 		dateOfBirth: _dateOfBirth,
@@ -32,7 +33,7 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 				<Button
 					type="primary"
 					icon={<EditOutlined />}
-					href={`${id}/edit`} // TODO: Update to use id
+					href={`${id}/edit`}
 				>
 					Edit
 				</Button>
@@ -65,17 +66,7 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 					<DataField label="Name" data={name} />
 					<DataField label="Species" data={species} />
 					<DataField label="Date Acquired" data={intakeDate} />{" "}
-					<DataField
-						label="Medical Problems"
-						data={
-							<>
-								<Tag>Problem 1</Tag>
-								<Tag>Problem 2</Tag>
-								<Tag>Problem 3</Tag>
-							</>
-						}
-					/>
-					{/* TODO: update add to petData */}
+					<DataField label="Medical Problems" data={healthIssues} />
 				</div>
 			</Flex>
 		</InnerContent>
