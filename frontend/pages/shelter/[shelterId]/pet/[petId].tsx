@@ -2,6 +2,7 @@ import { Animal } from "@contract";
 import { Breadcrumb } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { PetApi } from "api/petApi";
+import { ErrorComponent, LoadingComponent } from "components/shelter/common";
 import PetDetailsSection from "components/shelter/pet/PetDetailsSection";
 import ProspectiveAdopters from "components/shelter/pet/ProspectiveAdopters";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
@@ -12,17 +13,19 @@ import styled from "styled-components";
 
 export default function PetDetails() {
 	const router = useRouter();
-	const petId = router.query.petId as string;
+	const petId = router.query.petId;
 	const [petData, setPetData] = useState<Animal.Attributes>();
 	const [petAdopters, setPetAdopters] = useState<Adopter[]>();
 	const [loading, setLoading] = useState(true);
+	const [isError, setIsError] = useState(false);
 
 	useEffect(() => {
-		const fetchPetDetail = async () => {
+		const fetchPetDetail = async (id: string) => {
 			try {
-				const res = await new PetApi().fetchPetData(petId);
+				const res = await new PetApi().fetchPetData(id);
 				setPetData(res);
 			} catch (e) {
+				setIsError(true);
 			} finally {
 				setLoading(false);
 			}
@@ -78,26 +81,44 @@ export default function PetDetails() {
 				image: "https://via.placeholder.com/22",
 			},
 		];
-		setPetAdopters(mockAdopterData);
-		fetchPetDetail();
+		if (petId) {
+			setPetAdopters(mockAdopterData);
+			fetchPetDetail(petId as string);
+		}
 	}, [petId]);
 
-	if (loading) return <Container>LOADINGGGG</Container>;
+	const renderData = () => {
+		if (loading) {
+			return <LoadingComponent />;
+		}
+
+		if (isError) {
+			return <ErrorComponent />;
+		}
+
+		return (
+			<>
+				<Container>
+					<Breadcrumb separator=">">
+						<Breadcrumb.Item>Pets</Breadcrumb.Item>
+						<Breadcrumb.Item href="">
+							View Pet Details
+						</Breadcrumb.Item>
+					</Breadcrumb>
+					{petData && <PetDetailsSection petData={petData} />}
+				</Container>
+				<Container>
+					{petAdopters && (
+						<ProspectiveAdopters petAdopters={petAdopters} />
+					)}
+				</Container>
+			</>
+		);
+	};
 
 	return (
 		<ShelterLayout selectedMenu={MenuKey.PETS}>
-			<Container>
-				<Breadcrumb separator=">">
-					<Breadcrumb.Item>Pets</Breadcrumb.Item>
-					<Breadcrumb.Item href="">View Pet Details</Breadcrumb.Item>
-				</Breadcrumb>
-				{petData && <PetDetailsSection petData={petData} />}
-			</Container>
-			<Container>
-				{petAdopters && (
-					<ProspectiveAdopters petAdopters={petAdopters} />
-				)}
-			</Container>
+			{renderData()}
 		</ShelterLayout>
 	);
 }
