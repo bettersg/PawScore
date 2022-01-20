@@ -1,6 +1,7 @@
 import { Button, Layout, Menu } from "antd";
 import styles from "../shelter/ShelterLoginLayout/ShelterLoginLayout.module.css";
 import { FooterContent } from "../common/FooterContent";
+import styled from "styled-components";
 const { Header, Content, Footer } = Layout;
 export const logo = "/logo.png";
 
@@ -28,11 +29,13 @@ export default AdopterHome;
 
 const HeaderContent = () => (
 	<>
-		<img
-			src={logo}
-			style={{ width: 139, height: 25 }}
-			alt="PawScore Logo"
-		/>
+		<Logo>
+			<img
+				src={logo}
+				style={{ width: 139, height: 25 }}
+				alt="PawScore Logo"
+			/>
+		</Logo>
 		{/* <Menu
 			style={{ float: "right" }}
 			theme="light"
@@ -48,3 +51,9 @@ const HeaderContent = () => (
 		</Menu> */}
 	</>
 );
+
+const Logo = styled.div`
+	background: pink;
+	width: 139px;
+	cursor: pointer;
+`;

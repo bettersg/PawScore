@@ -1,4 +1,5 @@
 import { Menu } from "antd";
+import Router from "next/router";
 import { MenuClickEventHandler } from "rc-menu/lib/interface";
 import styles from "./ShelterLayout.module.css";
 
@@ -13,8 +14,12 @@ type Props = {
 
 const HeaderContent = ({
 	handleEditProfileClick,
-	handleSignOutClick
+	handleSignOutClick,
 }: Props) => {
+	const navigateToHome = () => {
+		Router.push("/");
+	};
+
 	const accountAvatar = (
 		<img
 			src="https://via.placeholder.com/32"
@@ -27,7 +32,7 @@ const HeaderContent = ({
 
 	return (
 		<>
-			<div className={headerLogo}>
+			<div className={headerLogo} onClick={navigateToHome}>
 				<img
 					src={logo}
 					style={{ width: 139, height: 25 }}
@@ -37,21 +42,25 @@ const HeaderContent = ({
 			<Menu
 				mode="horizontal"
 				triggerSubMenuAction="click"
-				className={headerMenu}>
+				className={headerMenu}
+			>
 				<Menu.SubMenu
 					key="SubMenu"
 					icon={accountAvatar}
 					title="Your Account"
-					className={headerSubMenu}>
+					className={headerSubMenu}
+				>
 					<Menu.Item
 						key="edit-profile"
-						onClick={handleEditProfileClick}>
+						onClick={handleEditProfileClick}
+					>
 						Edit Profile
 					</Menu.Item>
 					<Menu.Item
 						key="sign-out"
 						danger
-						onClick={handleSignOutClick}>
+						onClick={handleSignOutClick}
+					>
 						Sign Out
 					</Menu.Item>
 				</Menu.SubMenu>
