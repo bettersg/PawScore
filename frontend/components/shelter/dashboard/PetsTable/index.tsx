@@ -29,7 +29,7 @@ const PetTableDisplay = ({
 		console.log("search");
 	};
 	const onViewMore = (id: string) => {
-		console.log("clicked view more ", id);
+		router.push(`/shelter/${shelterId}/pet/${id}`);
 	};
 	const redirectToAddPet = () => {
 		router.push(`/shelter/${shelterId}/pet/add`);

@@ -10,3 +10,10 @@ export namespace FetchPetsApiDomain {
 	}
 	export type response = Attributes[];
 }
+
+export namespace FetchPetDataApiDomain {
+	export const endpoint = "api/animal";
+	export const method = Methods.GET;
+	export type requestPetId = string;
+	export type response = Attributes;
+}

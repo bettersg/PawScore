@@ -48,7 +48,7 @@ export const FooterContent = () => (
 							<br />
 						</Col>
 						<Col span={6} className={styles.footerCol}>
-							<Link href="#">Partner with us</Link>
+							<Link href="/shelter/login">Partner with us</Link>
 							<br />
 							<Link href="#">Terms of service</Link>
 							<br />

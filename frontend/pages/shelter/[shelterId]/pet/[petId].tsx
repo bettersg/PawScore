@@ -1,6 +1,8 @@
 import { Animal } from "@contract";
 import { Breadcrumb } from "antd";
 import { Content } from "antd/lib/layout/layout";
+import { PetApi } from "api/petApi";
+import { ErrorComponent, LoadingComponent } from "components/shelter/common";
 import PetDetailsSection from "components/shelter/pet/PetDetailsSection";
 import ProspectiveAdopters from "components/shelter/pet/ProspectiveAdopters";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
@@ -9,76 +11,27 @@ import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-// export const defaultPet: Animal.Attributes = {
-// 	key: "",
-// 	name: "Cat 1",
-// 	images: [
-// 		"https://via.placeholder.com/86",
-// 		"https://via.placeholder.com/86",
-// 		"https://via.placeholder.com/86",
-// 		"https://via.placeholder.com/86",
-// 		"https://via.placeholder.com/86",
-// 	],
-// 	visible: false,
-// 	species: Species.CAT,
-// 	status: Status.HEALTHY,
-// 	acquired: new Date(),
-// 	breed: "Shorthair cat",
-// 	sex: Sex.MALE,
-// 	furLength: FurLength.SHORT,
-// 	medicalIssues: ["asthma"],
-// 	sterilised: Sterilised.YES,
-// 	dateOfBirth: new Date(),
-// 	furColor: ["white", "brown"],
-// 	toiletTrained: true,
-// };
-
 export default function PetDetails() {
 	const router = useRouter();
-	const petId = router.query.petId as string;
+	const petId = router.query.petId;
 	const [petData, setPetData] = useState<Animal.Attributes>();
 	const [petAdopters, setPetAdopters] = useState<Adopter[]>();
+	const [loading, setLoading] = useState(true);
+	const [isError, setIsError] = useState(false);
 
 	useEffect(() => {
-		/* TODO: Refactor to either use API from contract or receive data from parent */
-		console.log(`Fetching pet info for shelter - ${petId}`);
-		const pd: Partial<Animal.Attributes> = {
-			id: petId,
-			name: "Cat 1",
-			animalImages: [
-				{
-					photoUrl: "https://via.placeholder.com/86",
-					thumbnailUrl: "https://via.placeholder.com/86",
-				},
-				{
-					photoUrl: "https://via.placeholder.com/86",
-					thumbnailUrl: "https://via.placeholder.com/86",
-				},
-				{
-					photoUrl: "https://via.placeholder.com/86",
-					thumbnailUrl: "https://via.placeholder.com/86",
-				},
-				{
-					photoUrl: "https://via.placeholder.com/86",
-					thumbnailUrl: "https://via.placeholder.com/86",
-				},
-				{
-					photoUrl: "https://via.placeholder.com/86",
-					thumbnailUrl: "https://via.placeholder.com/86",
-				},
-				{
-					photoUrl: "https://via.placeholder.com/86",
-					thumbnailUrl: "https://via.placeholder.com/86",
-				},
-			],
-			visible: false,
-			species: Animal.Species.Cat,
-			adoptionStatus: Animal.AdoptionStatus.Healthy,
-			intakeDate: new Date(),
-			breed: "Shorthair cat",
+		const fetchPetDetail = async (id: string) => {
+			try {
+				const res = await new PetApi().fetchPetData(id);
+				setPetData(res);
+			} catch (e) {
+				setIsError(true);
+			} finally {
+				setLoading(false);
+			}
 		};
 
-		const adopterData: Adopter[] = [
+		const mockAdopterData: Adopter[] = [
 			{
 				key: "1",
 				name: "Adopter 1",
@@ -128,24 +81,44 @@ export default function PetDetails() {
 				image: "https://via.placeholder.com/22",
 			},
 		];
-		setPetData(pd as Animal.Attributes);
-		setPetAdopters(adopterData);
+		if (petId) {
+			setPetAdopters(mockAdopterData);
+			fetchPetDetail(petId as string);
+		}
 	}, [petId]);
+
+	const renderData = () => {
+		if (loading) {
+			return <LoadingComponent />;
+		}
+
+		if (isError) {
+			return <ErrorComponent />;
+		}
+
+		return (
+			<>
+				<Container>
+					<Breadcrumb separator=">">
+						<Breadcrumb.Item>Pets</Breadcrumb.Item>
+						<Breadcrumb.Item href="">
+							View Pet Details
+						</Breadcrumb.Item>
+					</Breadcrumb>
+					{petData && <PetDetailsSection petData={petData} />}
+				</Container>
+				<Container>
+					{petAdopters && (
+						<ProspectiveAdopters petAdopters={petAdopters} />
+					)}
+				</Container>
+			</>
+		);
+	};
 
 	return (
 		<ShelterLayout selectedMenu={MenuKey.PETS}>
-			<Container>
-				<Breadcrumb separator=">">
-					<Breadcrumb.Item>Pets</Breadcrumb.Item>
-					<Breadcrumb.Item href="">View Pet Details</Breadcrumb.Item>
-				</Breadcrumb>
-				{petData && <PetDetailsSection petData={petData} />}
-			</Container>
-			<Container>
-				{petAdopters && (
-					<ProspectiveAdopters petAdopters={petAdopters} />
-				)}
-			</Container>
+			{renderData()}
 		</ShelterLayout>
 	);
 }

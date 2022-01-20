@@ -33,6 +33,17 @@ export class PetApi extends BaseApi {
 		return response?.data!;
 	}
 
+	public async fetchPetData(id: Shelter.FetchPetDataApiDomain.requestPetId) {
+		const response = await this.fetch<
+			null,
+			Shelter.FetchPetDataApiDomain.response
+		>(
+			Shelter.FetchPetsApiDomain.method,
+			`${Shelter.FetchPetsApiDomain.endpoint}/${id}`,
+		);
+		return response.data;
+	}
+
 	public async uploadImage(
 		imageData: Upload.uploadImageApiDomain.requestBody,
 	) {
@@ -49,10 +60,15 @@ export class PetApi extends BaseApi {
 	}
 
 	public async addNewPet(petData: Shelter.addNewPetApiDomain.requestBody) {
-		await this.fetch<Shelter.addNewPetApiDomain.requestBody, null>(
+		const res = await this.fetch<
+			Shelter.addNewPetApiDomain.requestBody,
+			Shelter.addNewPetApiDomain.response
+		>(
 			Shelter.addNewPetApiDomain.method,
 			Shelter.addNewPetApiDomain.endpoint,
 			petData,
 		);
+
+		return res.data.id;
 	}
 }

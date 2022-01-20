@@ -2,6 +2,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { Animal } from "@contract";
 import { Button, Tag } from "antd";
 import Title from "antd/lib/typography/Title";
+import dayjs from "dayjs";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
@@ -16,10 +17,15 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 		breed,
 		name,
 		species,
-		intakeDate,
+		healthIssues,
+		intakeDate: _intakeDate,
 		adoptionStatus,
-		dateOfBirth,
+		dateOfBirth: _dateOfBirth,
 	} = petData;
+
+	const dateOfBirth = dayjs(_dateOfBirth).format("DD MMM YYYY");
+	const intakeDate = dayjs(_intakeDate).format("DD MMM YYYY");
+
 	return (
 		<InnerContent>
 			<PetDetailHeader>
@@ -27,7 +33,7 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 				<Button
 					type="primary"
 					icon={<EditOutlined />}
-					href={`${id}/edit`} // TODO: Update to use id
+					href={`${id}/edit`}
 				>
 					Edit
 				</Button>
@@ -60,17 +66,7 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 					<DataField label="Name" data={name} />
 					<DataField label="Species" data={species} />
 					<DataField label="Date Acquired" data={intakeDate} />{" "}
-					<DataField
-						label="Medical Problems"
-						data={
-							<>
-								<Tag>Problem 1</Tag>
-								<Tag>Problem 2</Tag>
-								<Tag>Problem 3</Tag>
-							</>
-						}
-					/>
-					{/* TODO: update add to petData */}
+					<DataField label="Medical Problems" data={healthIssues} />
 				</div>
 			</Flex>
 		</InnerContent>

@@ -1,7 +1,8 @@
-import { SearchOutlined } from "@ant-design/icons";
 import { Animal } from "@contract";
-import { Col, Empty, Input, Result, Row, Space, Spin, Typography } from "antd";
+import { Col, Empty, Input, Row, Space, Typography } from "antd";
 import { PetApi } from "api/petApi";
+import { ErrorBaseComponent } from "components/common/Error";
+import { LoadingBaseComponent } from "components/common/Loading";
 import AdopterLayout from "layouts/adopter/AdopterLayout";
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
@@ -139,25 +140,11 @@ function AnimalContent(props: AnimalContentProps) {
 	const { isLoading, isError, animals } = props;
 
 	if (isLoading) {
-		return (
-			<Space
-				direction="vertical"
-				align="center"
-				style={{ width: "100%" }}
-			>
-				<Spin size="large" />
-			</Space>
-		);
+		return <LoadingBaseComponent />;
 	}
 
 	if (isError) {
-		return (
-			<Result
-				status="error"
-				title="Oops!"
-				subTitle="Something went wrong. Refresh the page to try again."
-			/>
-		);
+		return <ErrorBaseComponent />;
 	}
 
 	if (animals.length === 0) {

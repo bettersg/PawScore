@@ -87,7 +87,7 @@ AnimalModel.init(
 		},
 		dateOfBirth: {
 			type: DataTypes.DATEONLY,
-			get: dateOnlyStringToDate("intakeDate"),
+			get: dateOnlyStringToDate("dateOfBirth"),
 		},
 		sizeCm: {
 			type: DataTypes.INTEGER,
