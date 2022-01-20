@@ -60,15 +60,10 @@ export class PetApi extends BaseApi {
 	}
 
 	public async addNewPet(petData: Shelter.addNewPetApiDomain.requestBody) {
-		const res = await this.fetch<
-			Shelter.addNewPetApiDomain.requestBody,
-			Shelter.addNewPetApiDomain.response
-		>(
+		await this.fetch<Shelter.addNewPetApiDomain.requestBody, null>(
 			Shelter.addNewPetApiDomain.method,
 			Shelter.addNewPetApiDomain.endpoint,
 			petData,
 		);
-
-		return res.data.id;
 	}
 }

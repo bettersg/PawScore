@@ -62,9 +62,16 @@ export const AddPetForm = () => {
 			intakeDate: dateToDateString(values.intakeDate)!,
 			shelterId,
 		};
-
-		const petId = await new PetApi().addNewPet(transformedValues);
-		router.push(`/shelter/${shelterId}/pet/${petId}`);
+		/*
+			TODO:
+			missing form inputs -
+				adoption fee
+				description
+				dewormed
+				sizeCm
+				weightKg
+		*/
+		await new PetApi().addNewPet(transformedValues);
 	};
 
 	return (

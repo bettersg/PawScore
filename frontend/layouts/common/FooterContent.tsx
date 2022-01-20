@@ -42,7 +42,7 @@ export const FooterContent = () => (
 							<br />
 						</Col>
 						<Col span={6} className={styles.footerCol}>
-							<Link href="#">Adopt A Pet</Link>
+							<Link href="/adopter">Adopt A Pet</Link>
 							<br />
 							<Link href="#">Make A Donation</Link>
 							<br />
