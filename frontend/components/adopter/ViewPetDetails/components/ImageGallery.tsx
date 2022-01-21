@@ -40,8 +40,11 @@ export function ImageGallery(props: ImageGalleryProps) {
 			</Carousel>
 			<CarouselThumbnailRow>
 				{images.map((image, i) => (
-					<CarouselThumbnailButton onClick={() => selectImage(i)}>
-						<CarouselThumbnail key={image} src={image} alt="" />
+					<CarouselThumbnailButton
+						key={image}
+						onClick={() => selectImage(i)}
+					>
+						<CarouselThumbnail src={image} alt="" />
 					</CarouselThumbnailButton>
 				))}
 			</CarouselThumbnailRow>
