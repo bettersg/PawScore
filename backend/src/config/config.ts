@@ -20,6 +20,7 @@ const schema = z.object({
 	GOOGLE_SVC_ACCT_KEY: z.string(),
 	NEXT_SERVER_URL: z.string(),
 	DB_SOCKET_PATH: z.string(),
+	TEMP_REGISTRATION_KEY: z.string(),
 });
 
 const validEnv = schema.parse(process.env);
@@ -51,6 +52,7 @@ const otherConfigs = {
 		"http://localhost:3000",
 	],
 	nodeEnv: validEnv.NODE_ENV,
+	tempRegistrationKey: validEnv.TEMP_REGISTRATION_KEY,
 };
 
 const config = {
