@@ -15,6 +15,7 @@ import {
 	Req,
 } from "routing-controllers";
 import { WhereOptions } from "sequelize/types";
+import { Logger } from "../helpers/logger";
 import { z } from "zod";
 import { sequelize } from "../database";
 import { AnimalModel } from "../models/animal";
@@ -77,7 +78,7 @@ export class AnimalController {
 		}
 
 		const animal = await this.createAnimal(input);
-		console.log(`Created animal with id ${animal.id}`);
+		Logger.log(`Created animal with id ${animal.id}`);
 	}
 
 	private async createAnimal(
@@ -124,7 +125,7 @@ export class AnimalController {
 		}
 
 		await this.updateAnimal(animal, input);
-		console.log(`Updated animal with id ${animal.id}`);
+		Logger.log(`Updated animal with id ${animal.id}`);
 	}
 
 	private async updateAnimal(
@@ -175,7 +176,7 @@ export class AnimalController {
 
 		// records in animal image table are automatically deleted
 		await animal.destroy();
-		console.log(`Deleted animal with id ${animal.id}`);
+		Logger.log(`Deleted animal with id ${animal.id}`);
 	}
 }
 

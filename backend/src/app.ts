@@ -18,6 +18,7 @@ import { HealthCheckController } from "./controllers/healthcheck";
 import { ShelterController } from "./controllers/shelter";
 import { UploadController } from "./controllers/upload";
 import checkPageAuth from "./helpers/checkPageAuth";
+import { LoggerContextMiddleware } from "./helpers/logger";
 import { User as UserType } from "./models/user";
 import authRouteSetup from "./routes/auth";
 import bookingRouter from "./routes/booking";
@@ -56,6 +57,8 @@ if (config.nodeEnv === "development") {
 
 setupSession(app);
 
+app.use(LoggerContextMiddleware);
+
 // Passport initialization
 app.use(passport.initialize());
 app.use(passport.session());
@@ -85,7 +88,12 @@ app.use("/api", bookingRouter);
 app.use("/api", userProfileRouter);
 
 useExpressServer(app, {
-	controllers: [AnimalController, ShelterController, HealthCheckController, UploadController],
+	controllers: [
+		AnimalController,
+		ShelterController,
+		HealthCheckController,
+		UploadController,
+	],
 	development: false,
 	defaultErrorHandler: false,
 	middlewares: [ApiErrorMiddleware],
