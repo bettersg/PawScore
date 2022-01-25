@@ -12,12 +12,39 @@ export const requestContextLocalStorage =
 	new AsyncLocalStorage<RequestContext>();
 
 export class Logger {
-	static log(...message: any[]) {
+	static log(message: string, ...data: any[]) {
 		const context = requestContextLocalStorage.getStore();
-		console.log({
-			context,
-			message,
-		});
+		console.dir(
+			{
+				req: {
+					url: context?.req.path,
+					id: context?.id,
+					timestamp: new Date().toISOString(),
+				},
+				level: "info",
+				message,
+				data,
+			},
+			// customise depth so that nested objects can be printed and limit long string
+			{ depth: 5, maxStringLength: 1000 },
+		);
+	}
+
+	static error(message: string, ...data: any[]) {
+		const context = requestContextLocalStorage.getStore();
+		console.dir(
+			{
+				req: {
+					url: context?.req.path,
+					id: context?.id,
+					timestamp: new Date().toISOString(),
+				},
+				level: "error",
+				message,
+				data,
+			},
+			{ depth: 5, maxStringLength: 1000 },
+		);
 	}
 }
 

@@ -14,12 +14,14 @@ export class ApiErrorMiddleware implements ExpressErrorMiddlewareInterface {
 		request: express.Request,
 		response: express.Response,
 	): void {
-		Logger.log("[ERROR]", error);
 		if (error instanceof HttpError) {
+			Logger.error("Api error", error.message);
 			response.status(error.httpCode).json({ message: error.message });
 		} else if (error instanceof z.ZodError) {
+			Logger.error("Validation error", error.flatten());
 			response.status(400).json({ message: error.message });
 		} else {
+			Logger.error("Unhandled error", error.message);
 			response.status(500).json({ message: "Internal server error" });
 		}
 	}
