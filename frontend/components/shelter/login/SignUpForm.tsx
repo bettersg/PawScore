@@ -55,7 +55,6 @@ const SignUpForm = ({ onFinish, disableButton }: SignUpFormProps) => (
 		>
 			<Input.Password
 				prefix={<LockOutlined className={styles.inputFieldIcons} />}
-				type="tempRegistrationKey"
 				placeholder="Registration Key"
 			/>
 		</Form.Item>
