@@ -1,11 +1,11 @@
 import { EditOutlined } from "@ant-design/icons";
 import { Animal, Shelter } from "@contract";
-import { Button } from "antd";
+import { Alert, Button } from "antd";
 import Title from "antd/lib/typography/Title";
 import { PetApi } from "api/petApi";
 import { NewAnimal } from "common/types";
 import dayjs from "dayjs";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React from "react";
@@ -55,7 +55,12 @@ export const AddPetForm = () => {
 	const router = useRouter();
 	const shelterId = router.query.shelterId as string;
 
-	const handleSubmit = async (values: NewAnimal) => {
+	const handleSubmit = async (
+		values: NewAnimal,
+		{ setSubmitting, setStatus }: FormikHelpers<NewAnimal>,
+	) => {
+		setSubmitting(true);
+		setStatus({ apiError: false });
 		const transformedValues: Shelter.addNewPetApiDomain.requestBody = {
 			...values,
 			dateOfBirth: dateToDateString(values.dateOfBirth),
@@ -63,8 +68,13 @@ export const AddPetForm = () => {
 			shelterId,
 		};
 
-		await new PetApi().addNewPet(transformedValues);
-		router.push(`/shelter/${shelterId}`);
+		try {
+			await new PetApi().addNewPet(transformedValues);
+			router.push(`/shelter/${shelterId}`);
+		} catch (err) {
+			setSubmitting(false);
+			setStatus({ apiError: true });
+		}
 	};
 
 	return (
@@ -106,6 +116,14 @@ export const AddPetForm = () => {
 				};
 				return (
 					<>
+						{formikProps.status?.apiError && (
+							<FormError
+								type="error"
+								message="Something went wrong."
+								showIcon
+								closable
+							/>
+						)}
 						<PetDetailHeader>
 							<Title level={5}>Pet Details</Title>
 							<div>
@@ -115,7 +133,10 @@ export const AddPetForm = () => {
 								<Button
 									type="primary"
 									icon={<EditOutlined />}
-									disabled={!formikProps.isValid}
+									disabled={
+										!formikProps.isValid ||
+										formikProps.isSubmitting
+									}
 									onClick={formikProps.submitForm}
 								>
 									Save
@@ -150,6 +171,10 @@ export const AddPetForm = () => {
 // =============================================================================
 // Styled Components
 // =============================================================================
+
+const FormError = styled(Alert)`
+	margin-bottom: 20px;
+`;
 
 const PetDetailHeader = styled.div`
 	display: flex;
