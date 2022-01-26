@@ -41,6 +41,8 @@ export interface Attributes extends BaseAttributes {
 	id: string;
 	dateOfBirth: Date | null;
 	intakeDate: Date;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface NewAnimalAttributes extends BaseAttributes {

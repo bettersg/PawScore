@@ -1,20 +1,17 @@
+import { Shelter } from "@contract";
 import { Model, DataTypes, Optional, UUIDV4 } from "sequelize";
 import { sequelize } from "../database";
 
-export interface ShelterAttributes {
-	id: string;
-	name: string;
-	address: string;
-	country: string;
-	contact: string;
-	registrationNo: string | null;
-}
+export type ShelterDbAttributes = Shelter.Attributes;
 
-export type ShelterCreationAttributes = Optional<ShelterAttributes, "id">;
+export type ShelterDbCreationAttributes = Optional<
+	ShelterDbAttributes,
+	"id" | "createdAt" | "updatedAt"
+>;
 
 export class ShelterModel
-	extends Model<ShelterAttributes, ShelterCreationAttributes>
-	implements ShelterAttributes
+	extends Model<ShelterDbAttributes, ShelterDbCreationAttributes>
+	implements ShelterDbAttributes
 {
 	public id!: string;
 	public name!: string;
@@ -52,6 +49,14 @@ ShelterModel.init(
 		registrationNo: {
 			type: DataTypes.STRING,
 			allowNull: true,
+		},
+		createdAt: {
+			type: DataTypes.DATE,
+			allowNull: false,
+		},
+		updatedAt: {
+			type: DataTypes.DATE,
+			allowNull: false,
 		},
 	},
 	{
