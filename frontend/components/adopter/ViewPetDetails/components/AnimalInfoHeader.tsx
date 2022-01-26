@@ -30,11 +30,9 @@ export function AnimalInfoHeader(props: AnimalInfoProps) {
 				<Space size="large">
 					<Time>
 						<ClockCircleOutlined /> Posted{" "}
-						{dayjs((animal as any).createdAt).fromNow()}
+						{dayjs(animal.createdAt).fromNow()}
 					</Time>
-					<Time>
-						Updated {dayjs((animal as any).updatedAt).fromNow()}
-					</Time>
+					<Time>Updated {dayjs(animal.updatedAt).fromNow()}</Time>
 				</Space>
 			</AnimalHeaderWrapper>
 		</>
