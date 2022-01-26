@@ -239,7 +239,8 @@ export function AboutSection(props: AnimalInfoProps) {
 		<Section>
 			<Header>About {props.animal.name}</Header>
 			<ExpandableTextbox $isExpanded={isExpanded}>
-				{props.animal.description}
+				{props.animal.description ||
+					"Oops, there is nothing to say about this pet"}
 			</ExpandableTextbox>
 			{showReadMore && (
 				<Button type="link" onClick={() => setIsExpanded(!isExpanded)}>
