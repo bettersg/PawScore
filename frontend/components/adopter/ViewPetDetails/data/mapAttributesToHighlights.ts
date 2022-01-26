@@ -1,7 +1,6 @@
 import { Animal } from "@contract";
-import { HighlightProps } from "../components/AnimalInfo";
+import { HighlightProps } from "../components/Highlight";
 
-// TODO: confirm labels
 export function mapAttributesToHighlights(
 	animal: Animal.Attributes,
 ): HighlightProps[] {

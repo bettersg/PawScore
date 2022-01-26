@@ -1,23 +1,23 @@
 import { Animal, Shelter } from "@contract";
 import { PetApi } from "api/petApi";
 import { ActionCard } from "components/adopter/ViewPetDetails/components/ActionCard";
-import {
-	AboutSection,
-	AnimalInfoHeader,
-	DetailsSection,
-	HighlightList,
-	ShelterSection,
-} from "components/adopter/ViewPetDetails/components/AnimalInfo";
+import { AnimalInfoHeader } from "components/adopter/ViewPetDetails/components/AnimalInfoHeader";
 import {
 	ErrorComponent,
 	LoadingComponent,
 } from "components/adopter/ViewPetDetails/components/common";
+import { HighlightList } from "components/adopter/ViewPetDetails/components/Highlight";
 import { ImageGallery } from "components/adopter/ViewPetDetails/components/ImageGallery";
 import {
 	Grid,
 	GridCell,
 	Page,
 } from "components/adopter/ViewPetDetails/components/Page";
+import {
+	AboutSection,
+	DetailsSection,
+	ShelterSection,
+} from "components/adopter/ViewPetDetails/components/sections";
 import { mapAttributesToHighlights } from "components/adopter/ViewPetDetails/data/mapAttributesToHighlights";
 import AdopterLayout from "layouts/adopter/AdopterLayout";
 import { useRouter } from "next/router";
