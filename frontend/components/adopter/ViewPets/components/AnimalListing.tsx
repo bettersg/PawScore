@@ -1,5 +1,6 @@
 import { Animal } from "@contract";
 import { Typography } from "antd";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 interface AnimalListingProps {
@@ -12,12 +13,13 @@ const GenderDisplay = {
 };
 
 export function AnimalListing(props: AnimalListingProps) {
+	const router = useRouter();
 	const {
-		animal: { name, gender, breed, weightKg, animalImages },
+		animal: { id, name, gender, breed, weightKg, animalImages },
 	} = props;
 	const thumbnail = animalImages?.[0].thumbnailUrl;
 	return (
-		<Wrapper>
+		<Wrapper onClick={() => router.push(`/adopter/pet/${id}`)}>
 			<PetImage src={thumbnail} alt={`${name} image`} />
 			<PetInfo>
 				<PetName>{name}</PetName>
@@ -40,6 +42,7 @@ const Wrapper = styled.div`
 	color: var(--color-white);
 	border-radius: 7px;
 	overflow: hidden;
+	cursor: pointer;
 `;
 
 const PetImage = styled.img`
