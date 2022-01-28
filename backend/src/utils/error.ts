@@ -4,7 +4,6 @@ import {
 	HttpError,
 	Middleware,
 } from "routing-controllers";
-import { Logger } from "../helpers/logger";
 import { z } from "zod";
 
 @Middleware({ type: "after" })

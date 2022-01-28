@@ -15,7 +15,6 @@ import {
 	Req,
 } from "routing-controllers";
 import { WhereOptions } from "sequelize/types";
-import { Logger } from "../helpers/logger";
 import { z } from "zod";
 import { sequelize } from "../database";
 import { AnimalModel } from "../models/animal";

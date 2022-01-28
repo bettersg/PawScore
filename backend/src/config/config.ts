@@ -51,6 +51,7 @@ const otherConfigs = {
 		"http://localhost:3000",
 	],
 	nodeEnv: validEnv.NODE_ENV,
+	logMaxStringLength: 1000,
 };
 
 const config = {
