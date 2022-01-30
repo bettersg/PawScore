@@ -1,7 +1,7 @@
 import { Animal } from "@contract";
 import { PetApi } from "api/petApi";
 import { ErrorComponent, LoadingComponent } from "components/shelter/common";
-import { EditPetDetails } from "components/shelter/pet/EditPetDetails";
+import { EditPetForm } from "components/shelter/pet/edit/Form";
 import { ViewPetDetails } from "components/shelter/pet/ViewPetDetails";
 import ShelterLayout from "layouts/shelter/ShelterLayout";
 import { MenuKey } from "layouts/shelter/ShelterLayout/LeftMenu";
@@ -103,9 +103,9 @@ export default function PetDetails() {
 		}
 
 		return editMode ? (
-			<EditPetDetails
+			<EditPetForm
 				petData={petData!}
-				onClickCancel={toggleEditModeOff}
+				toggleEditModeOff={toggleEditModeOff}
 			/>
 		) : (
 			<ViewPetDetails
