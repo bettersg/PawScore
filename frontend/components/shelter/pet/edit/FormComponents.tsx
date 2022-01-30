@@ -1,4 +1,4 @@
-import { Breadcrumb, Input, Radio, Select } from "antd";
+import { Breadcrumb, Input, Radio, RadioChangeEvent, Select } from "antd";
 import { Container } from "../styledComponents";
 import Title from "antd/lib/typography/Title";
 import { Button } from "antd";
@@ -6,16 +6,44 @@ import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { Animal } from "@contract";
 import { ImageGallery } from "../common/ImageGallery";
-import { ReactNode } from "react";
+import { ChangeEvent, ReactNode } from "react";
+
+const { TextArea } = Input;
 
 // =============================================================================
 // Primary Form Sections
 // =============================================================================
+interface IPetDataProp {
+	petData: Animal.Attributes;
+}
+interface FormProps {
+	handleChange: (
+		e:
+			| RadioChangeEvent
+			| ChangeEvent<HTMLInputElement>
+			| ChangeEvent<HTMLTextAreaElement>,
+	) => void;
+	handleSelectChange: (
+		value: Animal.Species | Animal.AdoptionStatus,
+		field: keyof Animal.Attributes,
+	) => void;
+}
+type SectionProps = IPetDataProp & FormProps;
+
 type FormHeaderProps = {
 	petId: string;
 	onClickCancel: () => void;
+	isValidForm: boolean;
+	isSubmitting: boolean;
+	handleSubmit: () => Promise<void>;
 };
-const FormHeader = ({ petId, onClickCancel }: FormHeaderProps) => (
+const FormHeader = ({
+	petId,
+	onClickCancel,
+	isValidForm,
+	isSubmitting,
+	handleSubmit,
+}: FormHeaderProps) => (
 	<Container>
 		<Breadcrumb separator=">">
 			<Breadcrumb.Item>Pets</Breadcrumb.Item>
@@ -36,7 +64,12 @@ const FormHeader = ({ petId, onClickCancel }: FormHeaderProps) => (
 			>
 				Cancel
 			</Button>
-			<Button type="primary" icon={<SaveOutlined />}>
+			<Button
+				type="primary"
+				icon={<SaveOutlined />}
+				disabled={!isValidForm || isSubmitting}
+				onClick={handleSubmit}
+			>
 				Save
 			</Button>
 		</ButtonContainer>
@@ -72,114 +105,187 @@ const ImageSection = ({ images, updateImages }: ImageSectionProps) => {
 	);
 };
 
-const PetInfoSection = ({ petData }: { petData: Animal.Attributes }) => {
-	return (
-		<FormSectionWithTitle title="Pet Information">
-			<Grid>
-				<DataField
-					required
-					label="Name"
-					data={
-						<Input
-							name={
-								"name" as keyof Pick<Animal.Attributes, "name">
-							}
-							defaultValue={petData.name}
-						/>
-					}
-				/>
-				<DataField
-					label="Breed"
-					data={
-						<Input
-							name={
-								"breed" as keyof Pick<
-									Animal.Attributes,
-									"breed"
-								>
-							}
-							defaultValue={petData.breed || undefined}
-							placeholder="Siamese"
-						/>
-					}
-				/>
-				<DataField
-					label="Weight"
-					data={
-						<Input
-							name={
-								"weightKg" as keyof Pick<
-									Animal.Attributes,
-									"weightKg"
-								>
-							}
-							defaultValue={petData.weightKg || undefined}
-							placeholder="in kg"
-						/>
-					}
-				/>
-				<DataField
-					required
-					label="Species"
-					data={
-						<Select
-							defaultValue={petData.species}
-							style={{ width: "100%" }}
-							// onChange={(value) => {
-							// 	handleSelectChange(value);
-							// }}
-						>
-							{Object.values(Animal.Species).map((val) => (
-								<Select.Option value={val} key={val}>
-									{val}
-								</Select.Option>
-							))}
-						</Select>
-					}
-				/>
-				<DataField
-					required
-					label="Gender"
-					data={
-						<Radio.Group
-							name={
-								"gender" as keyof Pick<
-									Animal.Attributes,
-									"gender"
-								>
-							}
-							defaultValue={petData.gender}
-							// onChange={handleChange}
-						>
-							<Radio value="M">Male</Radio>
-							<Radio value="F">Female</Radio>
-						</Radio.Group>
-					}
-				/>
-				<DataField
-					label="Fur Colour"
-					data={
-						<Input
-							name={
-								"color" as keyof Pick<
-									Animal.Attributes,
-									"color"
-								>
-							}
-							defaultValue={petData.color}
-							placeholder="brown"
-						/>
-					}
-				/>
-			</Grid>
-		</FormSectionWithTitle>
-	);
-};
+const PetInfoSection = ({
+	petData,
+	handleChange,
+	handleSelectChange,
+}: SectionProps) => (
+	<FormSectionWithTitle title="Pet Information">
+		<Grid columns={3}>
+			<DataField
+				required
+				label="Name"
+				data={
+					<Input
+						name={"name" as keyof Pick<Animal.Attributes, "name">}
+						defaultValue={petData.name}
+						onChange={handleChange}
+					/>
+				}
+			/>
+			<DataField
+				label="Breed"
+				data={
+					<Input
+						name={"breed" as keyof Pick<Animal.Attributes, "breed">}
+						defaultValue={petData.breed || undefined}
+						placeholder="Siamese"
+						onChange={handleChange}
+					/>
+				}
+			/>
+			<DataField
+				label="Weight"
+				data={
+					<Input
+						name={
+							"weightKg" as keyof Pick<
+								Animal.Attributes,
+								"weightKg"
+							>
+						}
+						defaultValue={petData.weightKg || undefined}
+						placeholder="in kg"
+						onChange={handleChange}
+					/>
+				}
+			/>
+			<DataField
+				required
+				label="Species"
+				data={
+					<Select
+						defaultValue={petData.species}
+						style={{ width: "100%" }}
+						onChange={(value) => {
+							handleSelectChange(value, "species");
+						}}
+					>
+						{Object.values(Animal.Species).map((val) => (
+							<Select.Option value={val} key={val}>
+								{val}
+							</Select.Option>
+						))}
+					</Select>
+				}
+			/>
+			<DataField
+				required
+				label="Gender"
+				data={
+					<Radio.Group
+						name={
+							"gender" as keyof Pick<Animal.Attributes, "gender">
+						}
+						defaultValue={petData.gender}
+						onChange={handleChange}
+					>
+						<Radio value="M">Male</Radio>
+						<Radio value="F">Female</Radio>
+					</Radio.Group>
+				}
+			/>
+			<DataField
+				label="Fur Colour"
+				data={
+					<Input
+						name={"color" as keyof Pick<Animal.Attributes, "color">}
+						defaultValue={petData.color}
+						placeholder="brown"
+						onChange={handleChange}
+					/>
+				}
+			/>
+		</Grid>
+	</FormSectionWithTitle>
+);
+
+const ImportantInfoSection = ({
+	petData,
+	handleChange,
+	handleSelectChange,
+}: SectionProps) => (
+	<FormSectionWithTitle title="Important Information ">
+		<Grid columns={2}>
+			<DataField
+				label="Medical Information"
+				data={
+					<TextArea
+						name={
+							"healthIssues" as keyof Pick<
+								Animal.Attributes,
+								"healthIssues"
+							>
+						}
+						defaultValue={petData.healthIssues}
+						placeholder="Any medical or health issues"
+						onChange={handleChange}
+					/>
+				}
+			/>
+			{/* TODO: unsure of what this field corresponds to */}
+			<DataField
+				label="Preferences and Needs"
+				data={
+					<TextArea
+						name={
+							"healthIssues" as keyof Pick<
+								Animal.Attributes,
+								"healthIssues"
+							>
+						}
+						defaultValue=""
+					/>
+				}
+			/>
+			<DataField
+				required
+				label="Sterilization Status"
+				data={
+					<Radio.Group
+						name={
+							"sterilised" as keyof Pick<
+								Animal.Attributes,
+								"sterilised"
+							>
+						}
+						defaultValue={petData.sterilised}
+						onChange={handleChange}
+					>
+						<Radio value={true}>Yes</Radio>
+						<Radio value={false}>No</Radio>
+						<Radio value={null}>Others</Radio>
+					</Radio.Group>
+				}
+			/>
+			<DataField
+				required
+				label="Listed as:"
+				data={
+					<Select
+						defaultValue={petData.adoptionStatus}
+						style={{ width: "100%" }}
+						onChange={(value) => {
+							handleSelectChange(value, "adoptionStatus");
+						}}
+					>
+						{Object.values(Animal.AdoptionStatus).map((val) => (
+							<Select.Option value={val} key={val}>
+								{val}
+							</Select.Option>
+						))}
+					</Select>
+				}
+			/>
+		</Grid>
+	</FormSectionWithTitle>
+);
 
 export const FormComponents = {
 	FormHeader,
 	ImageSection,
 	PetInfoSection,
+	ImportantInfoSection,
 };
 
 // =============================================================================
@@ -193,7 +299,7 @@ const FormSectionWithTitle = ({
 	title,
 	children,
 }: FormSectionWithTitleProps) => (
-	<Container padBottom>
+	<Container $padBottom>
 		<TitleContainer>
 			<Title style={{ marginBottom: 0 }} level={5}>
 				{title}
@@ -265,8 +371,8 @@ const DataFieldContainer = styled.div`
 	}
 `;
 
-const Grid = styled.div`
+const Grid = styled.div<{ columns: number }>`
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(${({ columns }) => columns}, 1fr);
 	grid-gap: 32px 16px;
 `;

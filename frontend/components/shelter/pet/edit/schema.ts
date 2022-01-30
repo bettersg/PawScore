@@ -33,10 +33,10 @@ export const schema: SchemaOf<Animal.Attributes> = object().shape({
 	gender: mixed<"M" | "F">().oneOf(["M", "F"]).required(),
 	dateOfBirth: date().required(),
 	sizeCm: number().nullable().defined(), //TODO: set validation if added to form
-	breed: string().required(),
+	breed: string().nullable().defined(),
 	color: string().required(),
 	weightKg: number().nullable().defined(), //TODO: set validation if added to form
-	furLength: string().required(),
+	furLength: string().nullable().defined(),
 	vaccinated: boolean().nullable().defined(), //TODO: set validation if added to form
 	dewormed: boolean().nullable().defined(), //TODO: set validation if added to form
 	sterilised: boolean().nullable().defined(),

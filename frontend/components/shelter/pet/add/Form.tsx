@@ -10,6 +10,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
+import { FormError } from "../styledComponents";
 import { FormSection } from "./FormComponents";
 import { schema } from "./schema";
 
@@ -171,11 +172,6 @@ export const AddPetForm = () => {
 // =============================================================================
 // Styled Components
 // =============================================================================
-
-const FormError = styled(Alert)`
-	margin-bottom: 20px;
-`;
-
 const PetDetailHeader = styled.div`
 	display: flex;
 	flex-direction: row;

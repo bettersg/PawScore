@@ -1,15 +1,7 @@
-import { CloseOutlined, EditOutlined } from "@ant-design/icons";
-import { Animal, Shelter } from "@contract";
-import { Alert, Button } from "antd";
-import Title from "antd/lib/typography/Title";
-import { PetApi } from "api/petApi";
-import { NewAnimal } from "common/types";
-import dayjs from "dayjs";
+import { Animal } from "@contract";
 import { Formik, FormikHelpers } from "formik";
-import moment from "moment";
-import { useRouter } from "next/router";
 import React from "react";
-import styled from "styled-components";
+import { FormError } from "../styledComponents";
 import { FormComponents } from "./FormComponents";
 import { schema } from "./schema";
 
@@ -22,30 +14,81 @@ export const EditPetForm = ({
 	petData,
 	toggleEditModeOff,
 }: EditPetFormProps) => {
-	const router = useRouter();
+	const handleSubmit = async (
+		values: Animal.Attributes,
+		{ setSubmitting, setStatus }: FormikHelpers<Animal.Attributes>,
+	) => {
+		// setSubmitting(true);
+		setStatus({ apiError: false });
 
-	const handleSubmit = () => {};
-
-	const handleImageUpdate = () => {};
+		try {
+			// await new PetApi().addNewPet(values);
+			// router.push(`/shelter/${shelterId}`);
+			console.log(values);
+		} catch (err) {
+			setSubmitting(false);
+			setStatus({ apiError: true });
+		}
+	};
 
 	return (
 		<Formik
 			validationSchema={schema}
 			initialValues={petData}
 			onSubmit={handleSubmit}
+			validateOnMount={true}
 		>
 			{(formikProps) => {
+				const pet = formikProps.values;
+				const updateImages = (images: Animal.Image[]) => {
+					formikProps.setFieldValue(
+						"animalImages" as keyof Pick<
+							Animal.Attributes,
+							"animalImages"
+						>,
+						images,
+					);
+				};
+				const onSelectChange = (
+					value: Animal.Species | Animal.AdoptionStatus,
+					field: keyof Animal.Attributes,
+				) => {
+					formikProps.setFieldValue(field, value);
+				};
 				return (
 					<>
+						{formikProps.status?.apiError && (
+							<FormError
+								type="error"
+								message="Something went wrong."
+								showIcon
+								closable
+							/>
+						)}
+						<div onClick={() => console.log(formikProps.errors)}>
+							errors?
+						</div>
 						<FormComponents.FormHeader
-							petId={petData.id}
+							petId={pet.id}
 							onClickCancel={toggleEditModeOff}
+							isValidForm={formikProps.isValid}
+							isSubmitting={formikProps.isSubmitting}
+							handleSubmit={formikProps.submitForm}
 						/>
 						<FormComponents.ImageSection
-							images={petData.animalImages || []}
-							updateImages={handleImageUpdate}
+							images={pet.animalImages || []}
+							updateImages={updateImages}
 						/>
-						<FormComponents.PetInfoSection petData={petData} />
+						<FormComponents.PetInfoSection
+							petData={pet}
+							handleChange={formikProps.handleChange}
+							handleSelectChange={onSelectChange}
+						/>
+						<FormComponents.ImportantInfoSection
+							petData={pet}
+							handleChange={formikProps.handleChange}
+							handleSelectChange={onSelectChange}
+						/>
 					</>
 				);
 			}}
