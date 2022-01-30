@@ -75,83 +75,103 @@ const ImageSection = ({ images, updateImages }: ImageSectionProps) => {
 const PetInfoSection = ({ petData }: { petData: Animal.Attributes }) => {
 	return (
 		<FormSectionWithTitle title="Pet Information">
-			<DataField
-				required
-				label="Name"
-				data={
-					<Input
-						name={"name" as keyof Pick<Animal.Attributes, "name">}
-						defaultValue={petData.name}
-					/>
-				}
-			/>
-			<DataField
-				label="Breed"
-				data={
-					<Input
-						name={"breed" as keyof Pick<Animal.Attributes, "breed">}
-						defaultValue={petData.breed || undefined}
-					/>
-				}
-			/>
-			<DataField
-				label="Weight"
-				data={
-					<Input
-						name={
-							"weightKg" as keyof Pick<
-								Animal.Attributes,
-								"weightKg"
-							>
-						}
-						defaultValue={petData.weightKg || undefined}
-					/>
-				}
-			/>
-			<DataField
-				required
-				label="Species"
-				data={
-					<Select
-						defaultValue={petData.species}
-						style={{ width: "100%" }}
-						// onChange={(value) => {
-						// 	handleSelectChange(value);
-						// }}
-					>
-						{Object.values(Animal.Species).map((val) => (
-							<Select.Option value={val} key={val}>
-								{val}
-							</Select.Option>
-						))}
-					</Select>
-				}
-			/>
-			<DataField
-				required
-				label="Gender"
-				data={
-					<Radio.Group
-						name={
-							"gender" as keyof Pick<Animal.Attributes, "gender">
-						}
-						defaultValue={petData.gender}
-						// onChange={handleChange}
-					>
-						<Radio value="M">Male</Radio>
-						<Radio value="F">Female</Radio>
-					</Radio.Group>
-				}
-			/>
-			<DataField
-				label="Fur Colour"
-				data={
-					<Input
-						name={"color" as keyof Pick<Animal.Attributes, "color">}
-						defaultValue={petData.color}
-					/>
-				}
-			/>
+			<Grid>
+				<DataField
+					required
+					label="Name"
+					data={
+						<Input
+							name={
+								"name" as keyof Pick<Animal.Attributes, "name">
+							}
+							defaultValue={petData.name}
+						/>
+					}
+				/>
+				<DataField
+					label="Breed"
+					data={
+						<Input
+							name={
+								"breed" as keyof Pick<
+									Animal.Attributes,
+									"breed"
+								>
+							}
+							defaultValue={petData.breed || undefined}
+							placeholder="Siamese"
+						/>
+					}
+				/>
+				<DataField
+					label="Weight"
+					data={
+						<Input
+							name={
+								"weightKg" as keyof Pick<
+									Animal.Attributes,
+									"weightKg"
+								>
+							}
+							defaultValue={petData.weightKg || undefined}
+							placeholder="in kg"
+						/>
+					}
+				/>
+				<DataField
+					required
+					label="Species"
+					data={
+						<Select
+							defaultValue={petData.species}
+							style={{ width: "100%" }}
+							// onChange={(value) => {
+							// 	handleSelectChange(value);
+							// }}
+						>
+							{Object.values(Animal.Species).map((val) => (
+								<Select.Option value={val} key={val}>
+									{val}
+								</Select.Option>
+							))}
+						</Select>
+					}
+				/>
+				<DataField
+					required
+					label="Gender"
+					data={
+						<Radio.Group
+							name={
+								"gender" as keyof Pick<
+									Animal.Attributes,
+									"gender"
+								>
+							}
+							defaultValue={petData.gender}
+							// onChange={handleChange}
+						>
+							<Radio value="M">Male</Radio>
+							<Radio value="F">Female</Radio>
+						</Radio.Group>
+					}
+				/>
+				<DataField
+					label="Fur Colour"
+					data={
+						<Input
+							name={
+								"color" as keyof Pick<
+									Animal.Attributes,
+									"color"
+								>
+							}
+							defaultValue={petData.color}
+							placeholder="brown"
+						/>
+					}
+				/>
+			</Grid>
 		</FormSectionWithTitle>
 	);
 };
@@ -173,7 +193,7 @@ const FormSectionWithTitle = ({
 	title,
 	children,
 }: FormSectionWithTitleProps) => (
-	<Container>
+	<Container padBottom>
 		<TitleContainer>
 			<Title style={{ marginBottom: 0 }} level={5}>
 				{title}
@@ -237,11 +257,16 @@ const TitleContainer = styled.div`
 const DataFieldContainer = styled.div`
 	.label {
 		margin: 8px 0;
-		background: pink;
 
 		span {
 			color: red;
 			padding-right: 3px;
 		}
 	}
+`;
+
+const Grid = styled.div`
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 32px 16px;
 `;
