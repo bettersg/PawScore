@@ -35,10 +35,10 @@ const authRouteSetup = (
 					"local-signup",
 					(error: Error, user: User, info) => {
 						if (error !== null) {
-							console.log(
+							Logger.error(
 								"Error in auth.ts > POST /api/register",
+								error,
 							);
-							console.log(JSON.stringify(error));
 							const result = {
 								status: "failed",
 								message: "Failed to register",
@@ -92,8 +92,10 @@ const authRouteSetup = (
 					"local-login",
 					(err: Error, user: User, info) => {
 						if (err) {
-							console.log("Error in auth.ts > POST /api/login");
-							console.log(JSON.stringify(err));
+							Logger.error(
+								"Error in auth.ts > POST /api/login",
+								err,
+							);
 							return next(err);
 						}
 						if (!user) {

@@ -20,7 +20,7 @@ export class ApiErrorMiddleware implements ExpressErrorMiddlewareInterface {
 			Logger.error("Validation error", error.flatten());
 			response.status(400).json({ message: error.message });
 		} else {
-			Logger.error("Unhandled error", error.message);
+			Logger.error("Unhandled error", error);
 			response.status(500).json({ message: "Internal server error" });
 		}
 	}
