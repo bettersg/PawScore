@@ -52,6 +52,7 @@ const otherConfigs = {
 	],
 	nodeEnv: validEnv.NODE_ENV,
 	logMaxStringLength: 1000,
+	logLevel: "info",
 };
 
 const config = {

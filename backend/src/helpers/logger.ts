@@ -5,8 +5,10 @@ import config from "../config/config";
 
 declare global {
 	class Logger {
-		static log(message: string, ...data: any[]): void;
+		static debug(message: string, ...data: any[]): void;
+		static info(message: string, ...data: any[]): void;
 		static error(message: string, ...data: any[]): void;
+		static fatal(message: string, ...data: any[]): void;
 	}
 }
 
@@ -25,48 +27,85 @@ type GoogleStructuredJSON = {
 	message: string;
 	timestamp: string;
 	"logging.googleapis.com/trace"?: string;
-	[key: string]: any;
 };
 
-const sensitiveFields = ["password"];
+type DefaultLoggingPayload = Omit<GoogleStructuredJSON, "message"> &
+	Record<string, any>;
+
+type LoggingPayload = GoogleStructuredJSON & Record<string, any>;
+
+const SENSITIVE_FIELDS = ["password"];
+
+enum LogLevel {
+	Debug,
+	Info,
+	Error,
+	Fatal,
+}
+
+const LogToLogLevelMap: Record<string, LogLevel> = {
+	debug: LogLevel.Debug,
+	info: LogLevel.Info,
+	error: LogLevel.Error,
+	fatal: LogLevel.Fatal,
+};
 
 export class Logger {
-	static log(message: string, ...data: any[]): void {
-		const context = requestContextLocalStorage.getStore();
+	private static logLevel =
+		LogToLogLevelMap[config.logLevel ?? "info"] ?? LogLevel.Info;
 
-		const payload: GoogleStructuredJSON = {
-			req: {
-				url: context?.req.path,
-				id: context?.id,
-			},
-			timestamp: new Date().toISOString(),
-			severity: "INFO",
-			message,
-			data,
-		};
-
-		const trace = context?.req.header("X-Cloud-Trace-Context");
-		if (trace) {
-			payload[
-				"logging.googleapis.com/trace"
-			] = `projects/pawscore/traces/${trace}`;
+	static setLogLevel(logLevel: string) {
+		if (LogToLogLevelMap[logLevel] === undefined) {
+			throw new Error("Invalid log level");
 		}
+		Logger.logLevel = LogToLogLevelMap[logLevel];
+	}
 
-		console.log(Logger.stringify(payload));
+	static debug(message: string, ...data: any[]): void {
+		if (Logger.logLevel <= LogLevel.Debug) {
+			Logger.log("DEBUG", message, data);
+		}
+	}
+
+	static info(message: string, ...data: any[]): void {
+		if (Logger.logLevel <= LogLevel.Info) {
+			Logger.log("INFO", message, data);
+		}
 	}
 
 	static error(message: string, ...data: any[]): void {
+		if (Logger.logLevel <= LogLevel.Error) {
+			Logger.log("ERROR", message, data);
+		}
+	}
+
+	static fatal(message: string, ...data: any[]): void {
+		if (Logger.logLevel <= LogLevel.Fatal) {
+			Logger.log("CRITICAL", message, data);
+		}
+	}
+
+	private static log(severity: string, message: string, data: any[]): void {
+		const payload: LoggingPayload = {
+			...Logger.constructDefaultPayload(severity),
+			message,
+			data,
+		};
+
+		console.log(Logger.stringify(payload));
+	}
+
+	private static constructDefaultPayload(severity: string) {
 		const context = requestContextLocalStorage.getStore();
 
-		const payload: GoogleStructuredJSON = {
+		const payload: DefaultLoggingPayload = {
 			req: {
 				url: context?.req.path,
 				id: context?.id,
+				user: context?.req?.user?.id,
 			},
 			timestamp: new Date().toISOString(),
-			severity: "ERROR",
-			message,
-			data,
+			severity: severity,
 		};
 
 		const trace = context?.req.header("X-Cloud-Trace-Context");
@@ -76,11 +115,11 @@ export class Logger {
 			] = `projects/pawscore/traces/${trace}`;
 		}
 
-		console.log(Logger.stringify(payload));
+		return payload;
 	}
 
 	private static stringify(payload: any) {
-		const indentation = ["development", "test"].includes(config.nodeEnv)
+		const indentation = ["development"].includes(config.nodeEnv)
 			? 2
 			: undefined;
 
@@ -90,16 +129,23 @@ export class Logger {
 			function (k, v) {
 				// blacklist sensitive data
 				// TODO: masking function for fields like email?
-				if (sensitiveFields.includes(k.toLowerCase())) {
+				if (SENSITIVE_FIELDS.includes(k.toLowerCase())) {
 					return "[Redacted]";
 				}
 
 				// limit string length
-
 				if (typeof v === "string") {
 					return v.length > config.logMaxStringLength
 						? v.substring(0, config.logMaxStringLength) + "[...]"
 						: v;
+				}
+
+				if (v instanceof Error) {
+					return {
+						errorName: v.name,
+						errorMessage: v.message,
+						errorCode: (v as any).code,
+					};
 				}
 
 				return v;
@@ -116,18 +162,20 @@ export const LoggerContextMiddleware: RequestHandler = (req, res, next) => {
 	};
 
 	requestContextLocalStorage.run(context, () => {
-		Logger.log("Request start", {
-			body: req.body,
-			query: req.query,
-		});
-		// successful responses strangely do not emit `finish`, use `close`
-		res.on(
-			"close",
-			// binding required as context was lost
-			AsyncResource.bind(() => {
-				Logger.log("Request end", { status: res.statusCode });
-			}),
-		);
+		if (!req.path.startsWith("/_next")) {
+			Logger.info("Request start", {
+				body: req.body,
+				query: req.query,
+			});
+			// successful responses strangely do not emit `finish`, use `close`
+			res.on(
+				"close",
+				// binding required as context was lost
+				AsyncResource.bind(() => {
+					Logger.info("Request end", { status: res.statusCode });
+				}),
+			);
+		}
 		next();
 	});
 };
