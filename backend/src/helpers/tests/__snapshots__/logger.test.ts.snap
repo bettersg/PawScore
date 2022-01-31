@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logger should extract req information when available 1`] = `"{\\"req\\":{\\"url\\":\\"reqPath\\",\\"id\\":\\"reqId\\"},\\"timestamp\\":\\"2022-01-31T16:00:00.000Z\\",\\"severity\\":\\"INFO\\",\\"logging.googleapis.com/trace\\":\\"projects/pawscore/traces/reqHeader\\",\\"message\\":\\"message\\",\\"data\\":[{\\"a\\":\\"a\\",\\"b\\":\\"b\\"}]}"`;
+
+exports[`Logger should log on equal or higher severity 1`] = `
+Array [
+  Array [
+    "{\\"req\\":{},\\"timestamp\\":\\"2022-01-31T16:00:00.000Z\\",\\"severity\\":\\"ERROR\\",\\"message\\":\\"message\\",\\"data\\":[]}",
+  ],
+  Array [
+    "{\\"req\\":{},\\"timestamp\\":\\"2022-01-31T16:00:00.000Z\\",\\"severity\\":\\"CRITICAL\\",\\"message\\":\\"message\\",\\"data\\":[]}",
+  ],
+]
+`;
+
+exports[`Logger should redact blacklisted fields 1`] = `"{\\"req\\":{},\\"timestamp\\":\\"2022-01-31T16:00:00.000Z\\",\\"severity\\":\\"INFO\\",\\"message\\":\\"message\\",\\"data\\":[{\\"password\\":\\"[Redacted]\\",\\"notPassword\\":\\"123456\\"}]}"`;
+
+exports[`Logger should truncate long strings 1`] = `"{\\"req\\":{},\\"timestamp\\":\\"2022-01-31T16:00:00.000Z\\",\\"severity\\":\\"INFO\\",\\"message\\":\\"message\\",\\"data\\":[{\\"long\\":\\"0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789[...]\\",\\"nested\\":{\\"long\\":\\"0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789[...]\\"},\\"short\\":\\"0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789\\"}]}"`;
