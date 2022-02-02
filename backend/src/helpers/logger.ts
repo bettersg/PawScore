@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import { AsyncLocalStorage, AsyncResource } from "async_hooks";
 import crypto from "crypto";
 import { Request, RequestHandler } from "express";
@@ -54,7 +56,7 @@ export class Logger {
 	private static logLevel =
 		LogToLogLevelMap[config.logLevel ?? "info"] ?? LogLevel.Info;
 
-	static setLogLevel(logLevel: string) {
+	static setLogLevel(logLevel: string): void {
 		if (LogToLogLevelMap[logLevel] === undefined) {
 			throw new Error("Invalid log level");
 		}

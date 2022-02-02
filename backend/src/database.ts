@@ -3,7 +3,7 @@ import allConfig from "./config/config";
 
 // eslint-disable-next-line
 const config: any = allConfig.databaseConfig;
-config.logging = (msg: any) => Logger.debug(msg);
+config.logging = (sql: string) => Logger.debug(sql);
 export const sequelize = new Sequelize(
 	config.database,
 	config.username,
