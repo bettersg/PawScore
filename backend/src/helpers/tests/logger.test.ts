@@ -17,7 +17,7 @@ const consoleSpy = jest.spyOn(global.console, "log");
 describe("Logger", () => {
 	beforeAll(() => {
 		jest.useFakeTimers("modern");
-		jest.setSystemTime(new Date(2022, 1, 1));
+		jest.setSystemTime(new Date("2022-01-31T16:00:00.000Z"));
 	});
 
 	afterAll(() => {
