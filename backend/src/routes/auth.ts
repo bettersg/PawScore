@@ -6,6 +6,7 @@ import { User } from "../models/user";
 import { NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { passwordRegex } from "./helpers/passwordRegex";
+import config from "../config/config";
 
 const authRouteSetup = (
 	app: express.Application,
@@ -27,9 +28,16 @@ const authRouteSetup = (
 								"password should have at least 8 characters, and only contain alphanumeric or the following special characters: ~`! @#$%^&*()_-+={[}]|:;\"'<,>.?/",
 							),
 						email: z.string().email().max(100),
+						tempRegistrationKey: z.string().max(100),
 					}),
 				});
 				const { body } = reqSchema.parse(req);
+				// Hard coded key to prevent unwanted registrations as we currently do not have proper
+				// email verification functionality (i.e. email confirmation link sent to email)
+				if (config.tempRegistrationKey !== body.tempRegistrationKey) {
+					console.log("Invalid registration key submitted.");
+					return res.status(400).send("Invalid registration key");
+				}
 				req.body.email = body.email.toLowerCase();
 				passport.authenticate(
 					"local-signup",

@@ -24,7 +24,7 @@ export namespace LoginApiDomain {
 	export const loginEndpoint = "/api/login";
 	export const registerEndpoint = "/api/register";
 	export const method = Methods.POST;
-	export type requestBody = LoginFormValues;
+	export type requestBody = LoginFormValues & { tempRegistrationKey: string };
 	export type response = LoginResponse;
 }
 

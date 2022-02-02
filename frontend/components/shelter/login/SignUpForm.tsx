@@ -44,6 +44,20 @@ const SignUpForm = ({ onFinish, disableButton }: SignUpFormProps) => (
 				placeholder="Password"
 			/>
 		</Form.Item>
+		<Form.Item
+			name="tempRegistrationKey"
+			rules={[
+				{
+					required: true,
+					message: "Please input a registration key!",
+				},
+			]}
+		>
+			<Input.Password
+				prefix={<LockOutlined className={styles.inputFieldIcons} />}
+				placeholder="Registration Key"
+			/>
+		</Form.Item>
 		<Form.Item>
 			<Button type="primary" htmlType="submit" disabled={disableButton}>
 				Sign Up
