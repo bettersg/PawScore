@@ -75,7 +75,11 @@ describe("Logger", () => {
 			id: "reqId",
 			req: {
 				path: "reqPath",
-				header: (name: string) => "reqHeader",
+				header: (name: string) => {
+					return name === "X-Cloud-Trace-Context"
+						? "105445aa7843bc8bf206b12000100000/1;o=1"
+						: "reqHeader";
+				},
 			} as Request,
 		};
 

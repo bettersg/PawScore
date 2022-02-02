@@ -108,11 +108,12 @@ export class Logger {
 			severity: severity,
 		};
 
-		const trace = context?.req.header("X-Cloud-Trace-Context");
-		if (trace) {
+		const traceHeader = context?.req.header("X-Cloud-Trace-Context");
+		if (traceHeader) {
+			const [traceId] = traceHeader.split("/");
 			payload[
 				"logging.googleapis.com/trace"
-			] = `projects/pawscore/traces/${trace}`;
+			] = `projects/pawscore/traces/${traceId}`;
 		}
 
 		return payload;
