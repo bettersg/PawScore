@@ -1,6 +1,6 @@
-import { EditOutlined } from "@ant-design/icons";
+import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Animal, Shelter } from "@contract";
-import { Alert, Button } from "antd";
+import { Button } from "antd";
 import Title from "antd/lib/typography/Title";
 import { PetApi } from "api/petApi";
 import { NewAnimal } from "common/types";
@@ -15,7 +15,7 @@ import { FormSection } from "./FormComponents";
 import { schema } from "./schema";
 
 // =============================================================================
-// Schema
+// Initial Data
 // =============================================================================
 const initialPet: NewAnimal = {
 	adoptionStatus: Animal.AdoptionStatus.Healthy,
@@ -128,7 +128,10 @@ export const AddPetForm = () => {
 						<PetDetailHeader>
 							<Title level={5}>Pet Details</Title>
 							<div>
-								<Button style={{ marginRight: 8 }}>
+								<Button
+									icon={<CloseOutlined />}
+									style={{ marginRight: 8 }}
+								>
 									Cancel
 								</Button>
 								<Button
