@@ -67,7 +67,9 @@ a:hover {
 	border-radius: 2px;
 }
 
-.ant-btn-default:hover {
+.ant-btn-default:hover,
+.ant-btn:hover,
+.ant-btn:focus {
 	background: var(--color-white);
 	border: 1px solid var(--color-golden-purple);
 	color: var(--color-golden-purple-hover);

@@ -55,6 +55,7 @@ const dateToDateString = (date: Date | null) => {
 export const AddPetForm = () => {
 	const router = useRouter();
 	const shelterId = router.query.shelterId as string;
+	const dashboardUrl = `/shelter/${shelterId}`;
 
 	const handleSubmit = async (
 		values: NewAnimal,
@@ -71,7 +72,7 @@ export const AddPetForm = () => {
 
 		try {
 			await new PetApi().addNewPet(transformedValues);
-			router.push(`/shelter/${shelterId}`);
+			router.push(dashboardUrl);
 		} catch (err) {
 			setSubmitting(false);
 			setStatus({ apiError: true });
@@ -131,6 +132,7 @@ export const AddPetForm = () => {
 								<Button
 									icon={<CloseOutlined />}
 									style={{ marginRight: 8 }}
+									href={dashboardUrl}
 								>
 									Cancel
 								</Button>
