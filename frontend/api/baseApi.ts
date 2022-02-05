@@ -18,8 +18,16 @@ export class BaseApi {
 		return this.client.post<Response>(url, body);
 	}
 
+	private put<Params, Response>(url: string, body?: Params) {
+		return this.client.put<Response>(url, body);
+	}
+
+	private delete<Response>(url: string) {
+		return this.client.delete<Response>(url);
+	}
+
 	protected fetch<Params, Response>(
-		method: Methods.GET | Methods.POST,
+		method: Methods,
 		url: string,
 		params?: Params,
 	) {
@@ -28,6 +36,10 @@ export class BaseApi {
 				return this.get<Params, Response>(url, params);
 			case Methods.POST:
 				return this.post<Params, Response>(url, params);
+			case Methods.PUT:
+				return this.put<Params, Response>(url, params);
+			case Methods.DELETE:
+				return this.delete<Response>(url);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 import { Animal } from "@contract";
+import { PetApi } from "api/petApi";
 import { Formik, FormikHelpers } from "formik";
 import React from "react";
 import { FormError } from "../styledComponents";
@@ -18,13 +19,12 @@ export const EditPetForm = ({
 		values: Animal.Attributes,
 		{ setSubmitting, setStatus }: FormikHelpers<Animal.Attributes>,
 	) => {
-		// setSubmitting(true);
+		setSubmitting(true);
 		setStatus({ apiError: false });
 
 		try {
-			// await new PetApi().addNewPet(values);
-			// router.push(`/shelter/${shelterId}`);
-			console.log(values);
+			await new PetApi().updatePetData(petData.id, values);
+			toggleEditModeOff();
 		} catch (err) {
 			setSubmitting(false);
 			setStatus({ apiError: true });
@@ -65,9 +65,6 @@ export const EditPetForm = ({
 								closable
 							/>
 						)}
-						<div onClick={() => console.log(formikProps.errors)}>
-							errors?
-						</div>
 						<FormComponents.FormHeader
 							petId={pet.id}
 							onClickCancel={toggleEditModeOff}

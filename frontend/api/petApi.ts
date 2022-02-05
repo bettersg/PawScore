@@ -66,4 +66,15 @@ export class PetApi extends BaseApi {
 			petData,
 		);
 	}
+
+	public async updatePetData(
+		id: Shelter.editPetApiDomain.requestQuery,
+		petData: Shelter.editPetApiDomain.requestBody,
+	) {
+		await this.fetch<Shelter.editPetApiDomain.requestBody, null>(
+			Shelter.editPetApiDomain.method,
+			`${Shelter.editPetApiDomain.endpoint}/${id}`,
+			petData,
+		);
+	}
 }
