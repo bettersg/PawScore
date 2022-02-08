@@ -1,6 +1,6 @@
 import { EditOutlined } from "@ant-design/icons";
 import { Animal } from "@contract";
-import { Button, Tag } from "antd";
+import { Button } from "antd";
 import Title from "antd/lib/typography/Title";
 import dayjs from "dayjs";
 import React, { ReactNode } from "react";
@@ -8,8 +8,13 @@ import styled from "styled-components";
 
 type PetDetailsSectionProps = {
 	petData: Animal.Attributes;
+	onClickEdit: () => void;
 };
-const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
+
+const PetDetailsSection = ({
+	petData,
+	onClickEdit,
+}: PetDetailsSectionProps) => {
 	const {
 		id,
 		animalImages,
@@ -29,11 +34,13 @@ const PetDetailsSection = ({ petData }: PetDetailsSectionProps) => {
 	return (
 		<InnerContent>
 			<PetDetailHeader>
-				<Title level={5}>Pet Details</Title>
+				<Title style={{ marginBottom: 0 }} level={5}>
+					Pet Details
+				</Title>
 				<Button
 					type="primary"
 					icon={<EditOutlined />}
-					href={`${id}/edit`}
+					onClick={onClickEdit}
 				>
 					Edit
 				</Button>

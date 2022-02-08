@@ -2,6 +2,7 @@ export * from "./addNewPet";
 export * from "./addNewShelter";
 export * from "./fetchPets";
 export * from "./fetchShelter";
+export * from "./editPetData";
 
 interface BaseAttributes {
 	name: string;

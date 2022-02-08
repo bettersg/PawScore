@@ -1,6 +1,6 @@
-import { EditOutlined } from "@ant-design/icons";
+import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Animal, Shelter } from "@contract";
-import { Alert, Button } from "antd";
+import { Button } from "antd";
 import Title from "antd/lib/typography/Title";
 import { PetApi } from "api/petApi";
 import { NewAnimal } from "common/types";
@@ -10,11 +10,12 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
+import { FormError } from "../styledComponents";
 import { FormSection } from "./FormComponents";
 import { schema } from "./schema";
 
 // =============================================================================
-// Schema
+// Initial Data
 // =============================================================================
 const initialPet: NewAnimal = {
 	adoptionStatus: Animal.AdoptionStatus.Healthy,
@@ -129,6 +130,7 @@ export const AddPetForm = () => {
 							<Title level={5}>Pet Details</Title>
 							<div>
 								<Button
+									icon={<CloseOutlined />}
 									style={{ marginRight: 8 }}
 									href={dashboardUrl}
 								>
@@ -175,11 +177,6 @@ export const AddPetForm = () => {
 // =============================================================================
 // Styled Components
 // =============================================================================
-
-const FormError = styled(Alert)`
-	margin-bottom: 20px;
-`;
-
 const PetDetailHeader = styled.div`
 	display: flex;
 	flex-direction: row;

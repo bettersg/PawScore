@@ -121,3 +121,20 @@ a:hover {
 .ant-tabs-ink-bar {
 	background: var(--color-golden-purple) !important;
 }
+
+/* ========================================================================== */
+/* Radio */
+/* ========================================================================== */
+.ant-radio-inner::after {
+	background-color: var(--color-golden-purple);
+	border: 1px solid var(--color-golden-purple);
+}
+
+.ant-radio-checked .ant-radio-inner,
+.ant-radio:hover .ant-radio-inner {
+	border-color: var(--color-golden-purple);
+}
+/* 
+.ant-radio:hover {
+	border: 1px solid var(--color-golden-purple);
+} */
