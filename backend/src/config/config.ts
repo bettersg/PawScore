@@ -53,6 +53,8 @@ const otherConfigs = {
 	],
 	nodeEnv: validEnv.NODE_ENV,
 	tempRegistrationKey: validEnv.TEMP_REGISTRATION_KEY,
+	logMaxStringLength: 1000,
+	logLevel: "info",
 };
 
 const config = {

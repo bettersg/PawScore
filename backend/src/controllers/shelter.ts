@@ -39,6 +39,6 @@ export class ShelterController {
 			registrationNo: shelter.registrationNo,
 		};
 		const s = await ShelterModel.create(data);
-		console.debug(`Saved shelter ${s.id}`);
+		Logger.info(`Saved shelter ${s.id}`);
 	}
 }

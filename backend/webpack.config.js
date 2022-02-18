@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack')
 const nodeExternals = require('webpack-node-externals');
 const NodemonPlugin = require('nodemon-webpack-plugin');
 
@@ -32,7 +33,8 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js'],
         alias: {
-            "@contract": path.resolve(__dirname, '../contract')
+            "@contract": path.resolve(__dirname, '../contract'),
+            "logger": path.resolve(__dirname, "./src/helpers/logger") 
         }
     },
 
@@ -48,6 +50,9 @@ module.exports = {
     },
 
     plugins: [
+        new webpack.ProvidePlugin({
+            'Logger': ['logger', 'Logger']
+          }),
         new NodemonPlugin({
             nodeArgs: ["--enable-source-maps", "--inspect"]
         })

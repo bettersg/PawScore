@@ -77,7 +77,7 @@ export class AnimalController {
 		}
 
 		const animal = await this.createAnimal(input);
-		console.log(`Created animal with id ${animal.id}`);
+		Logger.info(`Created animal with id ${animal.id}`);
 	}
 
 	private async createAnimal(
@@ -124,7 +124,7 @@ export class AnimalController {
 		}
 
 		await this.updateAnimal(animal, input);
-		console.log(`Updated animal with id ${animal.id}`);
+		Logger.info(`Updated animal with id ${animal.id}`);
 	}
 
 	private async updateAnimal(
@@ -175,7 +175,7 @@ export class AnimalController {
 
 		// records in animal image table are automatically deleted
 		await animal.destroy();
-		console.log(`Deleted animal with id ${animal.id}`);
+		Logger.info(`Deleted animal with id ${animal.id}`);
 	}
 }
 

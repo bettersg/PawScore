@@ -3,6 +3,7 @@ import allConfig from "./config/config";
 
 // eslint-disable-next-line
 const config: any = allConfig.databaseConfig;
+config.logging = (sql: string) => Logger.debug(sql);
 export const sequelize = new Sequelize(
 	config.database,
 	config.username,
@@ -13,9 +14,9 @@ export const sequelize = new Sequelize(
 const testConnection = async () => {
 	try {
 		await sequelize.authenticate();
-		console.log("Connection has been established successfully.");
+		Logger.info("Connection has been established successfully.");
 	} catch (error) {
-		console.error("Unable to connect to the database:", error);
+		Logger.fatal("Unable to connect to the database:", error);
 		throw error;
 	}
 };
